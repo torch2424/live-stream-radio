@@ -21,15 +21,20 @@ cd piStreamRadio
 ./installDeps.sh
 ````
 
-Then you probably want to edit you `config.sh` file to provide your Stream key and url (Default URL is for youtube).
+Then you probably want to edit your `config.sh` file to provide your Stream key and url (Default URL is for youtube).
 
-After this, simply start the stream!
+````
+cd radioFiles
+cp config.example.sh config.sh
+````
+
+You can now edit the `config.sh` file. After this, simply start the stream!
 
 ````
 ./startStream.sh
 ````
 
-And then sit back, relax, and vibe to your awesome radio! Gifs and Music and be removed and added from the `radioFiles/` directory. Be cautious removing while streaming however, as this could lead to errors while the video is encoding.
+And then sit back, relax, and vibe to your awesome radio! Gifs and Music and be removed and added from the `radioFiles/` directory, in their respective directories. Be cautious removing while streaming however, as this could lead to errors while the video is encoding.
 
 # Tips
 

@@ -3,3 +3,4 @@ ffmpeg/*
 libfdk*
 libfdk*/*
 .DS_Store
+radioFiles/config.sh
