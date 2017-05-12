@@ -30,7 +30,8 @@ SONG_NAME=""
 # Generate an optimized gif
 CURRENT_GIF="$STREAM_GIF_PATH$(date +%s).gif"
 echo "$CURRENT_GIF" > $CURRENT_GIF_PATH
-./optimizeGif.sh $(./getFileFromDir.sh $GIF_DIRECTORY) $CURRENT_GIF
+RANDOM_GIF=$(./getFileFromDir.sh $GIF_DIRECTORY)
+./optimizeGif.sh $RANDOM_GIF $CURRENT_GIF
 
 echo " "
 echo " "
@@ -59,8 +60,9 @@ while true ; do
       ( ./runFfmpeg.sh $(cat $CURRENT_GIF_PATH) $STREAM_TEXT_PATH &
       sleep 2; \
       CURRENT_GIF="$STREAM_GIF_PATH$(date +%s).gif"; \
-      echo "$CURRENT_GIF" > $CURRENT_GIF_PATH
-      ./optimizeGif.sh $(./getFileFromDir.sh $GIF_DIRECTORY) $CURRENT_GIF &
+      echo "$CURRENT_GIF" > $CURRENT_GIF_PATH; \
+      RANDOM_GIF=$(./getFileFromDir.sh $GIF_DIRECTORY); \
+      ./optimizeGif.sh $RANDOM_GIF $CURRENT_GIF &
       wait ) & wait -n
 
       # Kill the other command if one finishes
