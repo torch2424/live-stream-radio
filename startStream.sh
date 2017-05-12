@@ -12,7 +12,7 @@ echo "--------------------------------------------------"
 echo " "
 echo " "
 
-# ensure our alsa is set up right
+# Ensure our alsa is allowing for a looped recording
 sudo modprobe snd-aloop pcm_substreams=1
 
 # Allow for CTRL+C to exit
