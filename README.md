@@ -14,7 +14,7 @@ Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows 
 
 I've provided nice bash scripts to handle nearly everything!
 
-First, install the dependencies
+First, install the dependencies. Please note, you'll be doing some craziness like compiling ffmpeg, so it may literally take about 30-50 minutes if run on a raspberry pi 2.
 
 ````
 cd piStreamRadio
