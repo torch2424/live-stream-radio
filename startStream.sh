@@ -56,7 +56,7 @@ while true ; do
       # Run the commands, and wait for either to finish
       # Also, optimize the next gif, while the stream is playing
       ( /usr/bin/mpg123 "$RANDOM_SONG" ) & \
-      ( ./runFfmpeg.sh $(cat $CURRENT_GIF_PATH) &
+      ( ./runFfmpeg.sh $(cat $CURRENT_GIF_PATH) $STREAM_TEXT_PATH &
       sleep 2; \
       CURRENT_GIF="$STREAM_GIF_PATH$(date +%s).gif"; \
       echo "$CURRENT_GIF" > $CURRENT_GIF_PATH
