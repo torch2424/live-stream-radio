@@ -14,7 +14,7 @@ else
   PALLET_PATH="/tmp/optimizeGifPallet.png"
 
   # Import our config
-  source config.sh
+  source radioFiles/config.sh
 
   # Optimize the gif to be small no larger than the maxsize on the x or y
   # And use gifsicle to reduce filesize

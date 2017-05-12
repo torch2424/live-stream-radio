@@ -13,7 +13,7 @@ else
   STREAM_TEXT_PATH=$2
 
   # Souce our config
-  source config.sh
+  source radioFiles/config.sh
 
   # Define our private variables
   # KEYINT represents the number of key frames.

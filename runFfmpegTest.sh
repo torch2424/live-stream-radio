@@ -16,7 +16,7 @@ else
   GIF=$1
 
   # Souce our config
-  source config.sh
+  source radioFiles/config.sh
 
   # Run the ffmpeg encode to the stream url
   ffmpeg -f alsa -ac 2 -i hw:Loopback,1,0 -fflags +genpts \

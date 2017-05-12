@@ -1,7 +1,7 @@
 #/bin/bash
 
 # Source our config files
-source config.sh
+source radioFiles/config.sh
 
 # Introuduce the program to the user
 echo " "
@@ -42,6 +42,10 @@ echo " "
 echo " "
 
 while true ; do
+
+      # Source our config files (Before every play)
+      source radioFiles/config.sh
+
       # Get our random song
       RANDOM_SONG=$(./getFileFromDir.sh "$MUSIC_DIRECTORY")
 
