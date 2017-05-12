@@ -2,7 +2,6 @@
 
 # Script to generate an optimized gif
 if [ "$#" -ne 2 ]; then
-  echo $#
   echo "optimizeGif.sh: Opinionated Bash Script to optimize a gif"
   echo " "
   echo "USAGE: ./optimizeGif.sh [input.gif] [output.gif]"
@@ -31,5 +30,5 @@ else
   -i "$PALLET_PATH" \
   -lavfi "fps=$VIDEO_FPS,scale=w=$MAX_GIF_SIZE:h=$MAX_GIF_SIZE:force_original_aspect_ratio=decrease \
   [x]; [x][1:v] paletteuse=dither=sierra2_4a" \
-  -f gif - | gifsicle --optimize=3 --delay=6 > $OPTIMIZED_GIF_PATH
+  -f gif - | gifsicle --optimize=3 --delay=6 > "$OPTIMIZED_GIF_PATH"
 fi

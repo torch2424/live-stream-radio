@@ -29,9 +29,9 @@ SONG_NAME=""
 
 # Generate an optimized gif
 CURRENT_GIF="$STREAM_GIF_PATH$(date +%s).gif"
-echo "$CURRENT_GIF" > $CURRENT_GIF_PATH
-RANDOM_GIF=$(./getFileFromDir.sh $GIF_DIRECTORY)
-./optimizeGif.sh $RANDOM_GIF $CURRENT_GIF
+echo "$CURRENT_GIF" > "$CURRENT_GIF_PATH"
+RANDOM_GIF=$(./getFileFromDir.sh "$GIF_DIRECTORY")
+./optimizeGif.sh "$RANDOM_GIF" "$CURRENT_GIF"
 
 echo " "
 echo " "
@@ -43,26 +43,26 @@ echo " "
 
 while true ; do
       # Get our random song
-      RANDOM_SONG=$(./getFileFromDir.sh $MUSIC_DIRECTORY)
+      RANDOM_SONG=$(./getFileFromDir.sh "$MUSIC_DIRECTORY")
 
       # Create our video text from the random song
       rm $STREAM_TEXT_PATH
       ARTIST=$(id3info "$RANDOM_SONG" | grep TPE1 | head -n 1 | perl -pe 's/.*: //g')
       SONG_NAME=$(id3info "$RANDOM_SONG" | grep TIT2 | head -n 1 | perl -pe 's/.*: //g')
-      echo "Artist: $ARTIST" >> $STREAM_TEXT_PATH
+      echo "Artist: $ARTIST" >> "$STREAM_TEXT_PATH"
       echo " " >> /tmp/stream.txt
-      echo "Song: $SONG_NAME" >> $STREAM_TEXT_PATH
+      echo "Song: $SONG_NAME" >> "$STREAM_TEXT_PATH"
 
       # Create our two threads of audio playing, and the stream
       # Run the commands, and wait for either to finish
       # Also, optimize the next gif, while the stream is playing
       ( /usr/bin/mpg123 "$RANDOM_SONG" ) & \
-      ( ./runFfmpeg.sh $(cat $CURRENT_GIF_PATH) $STREAM_TEXT_PATH &
+      ( ./runFfmpeg.sh $(cat "$CURRENT_GIF_PATH") "$STREAM_TEXT_PATH" &
       sleep 2; \
       CURRENT_GIF="$STREAM_GIF_PATH$(date +%s).gif"; \
-      echo "$CURRENT_GIF" > $CURRENT_GIF_PATH; \
-      RANDOM_GIF=$(./getFileFromDir.sh $GIF_DIRECTORY); \
-      ./optimizeGif.sh $RANDOM_GIF $CURRENT_GIF &
+      echo "$CURRENT_GIF" > "$CURRENT_GIF_PATH"; \
+      RANDOM_GIF=$(./getFileFromDir.sh "$GIF_DIRECTORY"); \
+      ./optimizeGif.sh "$RANDOM_GIF" "$CURRENT_GIF" &
       wait ) & wait -n
 
       # Kill the other command if one finishes
