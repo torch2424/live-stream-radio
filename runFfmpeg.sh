@@ -23,11 +23,14 @@ else
   # Run our ffmpeg command
   # Draw text on multiple lines
   # https://stackoverflow.com/questions/11138832/ffmpeg-multiple-text-in-one-command-drawtext
+  # Scroll text
+
   ffmpeg -f alsa -ac 2 \
   -i hw:Loopback,1,0 -fflags +genpts \
   -ignore_loop 0 -r $VIDEO_FPS -i "$GIF" -s $VIDEO_RESOLUTION \
-  -vf "[in]drawtext=fontfile=${VIDEO_FONT}: \
-  text=:'The Loud House\, 24/7 Open Source Radio': \
+  -vf "[in]drawtext= \
+  text=:'$STREAM_TITLE': \
+  fontfile=${VIDEO_FONT}: \
   fontsize=$FONT_SIZE: \
   bordercolor=$FONT_BORDER_COLOR: borderw=1: fontcolor=$FONT_COLOR: \
   y=$FONT_TITLE_Y_POS: x=w-mod(max(t\,0)*(w+tw)/$FONT_TITLE_SCROLL_SPEED\,(w+tw)), \
