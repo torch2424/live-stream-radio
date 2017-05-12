@@ -1,6 +1,6 @@
 # piStreamRadio
 
-**Example Stream: The Loud House**
+**Example Stream: "The Loud House". Click the image to check out the stream!**
 
 
 [![The Loud House piStreamRadio Embed Link](http://img.youtube.com/vi/6PDzPW1YHeU/0.jpg)](http://www.youtube.com/watch?v=6PDzPW1YHeU)
