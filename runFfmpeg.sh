@@ -5,6 +5,7 @@ if [ "$#" -ne 2 ]; then
   the looped alsa interface to a live stream url."
   echo " "
   echo "USAGE: ./runFfmpeg.sh [input.gif] [fileOfTextToDisplayOnVideo.txt]"
+  echo " "
 else
 
   # Get the passed input files

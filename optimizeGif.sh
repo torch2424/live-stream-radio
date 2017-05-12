@@ -2,9 +2,11 @@
 
 # Script to generate an optimized gif
 if [ "$#" -ne 2 ]; then
+  echo $#
   echo "optimizeGif.sh: Opinionated Bash Script to optimize a gif"
   echo " "
   echo "USAGE: ./optimizeGif.sh [input.gif] [output.gif]"
+  echo " "
 else
 
   # Define our variables

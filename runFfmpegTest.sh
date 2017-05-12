@@ -9,6 +9,7 @@ if (( $# < 1 )); then
   find a balance in fps and video bitrate for running ./runFfmpeg.sh"
   echo " "
   echo "USAGE: ./runFfmpegTest.sh [input.gif]"
+  echo " "
 else
 
   # Get the passed Gif
