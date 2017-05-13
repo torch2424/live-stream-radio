@@ -3,8 +3,6 @@
 **Example Stream: "The Loud House". Click the image to check out the stream!**
 
 
-[![The Loud House piStreamRadio Embed Link](http://img.youtube.com/vi/6PDzPW1YHeU/0.jpg)](https://www.youtube.com/channel/UCVLTk4NIZb1Xgxnip_ggVzg/live)
-
 
 Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows for live streaming a video of music, playing over a gif, with the music information. Music and gifs are chosen from their respective folders in the radioFiles directory. Which comes included with some songs and gifs to get up and running quickly!
 
