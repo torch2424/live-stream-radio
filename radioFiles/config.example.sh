@@ -17,7 +17,8 @@ STREAM_URL=rtmp://a.rtmp.youtube.com/live2/$STREAM_KEY
 # Radio interludes that play between songs.
 # set RADIO_INTERLUDES to "true" to enable this feature
 # Set RADIO_INTERLUDE_INTERVAL_LENGTH to a number
-#     The larger the number, the less often an interlude will be played
+#     The larger the number, the less often an interlude will be played.
+#     This is Modulo'd with EPOCH time, and default is 9. Suggest between 2 - 50
 # set Interlude Text to any string that should replace the Artist/song text
 RADIO_INTERLUDES=true
 RADIO_INTERLUDE_INTERVAL_LENGTH=9
