@@ -14,9 +14,20 @@ STREAM_TITLE="Pi Stream Radio\, 24/7 Open Source Radio"
 STREAM_KEY=""
 STREAM_URL=rtmp://a.rtmp.youtube.com/live2/$STREAM_KEY
 
+# Radio interludes that play between songs.
+# set RADIO_INTERLUDES to "true" to enable this feature
+# Set RADIO_INTERLUDE_INTERVAL_LENGTH to a number
+#     The larger the number, the less often an interlude will be played
+# set Interlude Text to any string that should replace the Artist/song text
+RADIO_INTERLUDES=true
+RADIO_INTERLUDE_INTERVAL_LENGTH=9
+INTERLUDE_TEXT="Please wait, music shall resume shortly..."
+
 # Our Directories for music and gifs
 MUSIC_DIRECTORY="./radioFiles/music"
 GIF_DIRECTORY="./radioFiles/gifs"
+INTERLUDE_DIRECTORY="./radioFiles/interludes"
+
 
 # The max size the gif will be stretched to in the x or y direction
 # e.g a gif of 200x156 with a max size of 350, will be scaled to 300x268

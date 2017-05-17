@@ -39,14 +39,17 @@ cd ffmpeg
 --disable-htmlpages --disable-podpages --disable-altivec \
 --enable-libass --enable-omx --enable-omx-rpi --enable-libfdk-aac
 make -j 4
-make install
+sudo make install
 
 # Go back to the repo
 cd ..
 
 # Do the FFmpeg *.so fix
-sudo cat configFiles/ld.so.conf > /etc/ld.so.conf
+cat configFiles/ld.so.conf | sudo tee -a /etc/ld.so.conf
 sudo ldconfig
+
+# Copy over our required .asoundrc
+cp configFiles/asoundrc ~/.asoundrc
 
 # Should be finished
 ffmpeg
