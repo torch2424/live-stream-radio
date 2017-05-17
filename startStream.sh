@@ -50,7 +50,7 @@ while true ; do
       RANDOM_SONG=""
 
       # Check if we support interludes, and we should show one
-      if [ "RADIO_INTERLUDES" = true && ]; then
+      if [ "RADIO_INTERLUDES" = true ] && [ $(expr $(date +%s) % 2) = 0 ]; then
         # Get our random song
         RANDOM_SONG=$(./getFileFromDir.sh "$INTERLUDE_DIRECTORY")
 
