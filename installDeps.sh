@@ -48,6 +48,9 @@ cd ..
 cat configFiles/ld.so.conf | sudo tee -a /etc/ld.so.conf
 sudo ldconfig
 
+# Copy over our required .asoundrc
+cp configFiles/asoundrc ~/.asoundrc
+
 # Should be finished
 ffmpeg
 
