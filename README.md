@@ -8,11 +8,17 @@ Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows 
 
 [This wouldn't have been possible without the initial help of this guide posted on reddit. Shoutout to sikilikis!](https://www.reddit.com/r/raspberry_pi/comments/61ntji/247_youtube_music_live_stream_and_how_you_can/)
 
-# Installing
+# Getting Started (Installation)
 
 I've provided nice bash scripts to handle nearly everything!
 
-First, install the dependencies. Please note, you'll be doing some craziness like compiling ffmpeg, so it may literally take about 30-50 minutes if run on a raspberry pi 2.
+First things first, clone the repo:
+
+```
+git clone https://github.com/torch2424/piStreamRadio.git
+```
+
+Next, install the dependencies.
 
 ````
 cd piStreamRadio
@@ -24,9 +30,10 @@ Then you probably want to edit your `config.sh` file to provide your Stream key 
 ````
 cd radioFiles
 cp config.example.sh config.sh
+vim config.sh # Add your STREAM_KEY inside of here
 ````
 
-You can now edit the `config.sh` file. After this, simply start the stream!
+Lastly, start the stream!
 
 ````
 ./startStream.sh
@@ -34,9 +41,24 @@ You can now edit the `config.sh` file. After this, simply start the stream!
 
 And then sit back, relax, and vibe to your awesome radio! Gifs and Music and be removed and added from the `radioFiles/` directory, in their respective directories. Be cautious removing while streaming however, as this could lead to errors while the video is encoding.
 
+P.S FFmpeg can be compiled and installed manually using [the additional scripts](./additionalScripts). However, it may literally take about 30-50 minutes if compiled on a raspberry pi 2.
+
+# Adding Content to the Stream
+
+Music files can be found under [radioFiles/music](./radioFiles/music). `.mp3` files may be added / removed here, and will be randomly played on your stream.
+
+Gif files can be found under [radioFiles/gifs](./radioFiles/gifs). `.gif` files may be added / removed here, and will be randomly played on your stream.
+
+Interlude files can be found under [radioFiles/interludes](./radioFiles/interludes). `.mp3` files may be added / removed here, and will be randomly played on your stream. Interludes should be used for little radio breaks, or maybe you giving a shout out to the radio station. This is simply for fun, and can give a more "radio" feel
+
+Font files can be found under [radioFiles/fonts](./radioFiles/fonts). `.ttf` files may be added / removed here, and will be used as the onscreen text of your stream.
+
+**Additional Notes On Stream Content:**
+* Content on the stream will only be updated after a new song is loaded and played.
+
 # Tips
 
-Coming soon!
+* I'd suggest using a lightweight file server like [Droppy](https://github.com/silverwind/droppy) to allow easy access to your stream files. Also, Droppy will let you edit the config.sh file on the server itself!
 
 # Contributing
 
