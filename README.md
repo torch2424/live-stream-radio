@@ -40,4 +40,10 @@ Coming soon!
 
 # Contributing
 
-Feel free to open up a PR, and give any contributions!
+Feel free to fork the project, open up a PR, and give any contributions! I'd suggest opening an issue first however, just so everyone is aware and can discuss the proposed changes.
+
+# LICENSE
+
+LICENSE under [Apache 2.0](https://choosealicense.com/licenses/apache-2.0/)
+
+This software uses code of [FFmpeg](http://ffmpeg.org) licensed under the [LGPLv2.1](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html) and its source can be downloaded [here](./deps/ffmpeg)
