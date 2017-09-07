@@ -41,7 +41,7 @@ Lastly, start the stream!
 
 And then sit back, relax, and vibe to your awesome radio! Gifs and Music and be removed and added from the `radioFiles/` directory, in their respective directories. Be cautious removing while streaming however, as this could lead to errors while the video is encoding.
 
-P.S FFmpeg can be compiled and installed manually using [the additional scripts](./additionalScripts). However, it may literally take about 30-50 minutes if compiled on a raspberry pi 2.
+P.S FFmpeg can be compiled and installed manually using [the additional scripts](./additionalScripts). However, it may literally take about 30-50 minutes if compiled on a raspberry pi 2. A built version of FFmpeg, its source, and its LICENSE is included in the project to improve install times, and avoid errors in FFmpeg installation.
 
 # Adding Content to the Stream
 
