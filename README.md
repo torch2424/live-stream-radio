@@ -35,7 +35,7 @@ cp config.example.sh config.sh
 vim config.sh # Add your STREAM_KEY inside of here
 ````
 
-Lastly, start the stream! 🎵🎵🎵
+Lastly, start the stream! 🎶
 
 ````
 ./startStream.sh
