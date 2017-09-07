@@ -4,6 +4,8 @@
 
 [![Galaxy Noise Radio Live Stream link](https://files.aaronthedev.com/$/ugbbg)](https://www.youtube.com/channel/UCLkeIxbDJ8-kH7B9qJkyxQg/live)
 
+(Last Tested 9/5/15 on a fresh install of Raspbian Stretch Lite, version August 2017)
+
 Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows for live streaming a video of music, playing over a gif, with the music information. Music and gifs are chosen from their respective folders in the radioFiles directory. Which comes included with some songs and gifs to get up and running quickly!
 
 [This wouldn't have been possible without the initial help of this guide posted on reddit. Shoutout to sikilikis!](https://www.reddit.com/r/raspberry_pi/comments/61ntji/247_youtube_music_live_stream_and_how_you_can/)
@@ -12,7 +14,9 @@ Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows 
 
 I've provided nice bash scripts to handle nearly everything!
 
-First things first, clone the repo:
+First things first, [install Raspbian](https://www.raspberrypi.org/downloads/raspbian/) (Desktop and Lite should work):
+
+Then, clone the repo:
 
 ```
 git clone https://github.com/torch2424/piStreamRadio.git
