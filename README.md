@@ -35,13 +35,13 @@ cp config.example.sh config.sh
 vim config.sh # Add your STREAM_KEY inside of here
 ````
 
-Lastly, start the stream!
+Lastly, start the stream! 🎵🎵🎵
 
 ````
 ./startStream.sh
 ````
 
-And then sit back, relax, and vibe to your awesome radio! 📻 📻 📻 Gifs and Music and be removed and added from the `radioFiles/` directory, in their respective directories. Be cautious removing while streaming however, as this could lead to errors while the video is encoding.
+And then sit back, relax, and vibe to your awesome radio! 🎵 📻 📻 📻 🎵 Gifs and Music and be removed and added from the `radioFiles/` directory, in their respective directories. Be cautious removing while streaming however, as this could lead to errors while the video is encoding.
 
 # Adding Content to the Stream
 
