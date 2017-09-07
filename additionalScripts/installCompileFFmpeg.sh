@@ -12,7 +12,8 @@ cd ffmpeg
 --enable-libfreetype --disable-decoder=amrnb --disable-vda \
 --enable-fontconfig --disable-mips32r2 --disable-mipsdspr2 \
 --disable-htmlpages --disable-podpages --disable-altivec \
---enable-libass --enable-omx --enable-omx-rpi --enable-libfdk-aac
+--enable-libass --enable-omx --enable-omx-rpi --enable-libfdk-aac \
+--prefix=$(pwd)/../piStreamRadioFFmpeg
 make -j 4
 sudo make install
 

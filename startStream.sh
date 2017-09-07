@@ -16,7 +16,7 @@ echo " "
 sudo modprobe snd-aloop pcm_substreams=1
 
 # Set our ffmpeg to our PATH
-export PATH=$(pwd)/deps/ffmpeg/ffmpeg:$PATH
+export PATH=$(pwd)/deps/ffmpeg/bin/ffmpeg/ffmpeg:$PATH
 
 # Allow for CTRL+C to exit
 trap "exit" SIGINT
