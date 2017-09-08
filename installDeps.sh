@@ -31,7 +31,7 @@ sudo ldconfig
 cp configFiles/asoundrc ~/.asoundrc
 
 # Should be finished
-export PATH=$(pwd)/deps/ffmpeg/bin/ffmpeg:$PATH
+export PATH=$(pwd)/deps/ffmpeg/bin:$PATH
 ffmpeg
 
 echo " "

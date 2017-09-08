@@ -26,7 +26,7 @@ After this, cd into the piStreamRadio directory. **PLEASE NOTE:** All scripts as
 cd piStreamRadio
 ```
 
-Next, install the dependencies.
+Next, install the dependencies. This will take a little bit of time, probably 5-10 minutes since it shall be installing some audio stuff.
 
 ````
 ./installDeps.sh
@@ -35,9 +35,8 @@ Next, install the dependencies.
 Then you probably want to edit your `config.sh` file to provide your Stream key and url (Default URL is for youtube).
 
 ````
-cd radioFiles
-cp config.example.sh config.sh
-vim config.sh # Add your STREAM_KEY inside of here
+cp radioFiles/config.example.sh radioFiles/config.sh
+vim radioFiles/config.sh # Add your STREAM_KEY inside of here
 ````
 
 Lastly, start the stream! 🎶
@@ -46,7 +45,7 @@ Lastly, start the stream! 🎶
 ./startStream.sh
 ````
 
-And then sit back, relax, and vibe to your awesome radio! 🎵 📻 📻 📻 🎵 Gifs and Music and be removed and added from the `radioFiles/` directory, in their respective directories. Be cautious removing while streaming however, as this could lead to errors while the video is encoding.
+And then sit back, relax, and vibe to your awesome radio! 🎵 📻 📻 📻 🎵 Gifs and Music and be removed and added from the `radioFiles/` directory, in their respective directories. Be cautious removing files while streaming however, as this could lead to errors while the video is encoding.
 
 # Adding Content to the Stream
 
