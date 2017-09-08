@@ -14,13 +14,13 @@ Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows 
 
 First things first, [install Raspbian](https://www.raspberrypi.org/downloads/raspbian/) (Desktop and Lite should work):
 
-Then, clone the repo:
+Then, clone the repo. The project is a bit large as it comes with a compiled FFmpeg for piStreamRadio:
 
 ```
 git clone https://github.com/torch2424/piStreamRadio.git
 ```
 
-After this, cd into the piStreamRadio directory. **PLEASE NOTE:** All scripts assume that they are run from the base piStreamRadio/ directory, and may not work if they are moved or run somewhere else. Please see the (Tips)[#Tips] Section for more detail
+After this, cd into the piStreamRadio directory. **PLEASE NOTE:** All scripts assume that they are run from the base piStreamRadio/ directory, and may not work if they are moved or run somewhere else. Please see the "Tips" Section for more detail
 
 ```
 cd piStreamRadio
