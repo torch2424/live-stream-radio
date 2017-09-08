@@ -1,6 +1,6 @@
 #/bin/bash
 
-# Install/Setup Dependencies for a 24/7 music live strem pi
+# Install/Setup Dependencies for a 24/7 music live stream pi
 
 # Taken from: https://www.reddit.com/r/raspberry_pi/comments/61ntji/247_youtube_music_live_stream_and_how_you_can/
 
@@ -34,4 +34,8 @@ cp configFiles/asoundrc ~/.asoundrc
 export PATH=$(pwd)/deps/ffmpeg/bin/ffmpeg:$PATH
 ffmpeg
 
-echo "Finished!"
+echo " "
+echo "piStreamRadio is now finished installing!"
+echo " "
+echo "Please be sure to create a config.sh in the radioFiles/ directory."
+echo "Then, you can run ./startStream.sh from the piStreamRadio directory to start streaming!"

@@ -20,10 +20,15 @@ Then, clone the repo:
 git clone https://github.com/torch2424/piStreamRadio.git
 ```
 
+After this, cd into the piStreamRadio directory. **PLEASE NOTE:** All scripts assume that they are run from the base piStreamRadio/ directory, and may not work if they are moved or run somewhere else. Please see the (Tips)[#Tips] Section for more detail
+
+```
+cd piStreamRadio
+```
+
 Next, install the dependencies.
 
 ````
-cd piStreamRadio
 ./installDeps.sh
 ````
 
@@ -57,6 +62,8 @@ Font files can be found under [radioFiles/fonts](./radioFiles/fonts). `.ttf` fil
 * Content on the stream will only be updated after a new song is loaded and played.
 
 # Tips
+
+* Just a reiteration of the install steps in more detail: All scripts assume that they are run from the base piStreamRadio/ directory, and may not work if they are moved or run somewhere else. For instance, for `./installDeps`, if you were to run it from a child directory like: `../installDeps` or from a parent directory `./piStreamRadio/installDeps`, this will not work. The scripts all assume that your current working directory is piStreamRadio/ since I do not know where you may have cloned or downloaded the source code.
 
 * I'd suggest using a lightweight file server like [Droppy](https://github.com/silverwind/droppy) to allow easy access to your stream files. Also, Droppy will let you edit the config.sh file on the server itself!
 
