@@ -2,6 +2,12 @@
 # if master is broken, try 3.2.4
 # wget http://ffmpeg.org/releases/ffmpeg-3.2.4.tar.bz2
 # tar xvjf ffmpeg-3.2.4.tar.bz2
+
+# Also, the install path if specified using --prefix
+# https://trac.ffmpeg.org/wiki/CompilationGuide/Generic#Installpath
+# THen you must add it to your path: export PATH=$(pwd)/deps/ffmpeg/bin:$PATH
+
+
 git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg
 cd ffmpeg
 ./configure --enable-shared --enable-gpl --enable-nonfree \
@@ -13,7 +19,7 @@ cd ffmpeg
 --enable-fontconfig --disable-mips32r2 --disable-mipsdspr2 \
 --disable-htmlpages --disable-podpages --disable-altivec \
 --enable-libass --enable-omx --enable-omx-rpi --enable-libfdk-aac \
---prefix=$(pwd)/../piStreamRadioFFmpeg
+--prefix=$(pwd)/../deps/ffmpeg
 make -j 4
 sudo make install
 
