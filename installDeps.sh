@@ -36,7 +36,8 @@ echo " "
 echo "Testing FFmpeg..."
 echo " "
 echo " "
-export PATH=$(pwd)/deps/ffmpeg/bin:$PATH
+# Set our ffmpeg to our PATH
+./addFFmpegToPath.sh
 ffmpeg
 
 echo " "
