@@ -1,4 +1,4 @@
 # Source this file from the piStreamRadio/ directory
 
 # Export FFmpeg to our path
-export PATH=$(pwd)/deps/ffmpeg:$PATH
+export PATH=$(pwd)/ffmpeg:$PATH

@@ -15,9 +15,9 @@
 # Last line to make ffmpeg a static binary, making it portable for the project
 # https://video.stackexchange.com/questions/14717/how-to-compile-ffmpeg-with-libfdkaac-into-a-single-static-binary
 
-rm -rf ffmpeg
-git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg
-cd ffmpeg
+rm -rf ffmpeg-source
+git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg-source
+cd ffmpeg-source
 ./configure --enable-gpl --enable-nonfree \
 --enable-pthreads --enable-postproc --enable-libtheora \
 --enable-version3 --enable-libx264 --disable-stripping \
@@ -27,7 +27,7 @@ cd ffmpeg
 --enable-fontconfig --disable-mips32r2 --disable-mipsdspr2 \
 --disable-htmlpages --disable-podpages --disable-altivec \
 --enable-libass --enable-omx --enable-omx-rpi --enable-libfdk-aac \
---prefix=$(pwd)/deps/ffmpeg \
+--prefix=$(pwd)/ffmpeg-build \
 --pkg-config-flags="--static" --libdir=/usr/local/lib --extra-version=ntd_20150128 --disable-shared --enable-static
 make -j 4
 sudo make install
