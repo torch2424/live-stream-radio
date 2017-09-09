@@ -1,4 +1,4 @@
 #/bin/bash
 
-# Simple script to add piStreamRadio compiled FFmpeg to our path
-export PATH=$(pwd)/deps/ffmpeg/bin:$PATH
+# Simple script to add piStreamRadio's compiled FFmpeg to our path
+source installFiles/bundledFFmpegToPath.sh

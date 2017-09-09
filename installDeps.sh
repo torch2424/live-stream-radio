@@ -24,10 +24,10 @@ sudo dpkg -i libfdk-aac0_0.1.3+20140816-2_armhf.deb
 sudo dpkg -i libfdk-aac-dev_0.1.3+20140816-2_armhf.deb
 
 # Copy over our required .asoundrc
-cp configFiles/asoundrc ~/.asoundrc
+cp installFiles/asoundrc ~/.asoundrc
 
 # Do the FFmpeg *.so fix
-cat configFiles/ld.so.conf | sudo tee -a /etc/ld.so.conf
+cat installFiles/ld.so.conf | sudo tee -a /etc/ld.so.conf
 sudo ldconfig
 
 # Should be finished
