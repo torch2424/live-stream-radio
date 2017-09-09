@@ -1,5 +1,4 @@
-ffmpeg*
-ffmpeg/*
+ffmpeg-source/*
 libfdk*
 libfdk*/*
 **/.DS_Store
