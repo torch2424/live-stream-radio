@@ -66,6 +66,8 @@ Font files can be found under [radioFiles/fonts](./radioFiles/fonts). `.ttf` fil
 
 * I'd suggest using a lightweight file server like [Droppy](https://github.com/silverwind/droppy) to allow easy access to your stream files. Also, Droppy will let you edit the config.sh file on the server itself!
 
+* I create a server-side rendered website in Go for piStreamRadio at [piStreamRadio-frontend](https://github.com/torch2424/piStreamRadio-frontend). This will host a website and interface with the piStreamRadio `radioFiles/music` directory to offer a playlist to your fans! Also, has standard website things like a homepage (with an embed of your stream), and about page, and etc...
+
 # Additional Info
 
 FFmpeg can be compiled and installed manually using [the additional scripts](./additionalScripts). However, it may literally take about 30-50 minutes if compiled on a raspberry pi 2. A built version of FFmpeg, its source, and its LICENSE is included in the project to improve install times, and avoid errors in FFmpeg installation.
