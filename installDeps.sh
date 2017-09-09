@@ -23,12 +23,17 @@ wget http://ftp.us.debian.org/debian/pool/non-free/f/fdk-aac/libfdk-aac0_0.1.3+2
 sudo dpkg -i libfdk-aac0_0.1.3+20140816-2_armhf.deb
 sudo dpkg -i libfdk-aac-dev_0.1.3+20140816-2_armhf.deb
 
+# Clean up the .deb files for the decoders
+rm libfdk-aac0_0.1.3+20140816-2_armhf.deb
+rm libfdk-aac-dev_0.1.3+20140816-2_armhf.deb
+
 # Copy over our required .asoundrc
 cp installFiles/asoundrc ~/.asoundrc
 
 # Do the FFmpeg *.so fix
-cat installFiles/ld.so.conf | sudo tee -a /etc/ld.so.conf
-sudo ldconfig
+# Not Needed as of the static ffmpeg build
+# cat installFiles/ld.so.conf | sudo tee -a /etc/ld.so.conf
+# sudo ldconfig
 
 # Should be finished
 echo " "
