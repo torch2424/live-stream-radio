@@ -70,7 +70,7 @@ Font files can be found under [radioFiles/fonts](./radioFiles/fonts). `.ttf` fil
 
 FFmpeg can be compiled and installed manually using [the additional scripts](./additionalScripts). However, it may literally take about 30-50 minutes if compiled on a raspberry pi 2. A built version of FFmpeg, its source, and its LICENSE is included in the project to improve install times, and avoid errors in FFmpeg installation.
 
-This Project is compatible with both [Raspbian Desktop, and Raspbian Lite](https://www.raspberrypi.org/downloads/raspbian/). Though, in theory, messing with the `installDeps.sh` you could possible get this working on any Debian based Distro, such as Ubuntu, or Debian itself. You can use the [original reddit post on the process](https://www.reddit.com/r/raspberry_pi/comments/61ntji/247_youtube_music_live_stream_and_how_you_can/) as a guide if you desire to do this. I may add a branch for installing on Ubuntu in the future.
+This Project is compatible with both [Raspbian Desktop, and Raspbian Lite](https://www.raspberrypi.org/downloads/raspbian/). Though, in theory, messing with the `installDeps.sh` and `addFFmpegToPath.sh` you could possibly get this working on any Debian based Distro, such as Ubuntu, or Debian itself. You can use the [original reddit post on the process](https://www.reddit.com/r/raspberry_pi/comments/61ntji/247_youtube_music_live_stream_and_how_you_can/) as a guide if you desire to do this. I may add a branch for installing on Ubuntu in the future.
 
 # Contributing
 
