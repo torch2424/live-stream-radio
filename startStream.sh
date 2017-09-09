@@ -16,7 +16,7 @@ echo " "
 sudo modprobe snd-aloop pcm_substreams=1
 
 # Set our ffmpeg to our PATH
-./addFFmpegToPath.sh
+source exportFFmpegToPath.sh
 
 # Allow for CTRL+C to exit
 trap "exit" SIGINT

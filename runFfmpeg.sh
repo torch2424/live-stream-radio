@@ -8,6 +8,9 @@ if [ "$#" -ne 2 ]; then
   echo " "
 else
 
+  # Set our ffmpeg to our PATH
+  source exportFFmpegToPath.sh
+
   # Get the passed input files
   GIF=$1
   STREAM_TEXT_PATH=$2

@@ -37,7 +37,7 @@ echo "Testing FFmpeg..."
 echo " "
 echo " "
 # Set our ffmpeg to our PATH
-./addFFmpegToPath.sh
+source exportFFmpegToPath.sh
 ffmpeg
 
 echo " "
