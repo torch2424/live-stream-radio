@@ -15,6 +15,9 @@ echo " "
 # Ensure our alsa is allowing for a looped recording
 sudo modprobe snd-aloop pcm_substreams=1
 
+# Set our ffmpeg to our PATH
+source exportFFmpegToPath.sh
+
 # Allow for CTRL+C to exit
 trap "exit" SIGINT
 

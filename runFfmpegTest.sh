@@ -12,6 +12,9 @@ if (( $# < 1 )); then
   echo " "
 else
 
+  # Set our ffmpeg to our PATH
+  source exportFFmpegToPath.sh
+
   # Get the passed Gif
   GIF=$1
 

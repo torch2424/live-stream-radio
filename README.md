@@ -4,40 +4,84 @@
 
 [![Galaxy Noise Radio Live Stream link](https://files.aaronthedev.com/$/ugbbg)](https://www.youtube.com/channel/UCLkeIxbDJ8-kH7B9qJkyxQg/live)
 
+(Last Tested 9/5/15 on a fresh install of Raspbian Stretch Lite, version August 2017)
+
 Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows for live streaming a video of music, playing over a gif, with the music information. Music and gifs are chosen from their respective folders in the radioFiles directory. Which comes included with some songs and gifs to get up and running quickly!
 
 [This wouldn't have been possible without the initial help of this guide posted on reddit. Shoutout to sikilikis!](https://www.reddit.com/r/raspberry_pi/comments/61ntji/247_youtube_music_live_stream_and_how_you_can/)
 
-# Installing
+# Getting Started (Installation)
 
-I've provided nice bash scripts to handle nearly everything!
+First things first, [install Raspbian](https://www.raspberrypi.org/downloads/raspbian/) (Desktop and Lite should work):
 
-First, install the dependencies. Please note, you'll be doing some craziness like compiling ffmpeg, so it may literally take about 30-50 minutes if run on a raspberry pi 2.
+Then, clone the repo. The project is a bit large as it comes with a compiled FFmpeg for piStreamRadio:
+
+```
+git clone https://github.com/torch2424/piStreamRadio.git
+```
+
+After this, cd into the piStreamRadio directory. **PLEASE NOTE:** All scripts assume that they are run from the base piStreamRadio/ directory, and may not work if they are moved or run somewhere else. Please see the "Tips" Section for more detail
+
+```
+cd piStreamRadio
+```
+
+Next, install the dependencies. This will take a little bit of time, probably 5-10 minutes since it shall be installing some audio stuff.
 
 ````
-cd piStreamRadio
 ./installDeps.sh
 ````
 
 Then you probably want to edit your `config.sh` file to provide your Stream key and url (Default URL is for youtube).
 
 ````
-cd radioFiles
-cp config.example.sh config.sh
+cp radioFiles/config.example.sh radioFiles/config.sh
+vim radioFiles/config.sh # Add your STREAM_KEY inside of here
 ````
 
-You can now edit the `config.sh` file. After this, simply start the stream!
+Lastly, start the stream! 🎶
 
 ````
 ./startStream.sh
 ````
 
-And then sit back, relax, and vibe to your awesome radio! Gifs and Music and be removed and added from the `radioFiles/` directory, in their respective directories. Be cautious removing while streaming however, as this could lead to errors while the video is encoding.
+And then sit back, relax, and vibe to your awesome radio! 🎵 📻 📻 📻 🎵 Gifs and Music and be removed and added from the `radioFiles/` directory, in their respective directories. Be cautious removing files while streaming however, as this could lead to errors while the video is encoding.
+
+# Adding Content to the Stream
+
+Music files can be found under [radioFiles/music](./radioFiles/music). `.mp3` files may be added / removed here, and will be randomly played on your stream.
+
+Gif files can be found under [radioFiles/gifs](./radioFiles/gifs). `.gif` files may be added / removed here, and will be randomly played on your stream.
+
+Interlude files can be found under [radioFiles/interludes](./radioFiles/interludes). `.mp3` files may be added / removed here, and will be randomly played on your stream. Interludes should be used for little radio breaks, or maybe you giving a shout out to the radio station. This is simply for fun, and can give a more "radio" feel
+
+Font files can be found under [radioFiles/fonts](./radioFiles/fonts). `.ttf` files may be added / removed here, and will be used as the onscreen text of your stream.
+
+**Additional Notes On Stream Content:**
+* Content on the stream will only be updated after a new song is loaded and played.
 
 # Tips
 
-Coming soon!
+* Just a reiteration of the install steps in more detail: All scripts assume that they are run from the base piStreamRadio/ directory, and may not work if they are moved or run somewhere else. For instance, for `./installDeps`, if you were to run it from a child directory like: `../installDeps` or from a parent directory `./piStreamRadio/installDeps`, this will not work. The scripts all assume that your current working directory is piStreamRadio/ since I do not know where you may have cloned or downloaded the source code.
+
+* I'd suggest using a lightweight file server like [Droppy](https://github.com/silverwind/droppy) to allow easy access to your stream files. Also, Droppy will let you edit the config.sh file on the server itself!
+
+* I create a server-side rendered website in Go for piStreamRadio at [piStreamRadio-frontend](https://github.com/torch2424/piStreamRadio-frontend). This will host a website and interface with the piStreamRadio `radioFiles/music` directory to offer a playlist to your fans! Also, has standard website things like a homepage (with an embed of your stream), and about page, and etc...
+
+# Additional Info
+
+FFmpeg can be compiled and installed manually using [the additional scripts](./additionalScripts). However, it may literally take about 30-50 minutes if compiled on a raspberry pi 2. A built version of FFmpeg, its source, and its LICENSE is included in the project to improve install times, and avoid errors in FFmpeg installation.
+
+This Project is compatible with both [Raspbian Desktop, and Raspbian Lite](https://www.raspberrypi.org/downloads/raspbian/). Though, in theory, messing with the `installDeps.sh` and `exportFFmpegToPath.sh` you could possibly get this working on any Debian based Distro, such as Ubuntu, or Debian itself. You can use the [original reddit post on the process](https://www.reddit.com/r/raspberry_pi/comments/61ntji/247_youtube_music_live_stream_and_how_you_can/) as a guide if you desire to do this. I may add a branch for installing on Ubuntu in the future.
 
 # Contributing
 
-Feel free to open up a PR, and give any contributions!
+Feel free to fork the project, open up a PR, and give any contributions! I'd suggest opening an issue first however, just so everyone is aware and can discuss the proposed changes.
+
+# LICENSE
+
+LICENSE under [Apache 2.0](https://choosealicense.com/licenses/apache-2.0/)
+
+This software uses code of [FFmpeg](http://ffmpeg.org) licensed under the [LGPLv2.1](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html) and its source can be downloaded [here](./deps/ffmpeg).
+
+As such, this software tries to respect the LGPLv2 License as close as possible to respect FFmpeg and its authors. Huge shoutout to them for building such an awesome and crazy tool!

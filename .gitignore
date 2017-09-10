@@ -1,6 +1,5 @@
-ffmpeg*
-ffmpeg/*
+ffmpeg-source/*
 libfdk*
 libfdk*/*
-.DS_Store
+**/.DS_Store
 radioFiles/config.sh
