@@ -12,5 +12,5 @@ else
   SONG=$3
 
   # Set the artist and song to the file
-  id3tool -t "$SONG" -r "$ARTIST" $4
+  id3tool -t "$SONG" -r "$ARTIST" $1
 fi
