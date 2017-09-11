@@ -12,7 +12,7 @@ Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows 
 
 * [Compatibility](#compatibility)
 * [Getting Started (Installation)](#getting-started-installation)
-* [Updating](#Updating)
+* [Updating](#updating)
 * [Adding Content to the Stream](#adding-content-to-the-stream)
 * [Helper Scripts](#helper-scripts)
 * [Tips](#tips)
