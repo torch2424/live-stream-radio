@@ -3,7 +3,7 @@
 # Helper script to find files with missing artist and song name.
 # Run from base pistreamradio directory
 
-for file in /radioFiles/music; do
+for file in radioFiles/music; do
 
   # Get the artist and song name
   ARTIST=$(id3info "$file" | grep TPE1 | head -n 1 | perl -pe 's/.*: //g')
