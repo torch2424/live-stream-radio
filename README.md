@@ -10,15 +10,15 @@ Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows 
 
 # Table Of Contents
 
-* [Compatibility](#Compatibility)
-* [Getting Started (Installation)](#Getting-Started-(Installation))
+* [Compatibility](#compatibility)
+* [Getting Started (Installation)](#getting-started-installation)
 * [Updating](#Updating)
-* [Adding Content to the Stream](#Adding-Content-to-the-Stream)
-* [Helper Scripts](#Helper-Scripts)
-* [Tips](#Tips)
-* [Additional Info](#Additional-Info)
-* [Contributing](#Contributing)
-* [LICENSE](#LICENSE)
+* [Adding Content to the Stream](#adding-content-to-the-stream)
+* [Helper Scripts](#helper-scripts)
+* [Tips](#tips)
+* [Additional Info](#additional-info)
+* [Contributing](#contributing)
+* [LICENSE](#license)
 
 # Compatibility
 
