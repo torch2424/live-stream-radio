@@ -3,6 +3,10 @@
 # Helper script to find files with missing artist and song name.
 # Run from base pistreamradio directory
 
+echo " "
+echo "Scanning all files in radioFiles/music/* for songs missing metadata for 'artist' or 'song name'..."
+echo " "
+
 for file in radioFiles/music/*; do
 
   # Get the artist and song name
