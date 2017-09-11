@@ -3,3 +3,6 @@ libfdk*
 libfdk*/*
 **/.DS_Store
 radioFiles/config.sh
+radioFiles/fonts/*
+radioFiles/gifs/*
+radioFiles/interludes/*
