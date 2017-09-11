@@ -4,13 +4,29 @@
 
 [![Galaxy Noise Radio Live Stream link](https://files.aaronthedev.com/$/ugbbg)](https://www.youtube.com/channel/UCLkeIxbDJ8-kH7B9qJkyxQg/live)
 
-(Last Tested 9/5/15 on a fresh install of Raspbian Stretch Lite, version August 2017)
-
 Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows for live streaming a video of music, playing over a gif, with the music information. Music and gifs are chosen from their respective folders in the radioFiles directory. Which comes included with some songs and gifs to get up and running quickly!
 
 [This wouldn't have been possible without the initial help of this guide posted on reddit. Shoutout to sikilikis!](https://www.reddit.com/r/raspberry_pi/comments/61ntji/247_youtube_music_live_stream_and_how_you_can/)
 
-**NOTE:** Updating your stream to the latest master can sometimes have breaking changes. I will be sure to keep the latest rasbian version tested in the README, and if errors occur, I suggest upgrading to the latest raspbian. For instance, [here is the guide to upgrade from Jessie to Stretch](https://www.raspberrypi.org/blog/raspbian-stretch/).
+# Table Of Contents
+
+* [Compatibility](#compatibility)
+* [Getting Started (Installation)](#getting-started-installation)
+* [Updating](#updating)
+* [Adding Content to the Stream](#adding-content-to-the-stream)
+* [Helper Scripts](#helper-scripts)
+* [Tips](#tips)
+* [Additional Info](#additional-info)
+* [Contributing](#contributing)
+* [LICENSE](#license)
+
+# Compatibility
+
+(Last Tested 9/5/15 on a fresh install of Raspbian Stretch Lite, version August 2017)
+
+This should work on Pi 2 / 3 running the latest Rasbian, at this time of writing, the latest Rasbian is Stretch.
+
+I've had users report that this will not work on Pi 0 / 1, since FFmpeg would require some finnicking, and I don't have a Pi 1 to test this on, and I highly doubt a zero could handle FFmpeg encoding at a reasonable rate.
 
 # Getting Started (Installation)
 
@@ -48,6 +64,10 @@ Lastly, start the stream! 🎶
 ````
 
 And then sit back, relax, and vibe to your awesome radio! 🎵 📻 📻 📻 🎵 Gifs and Music and be removed and added from the `radioFiles/` directory, in their respective directories. Be cautious removing files while streaming however, as this could lead to errors while the video is encoding.
+
+# Updating
+
+Updating your stream to the latest master can sometimes have breaking changes. I will be sure to keep the Compatibility Section in the README up-to-date, with the latest tested version of Raspbian. If errors occur while updating, I suggest upgrading to the latest raspbian. For instance, [here is the guide to upgrade from Jessie to Stretch](https://www.raspberrypi.org/blog/raspbian-stretch/).
 
 # Adding Content to the Stream
 
