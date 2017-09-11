@@ -10,7 +10,7 @@ for file in /radioFiles/music; do
   SONG_NAME=$(id3info "$file" | grep TIT2 | head -n 1 | perl -pe 's/.*: //g')
 
   # If the artist or the song name is empty, echo the file
-  if [ -z "$ARTIST" ||  -z "$SONG_NAME" ]; then
+  if [ -z "$ARTIST" ] || [ -z "$SONG_NAME" ]; then
     echo $file
   fi
 done
