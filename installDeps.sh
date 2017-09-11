@@ -9,7 +9,7 @@ sudo apt-get update
 
 # Install our packages
 sudo apt-get install -y nano bzip2 mpg123 htop git \
-gifsicle libid3-tools \
+gifsicle libid3-tools id3tool \
 autoconf automake build-essential libass-dev \
 libfreetype6-dev libtheora-dev libtool libvorbis-dev \
 pkg-config texinfo zlib1g-dev libgnutls28-dev \

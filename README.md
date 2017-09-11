@@ -10,6 +10,8 @@ Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows 
 
 [This wouldn't have been possible without the initial help of this guide posted on reddit. Shoutout to sikilikis!](https://www.reddit.com/r/raspberry_pi/comments/61ntji/247_youtube_music_live_stream_and_how_you_can/)
 
+**NOTE:** Updating your stream to the latest master can sometimes have breaking changes. I will be sure to keep the latest rasbian version tested in the README, and if errors occur, I suggest upgrading to the latest raspbian. For instance, [here is the guide to upgrade from Jessie to Stretch](https://www.raspberrypi.org/blog/raspbian-stretch/).
+
 # Getting Started (Installation)
 
 First things first, [install Raspbian](https://www.raspberrypi.org/downloads/raspbian/) (Desktop and Lite should work):
@@ -60,11 +62,21 @@ Font files can be found under [radioFiles/fonts](./radioFiles/fonts). `.ttf` fil
 **Additional Notes On Stream Content:**
 * Content on the stream will only be updated after a new song is loaded and played.
 
+# Helper Scripts
+
+In the `helperScripts/` directory, I have provided multiple scripts that can be run from the base `piStreamRadio/` directory like the following:
+
+```
+./helperScripts/findFilesWithMissingMetadata.sh
+```
+
+The goal of these scripts is to help manage piStreamRadio, such as song metadata. Please visit the [helperScripts/ Directory](./helperScripts) to view what they do, or simply run them for the Usage.
+
 # Tips
 
 * Just a reiteration of the install steps in more detail: All scripts assume that they are run from the base piStreamRadio/ directory, and may not work if they are moved or run somewhere else. For instance, for `./installDeps`, if you were to run it from a child directory like: `../installDeps` or from a parent directory `./piStreamRadio/installDeps`, this will not work. The scripts all assume that your current working directory is piStreamRadio/ since I do not know where you may have cloned or downloaded the source code.
 
-* I'd suggest using a lightweight file server like [Droppy](https://github.com/silverwind/droppy) to allow easy access to your stream files. Also, Droppy will let you edit the config.sh file on the server itself!
+* I'd suggest using a lightweight file server like [Droppy](https://github.com/silverwind/droppy) to allow easy access to your stream files. Also, Droppy will let you edit the config.sh file on the server itself! Another file server I could suggest would be [Filerun](http://www.filerun.com/), it is a lot heavier than Droppy, but offers a more robust interface, and file meta data editing!
 
 * I create a server-side rendered website in Go for piStreamRadio at [piStreamRadio-frontend](https://github.com/torch2424/piStreamRadio-frontend). This will host a website and interface with the piStreamRadio `radioFiles/music` directory to offer a playlist to your fans! Also, has standard website things like a homepage (with an embed of your stream), and about page, and etc...
 
