@@ -8,9 +8,10 @@ if [ $# -ne 3 ]; then
   echo "USAGE: ./helperScripts/setFileStreamMetadata.sh [filepath] [artist name in quotes] [song name in quotes]"
   echo "EXAMPLE: ./helperScripts/setFileStreamMetadata.sh radioFiles/music/song.mp3 \"pistreamradio\" \"Helper Scripts are cool\""
 else
+  FILE=$1
   ARTIST=$2
   SONG=$3
 
   # Set the artist and song to the file
-  id3tool -t "$SONG" -r "$ARTIST" $1
+  id3tool -t "$SONG" -r "$ARTIST" $FILE
 fi
