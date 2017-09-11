@@ -8,14 +8,8 @@ if [ $# -ne 3 ]; then
   echo "USAGE: ./helperScripts/setFileStreamMetadata.sh [filepath] [artist name in quotes] [song name in quotes]"
   echo "EXAMPLE: ./helperScripts/setFileStreamMetadata.sh radioFiles/music/song.mp3 \"pistreamradio\" \"Helper Scripts are cool\""
 else
-  echo $0
-  echo $1
-  echo $2
-  # Remove trailing and beginning quotes ""
-  ARTIST="${$2%\"}"
-  ARTIST="${ARTIST#\"}"
-  SONG="${$3%\"}"
-  SONG="${SONG#\"}"
+  ARTIST=$2
+  SONG=$3
 
   # Set the artist and song to the file
   id3tool -t "$SONG" -r "$ARTIST" $4
