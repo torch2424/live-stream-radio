@@ -12,11 +12,11 @@ else
   echo $1
   echo $2
   # Remove trailing and beginning quotes ""
-  ARTIST="${$1%\"}"
+  ARTIST="${$2%\"}"
   ARTIST="${ARTIST#\"}"
-  SONG="${$2%\"}"
+  SONG="${$3%\"}"
   SONG="${SONG#\"}"
 
   # Set the artist and song to the file
-  id3tool -t "$SONG" -r "$ARTIST" $0
+  id3tool -t "$SONG" -r "$ARTIST" $4
 fi
