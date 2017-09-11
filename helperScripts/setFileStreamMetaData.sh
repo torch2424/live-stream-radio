@@ -5,7 +5,9 @@
 
 
 if [ $# -ne 3 ]; then
-  echo "USAGE: ./helperScripts/setFileStreamMetadata.sh [filepath] [artist name in quotes] [song name in quotes]"
+  echo "Helper script to set song file's artist and song title meta data"
+  echo " "
+  echo "USAGE: ./helperScripts/setFileStreamMetadata.sh [filepath] [artist name in quotes] [song title in quotes]"
   echo "EXAMPLE: ./helperScripts/setFileStreamMetadata.sh radioFiles/music/song.mp3 \"pistreamradio\" \"Helper Scripts are cool\""
 else
   FILE=$1

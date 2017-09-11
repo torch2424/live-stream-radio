@@ -4,7 +4,7 @@
 # Run from base pistreamradio directory
 
 echo " "
-echo "Scanning all files in radioFiles/music/* for songs missing metadata for 'artist' or 'song title'..."
+echo "Scanning all files in radioFiles/music/*, to show their artist and song title"
 echo " "
 
 for file in radioFiles/music/*; do
@@ -14,7 +14,5 @@ for file in radioFiles/music/*; do
   SONG_NAME=$(id3info "$file" | grep TIT2 | head -n 1 | perl -pe 's/.*: //g')
 
   # If the artist or the song name is empty, echo the file
-  if [ -z "$ARTIST" ] || [ -z "$SONG_NAME" ]; then
-    echo "$file"
-  fi
+  echo "File: $file, Artist: $ARTIST, Song Title: $SONG_NAME"
 done

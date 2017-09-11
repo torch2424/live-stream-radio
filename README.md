@@ -10,6 +10,8 @@ Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows 
 
 [This wouldn't have been possible without the initial help of this guide posted on reddit. Shoutout to sikilikis!](https://www.reddit.com/r/raspberry_pi/comments/61ntji/247_youtube_music_live_stream_and_how_you_can/)
 
+**NOTE:** Updating your stream to the latest master can sometimes have breaking changes. I will be sure to keep the latest rasbian version tested in the README, and if errors occur, I suggest upgrading to the latest raspbian. For instance, [here is the guide to upgrade from Jessie to Stretch](https://www.raspberrypi.org/blog/raspbian-stretch/).
+
 # Getting Started (Installation)
 
 First things first, [install Raspbian](https://www.raspberrypi.org/downloads/raspbian/) (Desktop and Lite should work):
@@ -59,6 +61,16 @@ Font files can be found under [radioFiles/fonts](./radioFiles/fonts). `.ttf` fil
 
 **Additional Notes On Stream Content:**
 * Content on the stream will only be updated after a new song is loaded and played.
+
+# Helper Scripts
+
+In the `helperScripts/` directory, I have provided multiple scripts that can be run from the base `piStreamRadio/` directory like the following:
+
+```
+./helperScripts/findFilesWithMissingMetadata.sh
+```
+
+Please visit the [helperScripts/ Directory](./helperScripts) to view what they do, or simply run them for the Usage.
 
 # Tips
 
