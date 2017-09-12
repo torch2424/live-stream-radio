@@ -87,7 +87,7 @@ while true ; do
 
       # Kill the other command if one finishes
       pkill -P $$
-      # Ensure both are completely killed (Fixes Alsa device busy)
+      # Ensure all three are completely killed (Fixes Alsa device busy)
       sudo killall ffmpeg
       sudo killall mpg123
       sudo killall generateGif
