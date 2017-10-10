@@ -34,14 +34,13 @@ Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows 
 
 | Device         | OS                    | Compatibility | Last Update                        |
 | -------------- | --------------------- | ------------- | ---------------------------------- |
-| Raspberry Pi 2 | Raspbian Stretch Lite | Works         | 6. September 2017 by torch2424     |
-| Raspberry Pi 3 | Raspbian Stretch Lite | Works         | 9. September 2017 by AndreasWebdev |
+| Raspberry Pi 0 | Raspbian              | Doesn't Work  | Sept 26th 2017 by robsd            |
+| Raspberry Pi 1 |                       | ????          | Please try out and report back     |
+| Raspberry Pi 2 | Raspbian Stretch Lite | Works         | Sept 6th 2017 by torch2424         |
+| Raspberry Pi 3 | Raspbian Stretch Lite | Works         | Sept 9th 2017 by AndreasWebdev     |
 
 **Add your compatibility report**
 To report your compatibility, start a new Issue with your device, os and the level of compatibility.
-
-**Raspberry Pi 0/1**
-I've had users report that this will not work on Pi 0 / 1, since FFmpeg would require some finnicking, and I don't have a Pi 1 to test this on, and I highly doubt a zero could handle FFmpeg encoding at a reasonable rate. Feel free to try it out and check back to report your results.
 
 # Getting Started (Installation)
 
