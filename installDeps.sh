@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 # Install/Setup Dependencies for a 24/7 music live stream pi
 

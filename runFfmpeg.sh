@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 if [ "$#" -ne 2 ]; then
   echo "runFfmpeg.sh: Opinionated Bash Script to encode a gif and \
@@ -16,12 +16,12 @@ else
   STREAM_TEXT_PATH=$2
 
   # Souce our config
-  source radioFiles/config.sh
+  .radioFiles/config.sh
 
   # Define our private variables
   # KEYINT represents the number of key frames.
   # Should be somewhere between 2 to 4.
-  KEYINT=$(expr $VIDEO_FPS \* 3)
+  KEYINT=${#VIDEO_FPS \* 30}
 
   # Run our ffmpeg command
   # Draw text on multiple lines
@@ -30,7 +30,7 @@ else
 
   ffmpeg -f alsa -ac 2 \
   -i hw:Loopback,1,0 -fflags +genpts \
-  -ignore_loop 0 -r $VIDEO_FPS -i "$GIF" -s $VIDEO_RESOLUTION \
+  -ignore_loop 0 -r "$VIDEO_FPS" -i "$GIF" -s "$VIDEO_RESOLUTION" \
   -vf "[in]drawtext= \
   text=:'$STREAM_TITLE': \
   fontfile=${VIDEO_FONT}: \
@@ -42,8 +42,8 @@ else
   fix_bounds=true: \
   bordercolor=$FONT_BORDER_COLOR: borderw=1: fontcolor=$FONT_COLOR: \
   textfile=$STREAM_TEXT_PATH: y=$FONT_MUSIC_Y_POS: x=$FONT_MUSIC_X_POS[out]" \
-  -vcodec h264_omx -x264opts keyint=$KEYINT:min-keyint=$KEYINT:scenecut=-1 \
-  -b:v $VIDEO_BIT_RATE -preset veryfast -pix_fmt yuv420p \
-  -c:a libfdk_aac -b:a $AUDIO_BIT_RATE -bufsize 960k \
-  -ar $AUDIO_SAMPLE_RATE -f flv $STREAM_URL
+  -vcodec h264_omx -x264opts keyint="$KEYINT":min-keyint="$KEYINT":scenecut=-1 \
+  -b:v "$VIDEO_BIT_RATE" -preset veryfast -pix_fmt yuv420p \
+  -c:a libfdk_aac -b:a "$AUDIO_BIT_RATE" -bufsize 960k \
+  -ar "$AUDIO_SAMPLE_RATE" -f flv "$STREAM_URL"
 fi

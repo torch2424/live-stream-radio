@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 # Script to generate an optimized gif
 if [ "$#" -ne 2 ]; then
