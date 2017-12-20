@@ -21,7 +21,7 @@ else
   # Define our private variables
   # KEYINT represents the number of key frames.
   # Should be somewhere between 2 to 4.
-  KEYINT=${#VIDEO_FPS \* 30}
+  KEYINT=${#VIDEO_FPS \* 3}
 
   # Run our ffmpeg command
   # Draw text on multiple lines
