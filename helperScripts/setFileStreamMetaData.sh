@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 # Helper script to set song file's artist and song name meta data
 # Run from base pistreamradio directory
@@ -15,5 +15,5 @@ else
   SONG=$3
 
   # Set the artist and song to the file
-  id3tool -t "$SONG" -r "$ARTIST" $FILE
+  id3tool -t "$SONG" -r "$ARTIST" "$FILE"
 fi

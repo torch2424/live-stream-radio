@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 # This is a test/less intense version of ./runFfmpeg
 # This is used to find a good balance in VIDEO_FPS
@@ -27,5 +27,5 @@ else
   -r 7 -vcodec h264_omx \
   -preset veryfast -pix_fmt yuv420p -s 854x480 \
   -c:a libfdk_aac -b:a 96k -ar 44100 \
-  -f flv $STREAM_URL
+  -f flv "$STREAM_URL"
 fi

@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 # Helper script to find files with missing artist and song name.
 # Run from base pistreamradio directory

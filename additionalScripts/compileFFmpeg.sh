@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 # Scripts must be run from base piStreamRadio/ Directory ! ! !
 
@@ -17,7 +17,7 @@
 
 rm -rf ffmpeg-source
 git clone https://git.ffmpeg.org/ffmpeg.git ffmpeg-source
-cd ffmpeg-source
+cd ffmpeg-source || exit
 ./configure --enable-gpl --enable-nonfree \
 --enable-pthreads --enable-postproc --enable-libtheora \
 --enable-version3 --enable-libx264 --disable-stripping \
@@ -27,13 +27,13 @@ cd ffmpeg-source
 --enable-fontconfig --disable-mips32r2 --disable-mipsdspr2 \
 --disable-htmlpages --disable-podpages --disable-altivec \
 --enable-libass --enable-omx --enable-omx-rpi --enable-libfdk-aac \
---prefix=$(pwd)/ffmpeg-build \
+--prefix="$(pwd)"/ffmpeg-build \
 --pkg-config-flags="--static" --libdir=/usr/local/lib --extra-version=ntd_20150128 --disable-shared --enable-static
 make -j 4
 sudo make install
 
 # Multiline comment, this is how ffmpeg output should look
-: `
+: '
 ffmpeg version N-87246-g260ea7a7b3-ntd_20150128 Copyright (c) 2000-2017 the FFmpeg developers
   built with gcc 6.3.0 (Raspbian 6.3.0-18+rpi1) 20170516
   configuration: --enable-gpl --enable-nonfree --enable-pthreads --enable-postproc --enable-libtheora --enable-version3 --enable-libx264 --disable-stripping --disable-encoder=libschroedinger --enable-librtmp --enable-openssl --enable-gnutls --enable-avfilter --enable-libfreetype --disable-decoder=amrnb --disable-vda --enable-fontconfig --disable-mips32r2 --disable-mipsdspr2 --disable-htmlpages --disable-podpages --disable-altivec --enable-libass --enable-omx --enable-omx-rpi --enable-libfdk-aac --prefix=/home/pi/piStreamRadio/additionalScripts/ffmpeg/../deps/ffmpeg --pkg-config-flags=--static --libdir=/usr/local/lib --extra-version=ntd_20150128 --disable-shared --enable-static
@@ -47,7 +47,7 @@ ffmpeg version N-87246-g260ea7a7b3-ntd_20150128 Copyright (c) 2000-2017 the FFmp
   libpostproc    54.  6.100 / 54.  6.100
 Hyper fast Audio and Video encoder
 usage: ffmpeg [options] [[infile options] -i infile]... {[outfile options] outfile}...
-`
+'
 
 # Go back to the repo
 cd ..
