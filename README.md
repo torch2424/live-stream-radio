@@ -1,5 +1,7 @@
 # piStreamRadio
 
+[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/torch2424)
+
 **Example Stream: "Galaxy Noise Radio". Click the image to check out the stream!**
 
 [![Galaxy Noise Radio Live Stream link](https://files.aaronthedev.com/$/ugbbg)](https://www.youtube.com/channel/UCLkeIxbDJ8-kH7B9qJkyxQg/live)
