@@ -48,7 +48,9 @@ To report your compatibility, start a new Issue with your device, os and the lev
 
 First things first, [install Raspbian](https://www.raspberrypi.org/downloads/raspbian/) (Desktop and Lite should work):
 
-Then, clone the repo. The project is a bit large as it comes with a compiled FFmpeg for piStreamRadio:
+Then, [download the latest release](https://github.com/torch2424/piStreamRadio/releases). The releases tend to be the most stable, and give the least amount of issues getting things working.
+
+But, if you want all the latest features, and don't mind messing around with things, then feel free to clone the repo. The project is a bit large as it comes with a compiled FFmpeg for piStreamRadio:
 
 ```
 git clone https://github.com/torch2424/piStreamRadio.git
