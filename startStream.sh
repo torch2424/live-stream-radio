@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Source our config files
 source radioFiles/config.sh
