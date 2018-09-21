@@ -61,6 +61,11 @@ while true ; do
         # Create our video text from the random song
         rm $STREAM_TEXT_PATH
         echo "$INTERLUDE_TEXT" >> "$STREAM_TEXT_PATH"
+
+        echo " "
+        echo "Playing Interlude:"
+        echo "Path: $RANDOM_SONG"
+        echo " "
       else
         # Get our random song
         RANDOM_SONG=$(./getFileFromDir.sh "$MUSIC_DIRECTORY")
@@ -72,6 +77,13 @@ while true ; do
         echo "Artist: $ARTIST" >> "$STREAM_TEXT_PATH"
         echo " " >> /tmp/stream.txt
         echo "Song: $SONG_NAME" >> "$STREAM_TEXT_PATH"
+        
+        echo " "
+        echo "Playing Song:"
+        echo "Path: $RANDOM_SONG"
+        echo "Artist: $ARTIST"
+        echo "Song: $SONG_NAME"
+        echo " "
       fi
 
       # Create our two threads of audio playing, and the stream
