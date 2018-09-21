@@ -1,3 +1,7 @@
+# OSX Files
+**/.DS_Store
+
+# Other build files
 ffmpeg-source/*
 libfdk*
 libfdk*/*
