@@ -16,6 +16,10 @@ Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows 
 * [Getting Started (Installation)](#getting-started-installation)
 * [Updating](#updating)
 * [Adding Content to the Stream](#adding-content-to-the-stream)
+  * [Music](#music)
+  * [Gifs](#gifs)
+  * [Interludes](#interludes)
+  * [Fonts](#fonts)
 * [Helper Scripts](#helper-scripts)
 * [Tips](#tips)
 * [Additional Info](#additional-info)
@@ -89,11 +93,21 @@ Updating your stream to the latest master can sometimes have breaking changes. I
 
 # Adding Content to the Stream
 
+Specific directories in [radioFiles](./radioFiles) control what is shown on your stream. Please see below for the directories and what each one does. Also, please also note **files in these directories can be nested and organized in sub folders, as they are found/randomized recursively**.
+
+### Music
+
 Music files can be found under [radioFiles/music](./radioFiles/music). `.mp3` files may be added / removed here, and will be randomly played on your stream.
+
+### Gifs
 
 Gif files can be found under [radioFiles/gifs](./radioFiles/gifs). `.gif` files may be added / removed here, and will be randomly played on your stream.
 
+### Interludes
+
 Interlude files can be found under [radioFiles/interludes](./radioFiles/interludes). `.mp3` files may be added / removed here, and will be randomly played on your stream. Interludes should be used for little radio breaks, or maybe you giving a shout out to the radio station. This is simply for fun, and can give a more "radio" feel
+
+### Fonts
 
 Font files can be found under [radioFiles/fonts](./radioFiles/fonts). `.ttf` files may be added / removed here, and will be used as the onscreen text of your stream.
 
