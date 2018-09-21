@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Source our config files
 source radioFiles/config.sh
@@ -36,6 +36,7 @@ echo "$CURRENT_GIF" > "$CURRENT_GIF_PATH"
 RANDOM_GIF=$(./getFileFromDir.sh "$GIF_DIRECTORY")
 ./optimizeGif.sh "$RANDOM_GIF" "$CURRENT_GIF"
 
+
 echo " "
 echo " "
 echo "--------------------------------------------------"
@@ -53,7 +54,7 @@ while true ; do
       RANDOM_SONG=""
 
       # Check if we support interludes, and we should show one
-      if [ "$RADIO_INTERLUDES" = true ] && [ "${#(date +%s) % $RADIO_INTERLUDE_INTERVAL_LENGTH }" = 0 ]; then
+      if [ "$RADIO_INTERLUDES" = true ] && [ $(expr $(date +%s) % $RADIO_INTERLUDE_INTERVAL_LENGTH) = 0 ]; then
         # Get our random song
         RANDOM_SONG=$(./getFileFromDir.sh "$INTERLUDE_DIRECTORY")
 

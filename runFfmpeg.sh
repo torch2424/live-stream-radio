@@ -16,12 +16,12 @@ else
   STREAM_TEXT_PATH=$2
 
   # Souce our config
-  .radioFiles/config.sh
+  source radioFiles/config.sh
 
   # Define our private variables
   # KEYINT represents the number of key frames.
   # Should be somewhere between 2 to 4.
-  KEYINT=${#VIDEO_FPS \* 3}
+  KEYINT=$(expr $VIDEO_FPS \* 3)
 
   # Run our ffmpeg command
   # Draw text on multiple lines
