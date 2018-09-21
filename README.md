@@ -68,7 +68,7 @@ Next, install the dependencies. This will take a little bit of time, probably 5-
 ./installDeps.sh
 ````
 
-Then you probably want to edit your `config.sh` file to provide your Stream key and url (Default URL is for youtube).
+Then you probably want to edit your `config.sh` file to provide your Stream key and url (Default URL is for youtube). Copy the example, and then edit the final `config.sh`.
 
 ````
 cp radioFiles/config.example.sh radioFiles/config.sh

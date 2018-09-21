@@ -7,6 +7,6 @@ if [ "$#" -ne 1 ]; then
   echo "USAGE: ./getFileFromDir.sh [Directory path]"
 else
   # Use find instead of ls to better handle non-alphanumeric filenames.
-  ranfile=$( find "$1" | sort --random-sort | tail -1 )
-  echo "$1/$ranfile"
+  ranfile=$( find "$1" -mindepth 1 | sort --random-sort | tail -1 )
+  echo "$ranfile"
 fi
