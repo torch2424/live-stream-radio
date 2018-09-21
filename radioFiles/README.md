@@ -1,6 +1,6 @@
 # Folders for the files for the radio
 
-You may place folders within these folders, as content is found/randomized recursively. However, ensure that the files are of the correct format for each respective base folder.
+You may place folders within these base folders, as content is found/randomized recursively. However, ensure that the files are of the correct format for each respective base folder.
 
 `music` is where ".mp3" is stored to be played as songs on the station
 `gifs` is where ".gif" files are stored to be encoded
