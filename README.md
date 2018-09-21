@@ -20,6 +20,7 @@ Scripts for piStreamRadio, a 24/7 live streaming raspberry pi. This will allows 
   * [Gifs](#gifs)
   * [Interludes](#interludes)
   * [Fonts](#fonts)
+  * [Additional Notes On Stream Content](#additional-notes-on-stream-content)
 * [Helper Scripts](#helper-scripts)
 * [Tips](#tips)
 * [Additional Info](#additional-info)
@@ -111,7 +112,8 @@ Interlude files can be found under [radioFiles/interludes](./radioFiles/interlud
 
 Font files can be found under [radioFiles/fonts](./radioFiles/fonts). `.ttf` files may be added / removed here, and will be used as the onscreen text of your stream.
 
-**Additional Notes On Stream Content:**
+### Additional Notes On Stream Content
+
 * Content on the stream will only be updated after a new song is loaded and played.
 
 # Helper Scripts
