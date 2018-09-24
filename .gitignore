@@ -1,6 +1,10 @@
 # System Files
 **/.DS_Store
 
+# Generator testing
+**/myStream/**/*
+**/pi-stream-radio/**/*
+
 # Logs
 logs
 *.log

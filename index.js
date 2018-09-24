@@ -17,11 +17,23 @@ if(argv.generate) {
 }
 
 // Start the server
+const chalk = require('chalk');
 
 // Check if we passed in a base path
-const path = process.cwd();
+let path = process.cwd();
 if (argv._.length > 0) {
-  path = argv[0];
+  path = `${process.cwd()}/${argv._[0]}`;
+}
+
+// Find if we have a config in the path
+const configPath = `${path}/config.json`;
+let config = undefined;
+try {
+   config = require(configPath);
+} catch (e) {
+  console.log(chalk.red('config.json was not find in project path!'));
+  process.exit(1);
 }
 
 // Call stream.js
+require('./stream.js')(path, config);
