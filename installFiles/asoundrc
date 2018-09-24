@@ -1,3 +1,0 @@
-pcm.!default {
-  type plug slave.pcm "hw:Loopback,0,0"
-}
