@@ -13,7 +13,8 @@ const argv = require('minimist')(process.argv.slice(2), {
 // Check if we would like to generate a project
 if(argv.generate) {
   // Call the generate from generator
-  require('./generator/generate')(argv.generate);
+  require('./generate/generate')(argv.generate);
+  process.exit(0);
 }
 
 // Start the server
@@ -35,5 +36,7 @@ try {
   process.exit(1);
 }
 
+console.log(path, config);
+
 // Call stream.js
-require('./stream.js')(path, config);
+require('./stream/stream.js')(path, config);
