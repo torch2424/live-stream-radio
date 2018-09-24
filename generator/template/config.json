@@ -1,0 +1,57 @@
+{
+  "stream_url": "rtmp://a.rtmp.youtube.com/live2/$stream_key",
+  "stream_key": "",
+  "audio_bit_rate": "128k",
+  "audio_sample_rate": "44100",
+  "video_height": "480",
+  "video_width": "854",
+  "video_bit_rate": "500k",
+  "video_fps": "10",
+  "radio": {
+    "audio_directory": "./audio",
+    "video_directory": "./video",
+    "overlay": {
+      "font": "./fonts/Lato-Regular.ttf",
+      "title": {
+        "text": "Pi Stream Radio, 24/7 Open Source Radio",
+        "font_color": "#FFFFFF",
+        "font_border": "#000000",
+        "font_size": "10",
+        "font_scroll_speed": "20",
+        "position_x": "0",
+        "position_y": "5"
+      },
+      "song": {
+        "font_color": "#FFFFFF",
+        "font_border": "#000000",
+        "font_size": "10",
+        "position_x": "5",
+        "position_y": "25"
+      },
+      "artist": {
+        "font_color": "#FFFFFF",
+        "font_border": "#000000",
+        "font_size": "10",
+        "position_x": "5",
+        "position_y": "55"
+      }
+    }
+  },
+  "interlude": {
+    "enabled": "true",
+    "frequency": "0.1",
+    "audio_directory": "./interludes/audio",
+    "video_directory": "./interludes/video",
+    "overlay": {
+      "font": "./fonts/Lato-Regular.ttf",
+      "title": {
+        "text": "Please wait, music shall resume shortly...",
+        "font_color": "#FFFFFF",
+        "font_border": "#000000",
+        "font_size": "10",
+        "position_x": "0",
+        "position_y": "5"
+      }
+    }
+  }
+}
