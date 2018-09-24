@@ -1,0 +1,23 @@
+{
+  "name": "pi-stream-radio",
+  "version": "2.0.0",
+  "description": "24/7 music live streaming service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/torch2424/piStreamRadio.git"
+  },
+  "author": "Aaron Turner",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/torch2424/piStreamRadio/issues"
+  },
+  "homepage": "https://github.com/torch2424/piStreamRadio#readme",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "minimist": "^1.2.0"
+  }
+}
