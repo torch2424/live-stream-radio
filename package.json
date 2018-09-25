@@ -20,7 +20,12 @@
   },
   "homepage": "https://github.com/torch2424/piStreamRadio#readme",
   "dependencies": {
+    "audio-metadata": "^0.3.0",
     "chalk": "^2.4.1",
-    "minimist": "^1.2.0"
+    "find": "^0.2.9",
+    "fluent-ffmpeg": "^2.1.2",
+    "minimist": "^1.2.0",
+    "music-metadata": "^3.1.0",
+    "read-audio-tags": "^0.1.0"
   }
 }

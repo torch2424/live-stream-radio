@@ -36,7 +36,5 @@ try {
   process.exit(1);
 }
 
-console.log(path, config);
-
 // Call stream.js
 require('./stream/stream.js')(path, config);
