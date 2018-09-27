@@ -1,6 +1,6 @@
 // Require our dependencies
 const chalk = require('chalk');
-const fs = require('fs');
+const fs = require('fs-extra');
 
 module.exports = (projectName) => {
   
@@ -18,7 +18,7 @@ module.exports = (projectName) => {
   fs.mkdirSync(newProjectPath);
   
   // Fill the project diretory with the template
-  createDirectoryContents(process.cwd(), './generator/template', projectName);
+  createDirectoryContents(process.cwd(), './generate/template', projectName);
   
   console.log(chalk.green(`Project created at: ${newProjectPath}`), '🎉');
 }
@@ -42,10 +42,9 @@ function createDirectoryContents(currentPath, templatePath, newProjectPath) {
     const writePath = `${currentPath}/${newProjectPath}/${file}`;
 
     if (stats.isFile()) {
-      const contents = fs.readFileSync(origFilePath, 'utf8');
 
-      console.log('📝', chalk.magenta(`Writing a file at ${writePath} ...`));
-      fs.writeFileSync(writePath, contents, 'utf8');
+      console.log('📝', chalk.magenta(`Copying file to ${writePath} ...`));
+      fs.copySync(origFilePath, writePath);
     } else if (stats.isDirectory()) {
       console.log('📁', chalk.magenta(`Creating a directory at ${writePath} ...`))
       fs.mkdirSync(writePath);
