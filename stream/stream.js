@@ -4,6 +4,7 @@ const ffmpegError = require('./error.js').ffmpegError;
 const chalk = require('chalk');
 const find = require('find');
 const musicMetadata = require('music-metadata');
+const progress = require('cli-progress');
 
 // Async Function to get a random file from a path
 const getRandomFileWithExtensionFromPath = async (extensions, path) => {
@@ -36,7 +37,7 @@ const stream = async (path, config) => {
   console.log(chalk.blue(`Playing the audio: ${randomSong}`));
 
   // Get the information about the song
-  const metadata = await musicMetadata.parseFile(randomSong, {native: true});
+  const metadata = await musicMetadata.parseFile(randomSong, {duration: true});
 
   console.log(chalk.magenta(`Artist: ${metadata.common.artist}`));
   console.log(chalk.magenta(`Album: ${metadata.common.album}`));
@@ -61,6 +62,11 @@ const stream = async (path, config) => {
     optimizedVideo = randomVideo;
   }
 
+  // Let's create a nice progress bar
+  // Using the song length as the 100%, as that is when the stream should end
+  const progressBar = new progress.Bar();
+  progressBar.start(Math.floor(metadata.format.duration), 0);
+  
   // Finally, lets start streaming!
   let streamUrl = config.stream_url;
   streamUrl = streamUrl.replace('$stream_key', config.stream_key);
@@ -90,8 +96,18 @@ const stream = async (path, config) => {
     // TODO: Restart stream
     .on('end', () => {
       console.log('DONE!');
+      progressBar.stop();
     })
-    .on('error', ffmpegError())
+    .on('error', ffmpegError(progressBar.stop))
+    .on('progress', (progress) => {
+      // Get our timestamp
+      const timestamp = progress.timemark.substring(0, 8)
+      const splitTimestamp = timestamp.split(':');
+      const seconds = (splitTimestamp[0] * 60 * 60) + (splitTimestamp[1] * 60) + splitTimestamp[2];
+
+      // Set seconds onto progressBar
+      progressBar.update(seconds);
+    })
     .save(streamUrl);
 
   // TODO: Make a better wait / restart
