@@ -2,6 +2,7 @@
 const ffmpeg = require('fluent-ffmpeg');
 const ffmpegError = require('./error.js').ffmpegError;
 const chalk = require('chalk');
+const termImg = require('term-img');
 const find = require('find');
 const musicMetadata = require('music-metadata');
 const progress = require('cli-progress');
@@ -38,10 +39,15 @@ const stream = async (path, config) => {
 
   // Get the information about the song
   const metadata = await musicMetadata.parseFile(randomSong, {duration: true});
-
+  
+  // Log data about the song
   console.log(chalk.magenta(`Artist: ${metadata.common.artist}`));
   console.log(chalk.magenta(`Album: ${metadata.common.album}`));
   console.log(chalk.magenta(`Song: ${metadata.common.title}`));
+  termImg(metadata.common.picture[0].data, {
+    width: '300px',
+    height: 'auto'
+  });
   
 
   // Get the stream video
