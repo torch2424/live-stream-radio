@@ -66,19 +66,28 @@ const stream = async (path, config) => {
   streamUrl = streamUrl.replace('$stream_key', config.stream_key);
 
   ffmpeg(optimizedVideo)
+    // Allow gifs to loop infitely
     .inputOptions(
       `-ignore_loop 0`
     )
+    // Add our song as input
     .input(randomSong)
+    // Copy over the video audio
     .audioCodec('copy')
+    // Livestream, encode in realtime as audio comes in
+    // https://superuser.com/questions/508560/ffmpeg-stream-a-file-with-original-playing-rate
     .inputOptions(
       `-re`
     )
     .outputOptions([
+      // Add our fps
       `-r ${config.video_fps}`,
+      // Define our video size
       `-s ${config.video_width}x${config.video_height}`,
+      // Set format to flv (Youtube/Twitch)
       `-f flv`
     ])
+    // TODO: Restart stream
     .on('end', () => {
       console.log('DONE!');
     })
@@ -86,6 +95,7 @@ const stream = async (path, config) => {
     .save(streamUrl);
 
   // TODO: Make a better wait / restart
+  // TODO: Make the next gif in the background
   const wait = () => {
     setTimeout(() => {
       wait();

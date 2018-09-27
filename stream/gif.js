@@ -14,8 +14,10 @@ const getOptimizedGif = async (gifPath, config) => {
   await new Promise((resolve, reject) => {
     ffmpeg(gifPath)
     // Equivalent to -vf
+    // This sets the fps, and tells to output a gif palette
       .videoFilter(`fps=${config.video_fps},palettegen=stats_mode=diff`)
       .outputOptions([
+        // Override any existing file
         `-y`
       ])
       .on('end', resolve)
@@ -29,17 +31,22 @@ const getOptimizedGif = async (gifPath, config) => {
   await new Promise((resolve, reject) => {
     ffmpeg(gifPath)
       .input(tempPalPath)
-    // Equivalient to -lavi or -filter_complex
+      // Equivalient to -lavi or -filter_complex
       .complexFilter(
+        // Set the fps
         `fps=${config.video_fps}` +
+        // Scale the gif
         `,scale=w=${config.max_gif_size}:h=${config.max_gif_size}` + 
+        // Maintain the aspect ratio from the previous scale, and decrease whichever breaks it
         `:force_original_aspect_ratio=decrease` + 
+        // Other cool gif optimization stuff, see linked blog post
         `:flags=lanczos` + 
         ` [x]; [x][1:v] paletteuse=dither=sierra2_4a`
       )
-
       .outputOptions([
+        // Set the format to gif
         `-f gif`,
+        // Override any existing file
         `-y`
       ])
       .on('end', resolve)
@@ -47,7 +54,8 @@ const getOptimizedGif = async (gifPath, config) => {
       .save(palAppliedGif);
   });
 
-  // Generate the final optimized byte size
+  // Generate the final gif with an optimized byte size
+  // Using gifsicle
   const files = await imagemin([palAppliedGif], '/tmp', {
     plugins: [
       imageminGifsicle({
