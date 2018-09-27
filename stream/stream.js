@@ -1,16 +1,26 @@
 // Get our ffmpeg
 const ffmpeg = require('fluent-ffmpeg');
+const ffmpegError = require('./error.js').ffmpegError;
 const chalk = require('chalk');
 const find = require('find');
 const musicMetadata = require('music-metadata');
-const imagemin = require('imagemin');
-const imageminGifsicle = require('imagemin-gifsicle');
 
-module.exports = (path, config) => {
-  console.log(chalk.green('Starting Stream!'));
+// Async Function to get a random file from a path
+const getRandomFileWithExtensionFromPath = async (extensions, path) => {
 
-  stream(path, config);
+  // Find al of our files with the extensions
+  let allFiles = [];
+  extensions.forEach(extension => {
+    allFiles = [
+      ...allFiles,
+      ...find.fileSync(extension, path)
+    ];
+  });
+
+  // Return a random file
+  return allFiles[Math.floor(Math.random() * allFiles.length)];
 }
+
 
 // Recursive function to stream repeatedly
 const stream = async (path, config) => {
@@ -46,92 +56,47 @@ const stream = async (path, config) => {
   let optimizedVideo;
   if (randomVideo.endsWith('.gif')) {
     // Optimize gif
-    optimizedVideo = await getOptimizedGif(randomVideo, config);
+    optimizedVideo = await require('./gif.js').getOptimizedGif(randomVideo, config);
   } else {
     optimizedVideo = randomVideo;
   }
 
-  console.log(optimizedVideo);
+  // Finally, lets start streaming!
+  let streamUrl = config.stream_url;
+  streamUrl = streamUrl.replace('$stream_key', config.stream_key);
 
+  ffmpeg(optimizedVideo)
+    .inputOptions(
+      `-ignore_loop 0`
+    )
+    .input(randomSong)
+    .audioCodec('copy')
+    .inputOptions(
+      `-re`
+    )
+    .outputOptions([
+      `-r ${config.video_fps}`,
+      `-s ${config.video_width}x${config.video_height}`,
+      `-f flv`
+    ])
+    .on('end', () => {
+      console.log('DONE!');
+    })
+    .on('error', ffmpegError())
+    .save(streamUrl);
+
+  // TODO: Make a better wait / restart
+  const wait = () => {
+    setTimeout(() => {
+      wait();
+    }, 500);
+  };
+  wait();
 }
 
-// Define our tasks here
+// Finally our exports
+module.exports = (path, config) => {
+  console.log(chalk.green('Starting Stream!'));
 
-// Async Function to get a random file from a path
-const getRandomFileWithExtensionFromPath = async (extensions, path) => {
-
-  // Find al of our files with the extensions
-  let allFiles = [];
-  extensions.forEach(extension => {
-    allFiles = [
-      ...allFiles,
-      ...find.fileSync(extension, path)
-    ];
-  });
-
-  // Return a random file
-  return allFiles[Math.floor(Math.random() * allFiles.length)];
+  stream(path, config);
 }
-
-// Function to handle better ffmpeg errors
-const ffmpegError = (callback, err, stdout, stderr) => {
-  console.log(chalk.red('ffmpeg stderr:\n'), stderr);
-  callback();
-}
-
-// Async function to optimize a gif using ffmpeg
-// http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
-const getOptimizedGif = async (gifPath, config) => {
-  
-  const tempPalPath = '/tmp/live-stream-radio-gif-pal.png';
-  const palAppliedGif = '/tmp/live-stream-radio-gif-with-pal.gif';
-  
-  // Create the gif pallete using ffmpeg
-  await new Promise((resolve, reject) => {
-    ffmpeg(gifPath)
-      // Equivalent to -vf
-      .videoFilter(`fps=${config.video_fps},palettegen=stats_mode=diff`)
-      .outputOptions([
-        `-y`
-      ])
-      .on('end', resolve)
-      .on('error', ffmpegError.bind(this, reject))
-      .save(tempPalPath);
-  });
-
-  // Optimize the gif quality using the palette
-  // Must use .input() to ensure inputs are in the right order
-  // https://superuser.com/questions/1199833/ffmpeg-palettegen-spits-out-a-palette-paletteuse-cant-use
-  await new Promise((resolve, reject) => {
-    ffmpeg(gifPath)
-      .input(tempPalPath)
-      // Equivalient to -lavi or -filter_complex
-      .complexFilter(
-        `fps=${config.video_fps}` +
-        `,scale=w=${config.max_gif_size}:h=${config.max_gif_size}` + 
-        `:force_original_aspect_ratio=decrease` + 
-        `:flags=lanczos` + 
-        ` [x]; [x][1:v] paletteuse=dither=sierra2_4a`
-      )
-      
-      .outputOptions([
-        `-f gif`,
-        `-y`
-      ])
-      .on('end', resolve)
-      .on('error', ffmpegError.bind(this, reject))
-      .save(palAppliedGif);
-  });
-  
-  // Generate the final optimized byte size
-  const files = await imagemin([palAppliedGif], '/tmp', {
-    plugins: [
-      imageminGifsicle({
-        optimizationLevel: 3
-      })
-    ]
-  });
-
-  return files[0].path;
-}; 
-
