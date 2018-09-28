@@ -36,13 +36,36 @@ const stream = async (path, config) => {
   );
   
 
-  console.log(chalk.blue(`Playing the audio:}`));
+  console.log(chalk.blue(`Playing the audio:`));
   console.log(randomSong);
-  console.log('\n');
+  console.log('\n'); 
+
+  // Get the stream video
+  let randomVideo = await getRandomFileWithExtensionFromPath(
+    [
+      /\.mp4$/,
+      // /\.webm$/,
+      // /\.gif$/,
+    ],
+    `${path}${config.radio.video_directory}`
+  );
+
+  console.log(chalk.blue(`Playing the video:`));
+  console.log(randomVideo);
+  console.log('\n'); 
+
+  // Do some optimizations to our video as we need
+  let optimizedVideo;
+  if (randomVideo.endsWith('.gif')) {
+    // Optimize gif
+    optimizedVideo = await require('./gif.js').getOptimizedGif(randomVideo, config);
+  } else {
+    optimizedVideo = randomVideo;
+  }
 
   // Get the information about the song
   const metadata = await musicMetadata.parseFile(randomSong, {duration: true});
-  
+
   // Log data about the song
   console.log(chalk.magenta(`Artist: ${metadata.common.artist}`));
   console.log(chalk.magenta(`Album: ${metadata.common.album}`));
@@ -56,25 +79,7 @@ const stream = async (path, config) => {
     });
     console.log('\n');
   }
-  
 
-  // Get the stream video
-  let randomVideo = await getRandomFileWithExtensionFromPath(
-    [
-      /\.mp4$/,
-      /\.gif$/,
-    ],
-    `${path}${config.radio.video_directory}`
-  );
-
-  // Do some optimizations to our video as we need
-  let optimizedVideo;
-  if (randomVideo.endsWith('.gif')) {
-    // Optimize gif
-    optimizedVideo = await require('./gif.js').getOptimizedGif(randomVideo, config);
-  } else {
-    optimizedVideo = randomVideo;
-  }
 
   // Let's create a nice progress bar
   // Using the song length as the 100%, as that is when the stream should end
