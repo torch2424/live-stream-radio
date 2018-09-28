@@ -104,7 +104,17 @@ const stream = async (path, config) => {
       `-ignore_loop 0`
       );
   } else {
-  
+    // Set video to render at normal speed   
+    ffmpegCommand = ffmpegCommand.loop()
+      .inputOptions(
+        `-re`
+      )
+      /*
+      // Loop the video
+      // https://video.stackexchange.com/questions/12905/repeat-loop-input-video-with-ffmpeg
+      .complexFilter(
+        `loop=-1`
+      );*/
   }
 
   // Add our audio as input
