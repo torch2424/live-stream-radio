@@ -34,8 +34,11 @@ const stream = async (path, config) => {
     ],
     `${path}${config.radio.audio_directory}`
   );
+  
 
-  console.log(chalk.blue(`Playing the audio: ${randomSong}`));
+  console.log(chalk.blue(`Playing the audio:}`));
+  console.log(randomSong);
+  console.log('\n');
 
   // Get the information about the song
   const metadata = await musicMetadata.parseFile(randomSong, {duration: true});
@@ -44,10 +47,15 @@ const stream = async (path, config) => {
   console.log(chalk.magenta(`Artist: ${metadata.common.artist}`));
   console.log(chalk.magenta(`Album: ${metadata.common.album}`));
   console.log(chalk.magenta(`Song: ${metadata.common.title}`));
-  termImg(metadata.common.picture[0].data, {
-    width: '300px',
-    height: 'auto'
-  });
+  console.log('\n');
+  // Log a album cover if available
+  if (metadata.common.picture && metadata.common.picture.length > 0) {
+    termImg(metadata.common.picture[0].data, {
+      width: '300px',
+      height: 'auto'
+    });
+    console.log('\n');
+  }
   
 
   // Get the stream video
@@ -70,35 +78,54 @@ const stream = async (path, config) => {
 
   // Let's create a nice progress bar
   // Using the song length as the 100%, as that is when the stream should end
-  const progressBar = new progress.Bar();
-  progressBar.start(Math.floor(metadata.format.duration), 0);
+  const songTotalDuration = Math.floor(metadata.format.duration);
+  const progressBar = new progress.Bar({
+    format: 'Audio Progress {bar} {percentage}% | Time Playing: {duration_formatted}'
+  }, progress.Presets.shades_classic);
+  progressBar.start(songTotalDuration, 0);
   
-  // Finally, lets start streaming!
+  //  Build our stream url 
   let streamUrl = config.stream_url;
   streamUrl = streamUrl.replace('$stream_key', config.stream_key);
 
-  ffmpeg(optimizedVideo)
+  // Create our command with the video as input
+  let ffmpegCommand = ffmpeg(optimizedVideo);
+
+  // Add input options depending on video type
+  if (optimizedVideo.endsWith('.gif')) {
     // Allow gifs to loop infitely
-    .inputOptions(
+    ffmpegCommand = ffmpegCommand
+      .inputOptions(
       `-ignore_loop 0`
-    )
-    // Add our song as input
-    .input(randomSong)
+      );
+  } else {
+  
+  }
+
+  // Add our audio as input
+  ffmpegCommand = ffmpegCommand.input(randomSong)
     // Copy over the video audio
     .audioCodec('copy')
     // Livestream, encode in realtime as audio comes in
     // https://superuser.com/questions/508560/ffmpeg-stream-a-file-with-original-playing-rate
     .inputOptions(
       `-re`
-    )
-    .outputOptions([
-      // Add our fps
-      `-r ${config.video_fps}`,
-      // Define our video size
-      `-s ${config.video_width}x${config.video_height}`,
-      // Set format to flv (Youtube/Twitch)
-      `-f flv`
-    ])
+    );
+
+  // Add our output options for the stream
+  ffmpegCommand = ffmpegCommand.outputOptions([
+    // Stop once the shortest input ends (audio)
+    `-shortest`,
+    // Add our fps
+    `-r ${config.video_fps}`,
+    // Define our video size
+    `-s ${config.video_width}x${config.video_height}`,
+    // Set format to flv (Youtube/Twitch)
+    `-f flv`
+  ]);
+
+  // Set our event handlers
+  ffpmepgCommand = ffmpegCommand
     // TODO: Restart stream
     .on('end', () => {
       console.log('DONE!');
@@ -109,12 +136,24 @@ const stream = async (path, config) => {
       // Get our timestamp
       const timestamp = progress.timemark.substring(0, 8)
       const splitTimestamp = timestamp.split(':');
-      const seconds = (splitTimestamp[0] * 60 * 60) + (splitTimestamp[1] * 60) + splitTimestamp[2];
+      const seconds = (parseInt(splitTimestamp[0], 10) * 60 * 60) + (parseInt(splitTimestamp[1], 10) * 60) + parseInt(splitTimestamp[2], 10);
 
       // Set seconds onto progressBar
       progressBar.update(seconds);
-    })
-    .save(streamUrl);
+    });
+
+  // Finally, save the stream to our stream URL
+  ffmpegCommand.save(streamUrl);
+}
+
+// Finally our exports
+module.exports = (path, config) => {
+
+  console.log('\n');
+  console.log(chalk.green('Starting Stream!'));
+  console.log('\n');
+
+  stream(path, config);
 
   // TODO: Make a better wait / restart
   // TODO: Make the next gif in the background
@@ -124,11 +163,4 @@ const stream = async (path, config) => {
     }, 500);
   };
   wait();
-}
-
-// Finally our exports
-module.exports = (path, config) => {
-  console.log(chalk.green('Starting Stream!'));
-
-  stream(path, config);
 }
