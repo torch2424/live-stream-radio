@@ -2,7 +2,6 @@
 const ffmpeg = require('fluent-ffmpeg');
 const ffmpegError = require('./error.js').ffmpegError;
 const chalk = require('chalk');
-const termImg = require('term-img');
 const find = require('find');
 const musicMetadata = require('music-metadata');
 const progress = require('cli-progress');
@@ -73,10 +72,15 @@ const stream = async (path, config) => {
   console.log('\n');
   // Log a album cover if available
   if (metadata.common.picture && metadata.common.picture.length > 0) {
-    termImg(metadata.common.picture[0].data, {
-      width: '300px',
-      height: 'auto'
-    });
+    // windows is not supported by termImg
+    // process.platform always will be win32 on windows, no matter if it is 32bit or 64bit
+    if(process.platform != "win32") {
+      const termImg = require('term-img');
+      termImg(metadata.common.picture[0].data, {
+        width: '300px',
+        height: 'auto'
+      });
+    }
     console.log('\n');
   }
 
