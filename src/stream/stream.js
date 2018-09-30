@@ -255,7 +255,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   // Then using the overlay filter to combine the first input, with the video of
   // a second input, aka [1:v], which in this case is our image.
   // Lastly using scale2ref filter to ensure the image size is consistent on all
-  // videos
+  // videos. And scaled the image to the video, preserving video quality
   if (
     config[typeKey].overlay &&
     config[typeKey].overlay.enabled &&
@@ -268,7 +268,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     ffmpegCommand = ffmpegCommand.input(imagePath);
     complexFilterString +=
       ` [videowithtext];` +
-      `[videowithtext][1:v] scale2ref [scaledvideowithtext][scaledoverlayimage];` +
+      `[1:v][videowithtext] scale2ref [scaledoverlayimage][scaledvideowithtext];` +
       `[scaledvideowithtext][scaledoverlayimage] overlay=x=${imageObject.position_x}:y=${imageObject.position_y}`;
   }
 
