@@ -22,7 +22,15 @@ let shouldListenForFfmpegErrors = false;
 const errorCallback = (err, stdout, stderr) => {
   // Check if we should respond to the error
   if (shouldListenForFfmpegErrors) {
-    console.log(chalk.red('ffmpeg stderr:\n'), stderr);
+    console.log('\n');
+    chalkLine.red();
+    console.log(chalk.red('ffmpeg stderr:'), '\n\n', stderr);
+    console.log('\n');
+    console.log(`${chalk.red('ffmpeg encountered an error.')} 😨`);
+    console.log(`Please see the stderror output above to fix the issue.`);
+    console.log('\n');
+
+    // Exit everything
     process.exit(1);
   }
 };
@@ -37,15 +45,15 @@ const endCallback = () => {
 const moduleExports = {
   start: (path, config, outputLocation) => {
     console.log('\n');
-    chalkLine.green();
+    chalkLine.white();
     console.log('\n');
-    console.log(chalk.green('Starting stream!'));
+    console.log(`${chalk.green('Starting stream!')} 🛠️`);
     console.log('\n');
 
     //  Build our stream url
     if (!outputLocation) {
       if (!config.stream_url || !config.stream_key) {
-        console.log(chalk.red('Missing a stream_url or a stream_key in your config.json !'));
+        console.log(`${chalk.red('Missing a stream_url or a stream_key in your config.json !')} 😟`);
         console.log(chalk.red('Exiting...'));
         console.log('\n');
         process.exit(1);
@@ -72,12 +80,15 @@ const moduleExports = {
   },
   stop: () => {
     console.log('\n');
-    console.log(chalk.red('Stopping stream...'));
+    console.log(`${chalk.red('Stopping stream...')} ✋`);
     console.log('\n');
 
     shouldListenForFfmpegErrors = false;
     ffmpegCommand.kill();
     ffmpegCommand = undefined;
+
+    console.log(`${chalk.red('Stream stopped!')} 😃`);
+    console.log('\n');
   }
 };
 

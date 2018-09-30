@@ -19,7 +19,7 @@ module.exports = projectName => {
   // Fill the project diretory with the template
   createDirectoryContents(process.cwd(), `${__dirname}/template`, projectName);
 
-  console.log(chalk.green(`Project created at: ${newProjectPath}`), '🎉');
+  console.log(chalk.green(`Project created at: ${newProjectPath} !`), '🎉');
 };
 
 // Function to generate out or template project

@@ -2,8 +2,9 @@
 
 // Parse our input
 const argv = require('minimist')(process.argv.slice(2), {
-  string: ['generate', 'output'],
+  string: ['generate', 'output', 'start'],
   alias: {
+    s: ['start'],
     g: ['generate'],
     o: ['output']
   }
@@ -21,8 +22,8 @@ const chalk = require('chalk');
 
 // Check if we passed in a base path
 let path = process.cwd();
-if (argv._.length > 0) {
-  path = `${process.cwd()}/${argv._[0]}`;
+if ((argv.start && argv.start.length > 0) || argv._.length > 0) {
+  path = `${process.cwd()}/${argv.start || argv._[0]}`;
 }
 
 // Add a trailing slash to out path if there isn't one
@@ -37,7 +38,7 @@ let config = undefined;
 try {
   config = require(configPath);
 } catch (e) {
-  console.log(chalk.red('config.json was not find in project path!'));
+  console.log(`${chalk.red('config.json was not find in project path!')} 😞`);
   process.exit(1);
 }
 

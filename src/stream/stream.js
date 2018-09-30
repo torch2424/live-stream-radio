@@ -58,7 +58,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     console.log('\n');
   }
 
-  console.log(chalk.magenta(`Finding audio...`));
+  console.log(chalk.magenta(`Finding audio... 🎤`));
   console.log('\n');
 
   // Find a random song from the config directory
@@ -68,7 +68,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   console.log(randomSong);
   console.log('\n');
 
-  console.log(chalk.magenta(`Finding/Optimizing video...`));
+  console.log(chalk.magenta(`Finding/Optimizing video... 📺`));
   console.log('\n');
 
   // Get the stream video
@@ -262,7 +262,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     `-pix_fmt yuv420p`,
     `-bufsize 960k`,
     `-crf 28`,
-    `-x264opts keyint=${config.video_fps * 3}:min-keyint=${config.video_fps * 3}:scenecut=-1`,
+    `-x264opts keyint=${config.video_fps * 2}:min-keyint=${config.video_fps * 2}:scenecut=-1`,
     // Set format to flv (Youtube/Twitch)
     `-f flv`
   ]);
