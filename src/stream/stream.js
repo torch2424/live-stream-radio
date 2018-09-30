@@ -193,6 +193,20 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     `-r ${config.video_fps}`,
     // Define our video size
     `-s ${config.video_width}x${config.video_height}`,
+    // Set video bitrate
+    `-b:v ${config.video_bit_rate}`,
+    // Set audio bitrate
+    `-b:a ${config.audio_bit_rate}`,
+    // Set audio sample rate
+    `-ar ${config.audio_sample_rate}`,
+    // Set our video codec, and encoder options
+    // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
+    `-vcodec libx264`,
+    `-preset veryfast`,
+    `-pix_fmt yuv420p`,
+    `-bufsize 960k`,
+    `-crf 28`,
+    `-x264opts keyint=${config.video_fps * 3}:min-keyint=${config.video_fps * 3}:scenecut=-1`,
     // Set format to flv (Youtube/Twitch)
     `-f flv`
   ]);

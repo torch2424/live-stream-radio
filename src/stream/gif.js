@@ -13,7 +13,7 @@ const getOptimizedGif = async (gifPath, config, errorCallback) => {
     ffmpeg(gifPath)
       // Equivalent to -vf
       // This sets the fps, and tells to output a gif palette
-      .videoFilter(`fps=${config.video_fps},palettegen=stats_mode=diff`)
+      .videoFilter(`palettegen=stats_mode=diff`)
       .outputOptions([
         // Override any existing file
         `-y`
@@ -31,10 +31,8 @@ const getOptimizedGif = async (gifPath, config, errorCallback) => {
       .input(tempPalPath)
       // Equivalient to -lavi or -filter_complex
       .complexFilter(
-        // Set the fps
-        `fps=${config.video_fps}` +
-          // Scale the gif
-          `,scale=w=${config.max_gif_size}:h=${config.max_gif_size}` +
+        // Scale the gif
+        `scale=w=${config.max_gif_size}:h=${config.max_gif_size}` +
           // Maintain the aspect ratio from the previous scale, and decrease whichever breaks it
           `:force_original_aspect_ratio=decrease` +
           // Other cool gif optimization stuff, see linked blog post

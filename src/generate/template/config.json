@@ -6,8 +6,8 @@
   "video_height": "480",
   "video_width": "854",
   "video_bit_rate": "500k",
-  "video_fps": "10",
-  "max_gif_size": "300",
+  "video_fps": "24",
+  "max_gif_size": "550",
   "radio": {
     "audio_directory": "./audio",
     "video_directory": "./video",

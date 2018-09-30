@@ -9,7 +9,7 @@
   "scripts": {
     "precommit": "pretty-quick --staged",
     "start": "node src/index.js live-stream-radio",
-    "generate": "node src/index.js --generate",
+    "generate": "rm -rf live-stream-radio && node src/index.js --generate",
     "dev": "node src/index.js live-stream-radio --output dev.flv",
     "prettier": "npm run prettier:fix",
     "lint": " echo \"Listing unlinted files, will show nothing if everything is fine.\" && npx prettier --config .prettierrc --list-different src/**/*.js",
