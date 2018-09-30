@@ -90,8 +90,8 @@ const stream = async (path, config, outputLocation) => {
         width: '300px',
         height: 'auto'
       });
+      console.log('\n');
     }
-    console.log('\n');
   }
 
 
