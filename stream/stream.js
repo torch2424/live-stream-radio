@@ -27,10 +27,13 @@ const getRandomFileWithExtensionFromPath = async (extensions, path) => {
 const stream = async (path, config, outputLocation) => {
 
   // Find what type of stream we want, radio, interlude, etc...
-  const typeKey = "radio";
+  let typeKey = "radio";
   const randomNumber = Math.random();
-  if (randomNumber <= config.interlude.frequency) {
-    const typeKey = "interlude";
+  const frequency = parseFloat(config.interlude.frequency, 10);
+  if (randomNumber <= frequency) {
+    console.log(chalk.magenta(`Playing an interlude...`));
+    console.log('\n');
+    typeKey = "interlude";
   }
   
   // Find a random song from the config directory

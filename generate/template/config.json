@@ -56,7 +56,7 @@
   },
   "interlude": {
     "enabled": "true",
-    "frequency": "0.1",
+    "frequency": "0.2",
     "audio_directory": "./interludes/audio",
     "video_directory": "./interludes/video",
     "overlay": {
@@ -68,7 +68,7 @@
         "font_color": "#FFFFFF",
         "font_border": "#000000",
         "font_size": "10",
-        "position_x": "0",
+        "position_x": "2",
         "position_y": "5"
       }
     }
