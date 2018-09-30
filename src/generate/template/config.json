@@ -14,7 +14,7 @@
     "video_directory": "./video",
     "overlay": {
       "enabled": true,
-      "font": "./fonts/Lato-Regular.ttf",
+      "font_path": "./fonts/Lato-Regular.ttf",
       "title": {
         "enabled": true,
         "text": "Live Stream Radio, 24/7 Open Source Radio",
@@ -52,6 +52,10 @@
         "font_size": "10",
         "position_x": "2",
         "position_y": "25"
+      },
+      "image": {
+        "enabled": true,
+        "image_path": "./live-stream-radio-overlay-image.png"
       }
     }
   },
@@ -62,7 +66,7 @@
     "video_directory": "./interludes/video",
     "overlay": {
       "enabled": true,
-      "font": "./fonts/Lato-Regular.ttf",
+      "font_path": "./fonts/Lato-Regular.ttf",
       "title": {
         "enabled": true,
         "text": "Please wait, music shall resume shortly...",
@@ -71,6 +75,10 @@
         "font_size": "10",
         "position_x": "2",
         "position_y": "5"
+      },
+      "image": {
+        "enabled": true,
+        "image_path": "./live-stream-radio-overlay-image.png"
       }
     }
   }

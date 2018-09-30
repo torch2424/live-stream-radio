@@ -157,7 +157,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     const overlayConfigObject = config[typeKey].overlay;
     const overlayItems = [];
 
-    const fontPath = `${path}${overlayConfigObject.font}`;
+    const fontPath = `${path}${overlayConfigObject.font_path}`;
 
     // Check if we have a title option
     if (overlayConfigObject.title && overlayConfigObject.title.enabled) {
