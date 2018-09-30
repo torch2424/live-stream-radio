@@ -8,43 +8,29 @@ const progress = require('cli-progress');
 
 // Function to start a stream
 module.exports = async (path, config, outputLocation, endCallback, errorCallback) => {
-
   // Find what type of stream we want, radio, interlude, etc...
-  let typeKey = "radio";
+  let typeKey = 'radio';
   const randomNumber = Math.random();
   const frequency = parseFloat(config.interlude.frequency, 10);
   if (randomNumber <= frequency) {
     console.log(chalk.magenta(`Playing an interlude...`));
     console.log('\n');
-    typeKey = "interlude";
+    typeKey = 'interlude';
   }
-  
+
   // Find a random song from the config directory
-  const randomSong = await getRandomFileWithExtensionFromPath(
-    [
-      /\.mp3$/
-    ],
-    `${path}${config[typeKey].audio_directory}`
-  );
-  
+  const randomSong = await getRandomFileWithExtensionFromPath([/\.mp3$/], `${path}${config[typeKey].audio_directory}`);
 
   console.log(chalk.blue(`Playing the audio:`));
   console.log(randomSong);
-  console.log('\n'); 
+  console.log('\n');
 
   // Get the stream video
-  let randomVideo = await getRandomFileWithExtensionFromPath(
-    [
-      /\.mp4$/,
-      /\.webm$/,
-      /\.gif$/,
-    ],
-    `${path}${config[typeKey].video_directory}`
-  );
+  let randomVideo = await getRandomFileWithExtensionFromPath([/\.mp4$/, /\.webm$/, /\.gif$/], `${path}${config[typeKey].video_directory}`);
 
   console.log(chalk.blue(`Playing the video:`));
   console.log(randomVideo);
-  console.log('\n'); 
+  console.log('\n');
 
   // Do some optimizations to our video as we need
   let optimizedVideo;
@@ -56,7 +42,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   }
 
   // Get the information about the song
-  const metadata = await musicMetadata.parseFile(randomSong, {duration: true});
+  const metadata = await musicMetadata.parseFile(randomSong, { duration: true });
 
   // Log data about the song
   if (metadata.common.artist) {
@@ -73,7 +59,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   if (metadata.common.picture && metadata.common.picture.length > 0) {
     // windows is not supported by termImg
     // process.platform always will be win32 on windows, no matter if it is 32bit or 64bit
-    if(process.platform != "win32") {
+    if (process.platform != 'win32') {
       const termImg = require('term-img');
       termImg(metadata.common.picture[0].data, {
         width: '300px',
@@ -83,27 +69,28 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     }
   }
 
-
   // Let's create a nice progress bar
   // Using the song length as the 100%, as that is when the stream should end
   const songTotalDuration = Math.floor(metadata.format.duration);
-  const progressBar = new progress.Bar({
-    format: 'Audio Progress {bar} {percentage}% | Time Playing: {duration_formatted}'
-  }, progress.Presets.shades_classic);
+  const progressBar = new progress.Bar(
+    {
+      format: 'Audio Progress {bar} {percentage}% | Time Playing: {duration_formatted}'
+    },
+    progress.Presets.shades_classic
+  );
   progressBar.start(songTotalDuration, 0);
 
   // Create a new command
   ffmpegCommand = ffmpeg();
 
   // Add our audio as input
-  ffmpegCommand = ffmpegCommand.input(randomSong)
+  ffmpegCommand = ffmpegCommand
+    .input(randomSong)
     // Copy over the video audio
     .audioCodec('copy')
     // Livestream, encode in realtime as audio comes in
     // https://superuser.com/questions/508560/ffmpeg-stream-a-file-with-original-playing-rate
-    .inputOptions(
-      `-re`
-    );
+    .inputOptions(`-re`);
 
   // Create our overlay
   // Note: Positions and sizes are done relative to the input video width and height
@@ -111,19 +98,19 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   // Font size is simply just a fraction of the width
   let overlayFilterString = '';
   if (config[typeKey].overlay && config[typeKey].overlay.enabled) {
-    
     const overlayConfigObject = config[typeKey].overlay;
     const overlayItems = [];
 
     const fontPath = `${path}${overlayConfigObject.font}`;
 
     // Check if we have a title option
-    if(overlayConfigObject.title && overlayConfigObject.title.enabled) {
+    if (overlayConfigObject.title && overlayConfigObject.title.enabled) {
       const itemObject = overlayConfigObject.title;
-      let itemString = `drawtext=text='${itemObject.text}'` + 
-        `:fontfile=${fontPath}` + 
+      let itemString =
+        `drawtext=text='${itemObject.text}'` +
+        `:fontfile=${fontPath}` +
         `:fontsize=(w * ${itemObject.font_size / 300})` +
-        `:bordercolor=${itemObject.font_border}` + 
+        `:bordercolor=${itemObject.font_border}` +
         `:borderw=1` +
         `:fontcolor=${itemObject.font_color}` +
         `:y=(h * ${itemObject.position_y / 100})`;
@@ -136,44 +123,47 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     }
 
     // Check if we have an artist option
-    if(overlayConfigObject.artist && overlayConfigObject.artist.enabled) {
+    if (overlayConfigObject.artist && overlayConfigObject.artist.enabled) {
       const itemObject = overlayConfigObject.artist;
-      let itemString = `drawtext=text='${itemObject.label}\\: ${metadata.common.artist}'` + 
-        `:fontfile=${fontPath}` + 
+      let itemString =
+        `drawtext=text='${itemObject.label}\\: ${metadata.common.artist}'` +
+        `:fontfile=${fontPath}` +
         `:fontsize=(w * ${itemObject.font_size / 300})` +
-        `:bordercolor=${itemObject.font_border}` + 
+        `:bordercolor=${itemObject.font_border}` +
         `:borderw=1` +
         `:fontcolor=${itemObject.font_color}` +
         `:y=(h * ${itemObject.position_y / 100})` +
-        `:x=(w * ${itemObject.position_x / 100})`
+        `:x=(w * ${itemObject.position_x / 100})`;
       overlayItems.push(itemString);
     }
 
     // Check if we have an album option
-    if(overlayConfigObject.album && overlayConfigObject.album.enabled) {
+    if (overlayConfigObject.album && overlayConfigObject.album.enabled) {
       const itemObject = overlayConfigObject.album;
-      let itemString = `drawtext=text='${itemObject.label}\\: ${metadata.common.album}'` + 
-        `:fontfile=${fontPath}` +         
+      let itemString =
+        `drawtext=text='${itemObject.label}\\: ${metadata.common.album}'` +
+        `:fontfile=${fontPath}` +
         `:fontsize=(w * ${itemObject.font_size / 300})` +
-        `:bordercolor=${itemObject.font_border}` + 
+        `:bordercolor=${itemObject.font_border}` +
         `:borderw=1` +
         `:fontcolor=${itemObject.font_color}` +
         `:y=(h * ${itemObject.position_y / 100})` +
-        `:x=(w * ${itemObject.position_x / 100})`
+        `:x=(w * ${itemObject.position_x / 100})`;
       overlayItems.push(itemString);
     }
 
     // Check if we have an artist option
-    if(overlayConfigObject.song && overlayConfigObject.song.enabled) {
+    if (overlayConfigObject.song && overlayConfigObject.song.enabled) {
       const itemObject = overlayConfigObject.song;
-      let itemString = `drawtext=text='${itemObject.label}\\: ${metadata.common.title}'` + 
-        `:fontfile=${fontPath}` + 
+      let itemString =
+        `drawtext=text='${itemObject.label}\\: ${metadata.common.title}'` +
+        `:fontfile=${fontPath}` +
         `:fontsize=(w * ${itemObject.font_size / 300})` +
-        `:bordercolor=${itemObject.font_border}` + 
+        `:bordercolor=${itemObject.font_border}` +
         `:borderw=1` +
         `:fontcolor=${itemObject.font_color}` +
         `:y=(h * ${itemObject.position_y / 100})` +
-        `:x=(w * ${itemObject.position_x / 100})`
+        `:x=(w * ${itemObject.position_x / 100})`;
       overlayItems.push(itemString);
     }
 
@@ -188,17 +178,12 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
 
   // Add our video as a movie filter, and our overlay
   // This is the only thing I could find to loop mp4
-  // NOTE: Need to add , instead of semi colon. Comma will make the 
+  // NOTE: Need to add , instead of semi colon. Comma will make the
   // filters applied in sucession, rather than create overlayed outputs per filter.
   // https://stackoverflow.com/questions/47885877/adding-loop-video-to-sound-ffmpeg
   // https://ffmpeg.org/ffmpeg-filters.html#movie-1
   // https://trac.ffmpeg.org/wiki/FilteringGuide#FiltergraphChainFilterrelationship
-  ffmpegCommand = ffmpegCommand
-    .complexFilter(
-      `movie=${optimizedVideo}:loop=0,setpts=N/FRAME_RATE/TB,` + 
-      `${overlayFilterString}`
-    );
-
+  ffmpegCommand = ffmpegCommand.complexFilter(`movie=${optimizedVideo}:loop=0,setpts=N/FRAME_RATE/TB,` + `${overlayFilterString}`);
 
   // Add our output options for the stream
   ffmpegCommand = ffmpegCommand.outputOptions([
@@ -227,11 +212,11 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
         errorCallback(err, stdout, stderr);
       }
     })
-    .on('progress', (progress) => {
+    .on('progress', progress => {
       // Get our timestamp
-      const timestamp = progress.timemark.substring(0, 8)
+      const timestamp = progress.timemark.substring(0, 8);
       const splitTimestamp = timestamp.split(':');
-      const seconds = (parseInt(splitTimestamp[0], 10) * 60 * 60) + (parseInt(splitTimestamp[1], 10) * 60) + parseInt(splitTimestamp[2], 10);
+      const seconds = parseInt(splitTimestamp[0], 10) * 60 * 60 + parseInt(splitTimestamp[1], 10) * 60 + parseInt(splitTimestamp[2], 10);
 
       // Set seconds onto progressBar
       progressBar.update(seconds);
@@ -241,4 +226,4 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   ffmpegCommand.save(outputLocation);
 
   return ffmpegCommand;
-}
+};

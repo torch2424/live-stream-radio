@@ -4,10 +4,16 @@
   "description": "24/7 music live streaming service",
   "main": "index.js",
   "bin": {
-    "pi-stream-radio": "./index.js"
+    "pi-stream-radio": "./src/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "precommit": "pretty-quick --staged",
+    "start": "node src/index.js",
+    "generate": "node src/index.js --generate",
+    "dev": "node src/index.js --output dev.flv",
+    "prettier": "npm run prettier:fix",
+    "lint": " echo \"Listing unlinted files, will show nothing if everything is fine.\" && npx prettier --config .prettierrc --list-different src/**/*.js",
+    "lint:fix": "npx prettier --config .prettierrc --write src/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -31,5 +37,10 @@
     "minimist": "^1.2.0",
     "music-metadata": "^3.1.0",
     "term-img": "^2.1.0"
+  },
+  "devDependencies": {
+    "husky": "^1.0.1",
+    "prettier": "1.14.3",
+    "pretty-quick": "^1.7.0"
   }
 }

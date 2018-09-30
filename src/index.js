@@ -2,18 +2,17 @@
 
 // Parse our input
 const argv = require('minimist')(process.argv.slice(2), {
-  string: [
-    "generate",
-    "output"
-  ],
+  string: ['generate', 'output'],
   alias: {
-    "g": ["generate"],
-    "o": ["output"]
+    g: ['generate'],
+    o: ['output']
   }
 });
 
+console.log(argv);
+
 // Check if we would like to generate a project
-if(argv.generate) {
+if (argv.generate !== undefined) {
   // Call the generate from generator
   require('./generate/generate')(argv.generate);
   process.exit(0);
@@ -32,7 +31,7 @@ if (argv._.length > 0) {
 const configPath = `${path}/config.json`;
 let config = undefined;
 try {
-   config = require(configPath);
+  config = require(configPath);
 } catch (e) {
   console.log(chalk.red('config.json was not find in project path!'));
   process.exit(1);
@@ -50,4 +49,3 @@ const wait = () => {
   }, 500);
 };
 wait();
-

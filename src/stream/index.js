@@ -25,28 +25,25 @@ const errorCallback = (err, stdout, stderr) => {
     console.log(chalk.red('ffmpeg stderr:\n'), stderr);
     process.exit(1);
   }
-}
+};
 
 const endCallback = () => {
   // Simply start a new stream
   console.log('\n');
   moduleExports.start(currentPath, currentConfig, currentOutputLocation);
-}
-
+};
 
 // Create our exports
 const moduleExports = {
   start: (path, config, outputLocation) => {
-
     console.log('\n');
     chalkLine.green();
     console.log('\n');
     console.log(chalk.green('Starting stream!'));
     console.log('\n');
 
-    //  Build our stream url 
+    //  Build our stream url
     if (!outputLocation) {
-
       if (!config.stream_url || !config.stream_key) {
         console.log(chalk.red('Missing a stream_url or a stream_key in your config.json !'));
         console.log(chalk.red('Exiting...'));
