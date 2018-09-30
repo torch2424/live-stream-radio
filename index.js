@@ -3,10 +3,12 @@
 // Parse our input
 const argv = require('minimist')(process.argv.slice(2), {
   string: [
-    "generate"
+    "generate",
+    "output"
   ],
   alias: {
-    "g": ["generate"]
+    "g": ["generate"],
+    "o": ["output"]
   }
 });
 
@@ -37,4 +39,4 @@ try {
 }
 
 // Call stream.js
-require('./stream/stream.js')(path, config);
+require('./stream/stream.js')(path, config, argv.output);

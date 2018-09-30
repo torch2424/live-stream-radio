@@ -24,7 +24,7 @@ const getRandomFileWithExtensionFromPath = async (extensions, path) => {
 
 
 // Recursive function to stream repeatedly
-const stream = async (path, config) => {
+const stream = async (path, config, outputLocation) => {
 
   // Find what type of stream we want, radio, interlude, etc...
   const typeKey = "radio";
@@ -99,10 +99,6 @@ const stream = async (path, config) => {
     format: 'Audio Progress {bar} {percentage}% | Time Playing: {duration_formatted}'
   }, progress.Presets.shades_classic);
   progressBar.start(songTotalDuration, 0);
-  
-  //  Build our stream url 
-  let streamUrl = config.stream_url;
-  streamUrl = streamUrl.replace('$stream_key', config.stream_key);
 
   // Create our command
   let ffmpegCommand = ffmpeg();
@@ -118,6 +114,9 @@ const stream = async (path, config) => {
     );
 
   // Create our overlay
+  // Note: Positions and sizes are done relative to the input video width and height
+  // Therefore position x/y is a percentage, like CSS style.
+  // Font size is simply just a fraction of the width
   let overlayFilterString = '';
   if (config[typeKey].overlay && config[typeKey].overlay.enabled) {
     
@@ -240,18 +239,27 @@ const stream = async (path, config) => {
     });
 
   // Finally, save the stream to our stream URL
-  //ffmpegCommand.save(streamUrl);
-  ffmpegCommand.save('test.flv');
+  ffmpegCommand.save(outputLocation);
 }
 
 // Finally our exports
-module.exports = (path, config) => {
+module.exports = (path, config, outputLocation) => {
 
   console.log('\n');
   console.log(chalk.green('Starting Stream!'));
   console.log('\n');
 
-  stream(path, config);
+  //  Build our stream url 
+  if (!outputLocation) {
+    let streamUrl = config.stream_url;
+    streamUrl = streamUrl.replace('$stream_key', config.stream_key);
+    outputLocation = streamUrl;
+  }
+
+  console.log(`${chalk.green('Streaming to:')} ${outputLocation}`);
+  console.log('\n');
+
+  stream(path, config, outputLocation);
 
   // TODO: Make a better wait / restart
   // TODO: Make the next gif in the background
