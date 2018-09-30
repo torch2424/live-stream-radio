@@ -5,7 +5,7 @@ const fs = require('fs-extra');
 module.exports = projectName => {
   // Add a default project name if none
   if (!projectName) {
-    projectName = 'pi-stream-radio';
+    projectName = 'live-stream-radio';
   }
 
   // Inform user of project creation

@@ -3,7 +3,7 @@
 
 # Generator testing
 **/myStream/**/*
-**/pi-stream-radio/**/*
+**/live-stream-radio/**/*
 
 # Stream Testing to a file
 **/*.flv

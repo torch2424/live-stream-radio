@@ -4,7 +4,7 @@
   "description": "24/7 music live streaming service",
   "main": "index.js",
   "bin": {
-    "pi-stream-radio": "./src/index.js"
+    "live-stream-radio": "./src/index.js"
   },
   "scripts": {
     "precommit": "pretty-quick --staged",
