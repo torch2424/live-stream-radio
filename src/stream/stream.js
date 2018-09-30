@@ -60,12 +60,16 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     // windows is not supported by termImg
     // process.platform always will be win32 on windows, no matter if it is 32bit or 64bit
     if (process.platform != 'win32') {
-      const termImg = require('term-img');
-      termImg(metadata.common.picture[0].data, {
-        width: '300px',
-        height: 'auto'
-      });
-      console.log('\n');
+      try {
+        const termImg = require('term-img');
+        termImg(metadata.common.picture[0].data, {
+          width: '300px',
+          height: 'auto'
+        });
+        console.log('\n');
+      } catch (e) {
+        // Do nothing, we dont need the album art
+      }
     }
   }
 
