@@ -25,6 +25,12 @@ if (argv._.length > 0) {
   path = `${process.cwd()}/${argv._[0]}`;
 }
 
+// Add a trailing slash to out path if there isn't one
+const lastPathChar = path.substr(-1);
+if (lastPathChar != '/') {
+  path += '/';
+}
+
 // Find if we have a config in the path
 const configPath = `${path}/config.json`;
 let config = undefined;
