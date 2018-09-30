@@ -1,6 +1,7 @@
 {
   "stream_url": "rtmp://a.rtmp.youtube.com/live2/$stream_key",
   "stream_key": "",
+  "ffmpeg_path": "",
   "audio_bit_rate": "128k",
   "audio_sample_rate": "44100",
   "video_height": "480",

@@ -83,6 +83,11 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   // Create a new command
   ffmpegCommand = ffmpeg();
 
+  // Set our ffmpeg path if we have one
+  if (config.ffmpeg_path) {
+    ffmpegCommand = ffmpegCommand.setFfmpegPath(config.ffmpeg_path);
+  }
+
   // Add our audio as input
   ffmpegCommand = ffmpegCommand
     .input(randomSong)

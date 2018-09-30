@@ -8,9 +8,19 @@ const getOptimizedGif = async (gifPath, config, errorCallback) => {
   const tempPalPath = '/tmp/live-stream-radio-gif-pal.png';
   const palAppliedGif = '/tmp/live-stream-radio-gif-with-pal.gif';
 
+  const getFfmpeg = input => {
+    const ffmpegCommand = ffmpeg();
+    // Set our ffmpeg path if we have one
+    if (config.ffmpeg_path) {
+      ffmpegCommand = ffmpegCommand.setFfmpegPath(config.ffmpeg_path);
+    }
+
+    return ffmpegCommand.input(input);
+  };
+
   // Create the gif pallete using ffmpeg
   await new Promise((resolve, reject) => {
-    ffmpeg(gifPath)
+    getFfmpeg(gifPath)
       // Equivalent to -vf
       // This sets the fps, and tells to output a gif palette
       .videoFilter(`palettegen=stats_mode=diff`)
@@ -27,7 +37,7 @@ const getOptimizedGif = async (gifPath, config, errorCallback) => {
   // Must use .input() to ensure inputs are in the right order
   // https://superuser.com/questions/1199833/ffmpeg-palettegen-spits-out-a-palette-paletteuse-cant-use
   await new Promise((resolve, reject) => {
-    ffmpeg(gifPath)
+    getFfmpeg(gifPath)
       .input(tempPalPath)
       // Equivalient to -lavi or -filter_complex
       .complexFilter(
