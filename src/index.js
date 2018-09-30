@@ -9,8 +9,6 @@ const argv = require('minimist')(process.argv.slice(2), {
   }
 });
 
-console.log(argv);
-
 // Check if we would like to generate a project
 if (argv.generate !== undefined) {
   // Call the generate from generator
