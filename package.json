@@ -21,6 +21,7 @@
   "homepage": "https://github.com/torch2424/piStreamRadio#readme",
   "dependencies": {
     "chalk": "^2.4.1",
+    "chalkline": "0.0.5",
     "cli-progress": "^2.1.0",
     "find": "^0.2.9",
     "fluent-ffmpeg": "^2.1.2",

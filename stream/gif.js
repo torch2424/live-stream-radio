@@ -1,11 +1,10 @@
 const ffmpeg = require('fluent-ffmpeg');
-const ffmpegError = require('./error.js').ffmpegError
 const imagemin = require('imagemin');
 const imageminGifsicle = require('imagemin-gifsicle');
 
 // Async function to optimize a gif using ffmpeg
 // http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
-const getOptimizedGif = async (gifPath, config) => {
+const getOptimizedGif = async (gifPath, config, errorCallback) => {
 
   const tempPalPath = '/tmp/live-stream-radio-gif-pal.png';
   const palAppliedGif = '/tmp/live-stream-radio-gif-with-pal.gif';
@@ -21,7 +20,7 @@ const getOptimizedGif = async (gifPath, config) => {
         `-y`
       ])
       .on('end', resolve)
-      .on('error', ffmpegError(reject))
+      .on('error', errorCallback)
       .save(tempPalPath);
   });
 
@@ -50,7 +49,7 @@ const getOptimizedGif = async (gifPath, config) => {
         `-y`
       ])
       .on('end', resolve)
-      .on('error', ffmpegError(reject))
+      .on('error', errorCallback)
       .save(palAppliedGif);
   });
 

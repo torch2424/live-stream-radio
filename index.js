@@ -39,4 +39,15 @@ try {
 }
 
 // Call stream.js
-require('./stream/stream.js')(path, config, argv.output);
+const stream = require('./stream/index.js');
+stream.start(path, config, argv.output);
+
+// TODO: Make a better wait / restart
+// TODO: Make the next gif in the background
+const wait = () => {
+  setTimeout(() => {
+    wait();
+  }, 500);
+};
+wait();
+

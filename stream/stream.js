@@ -1,30 +1,13 @@
 // Get our ffmpeg
+const getRandomFileWithExtensionFromPath = require('./randomFile.js');
+
 const ffmpeg = require('fluent-ffmpeg');
-const ffmpegError = require('./error.js').ffmpegError;
 const chalk = require('chalk');
-const find = require('find');
 const musicMetadata = require('music-metadata');
 const progress = require('cli-progress');
 
-// Async Function to get a random file from a path
-const getRandomFileWithExtensionFromPath = async (extensions, path) => {
-
-  // Find al of our files with the extensions
-  let allFiles = [];
-  extensions.forEach(extension => {
-    allFiles = [
-      ...allFiles,
-      ...find.fileSync(extension, path)
-    ];
-  });
-
-  // Return a random file
-  return allFiles[Math.floor(Math.random() * allFiles.length)];
-}
-
-
-// Recursive function to stream repeatedly
-const stream = async (path, config, outputLocation) => {
+// Function to start a stream
+module.exports = async (path, config, outputLocation, endCallback, errorCallback) => {
 
   // Find what type of stream we want, radio, interlude, etc...
   let typeKey = "radio";
@@ -67,7 +50,7 @@ const stream = async (path, config, outputLocation) => {
   let optimizedVideo;
   if (randomVideo.endsWith('.gif')) {
     // Optimize gif
-    optimizedVideo = await require('./gif.js').getOptimizedGif(randomVideo, config);
+    optimizedVideo = await require('./gif.js').getOptimizedGif(randomVideo, config, errorCallback);
   } else {
     optimizedVideo = randomVideo;
   }
@@ -76,9 +59,15 @@ const stream = async (path, config, outputLocation) => {
   const metadata = await musicMetadata.parseFile(randomSong, {duration: true});
 
   // Log data about the song
-  console.log(chalk.magenta(`Artist: ${metadata.common.artist}`));
-  console.log(chalk.magenta(`Album: ${metadata.common.album}`));
-  console.log(chalk.magenta(`Song: ${metadata.common.title}`));
+  if (metadata.common.artist) {
+    console.log(chalk.yellow(`Artist: ${metadata.common.artist}`));
+  }
+  if (metadata.common.album) {
+    console.log(chalk.yellow(`Album: ${metadata.common.album}`));
+  }
+  if (metadata.common.title) {
+    console.log(chalk.yellow(`Song: ${metadata.common.title}`));
+  }
   console.log('\n');
   // Log a album cover if available
   if (metadata.common.picture && metadata.common.picture.length > 0) {
@@ -103,8 +92,8 @@ const stream = async (path, config, outputLocation) => {
   }, progress.Presets.shades_classic);
   progressBar.start(songTotalDuration, 0);
 
-  // Create our command
-  let ffmpegCommand = ffmpeg();
+  // Create a new command
+  ffmpegCommand = ffmpeg();
 
   // Add our audio as input
   ffmpegCommand = ffmpegCommand.input(randomSong)
@@ -225,12 +214,19 @@ const stream = async (path, config, outputLocation) => {
 
   // Set our event handlers
   ffpmepgCommand = ffmpegCommand
-    // TODO: Restart stream
     .on('end', () => {
-      console.log('DONE!');
       progressBar.stop();
+      if (endCallback) {
+        endCallback();
+      }
     })
-    .on('error', ffmpegError(progressBar.stop))
+    .on('error', (err, stdout, stderr) => {
+      progressBar.stop();
+
+      if (errorCallback) {
+        errorCallback(err, stdout, stderr);
+      }
+    })
     .on('progress', (progress) => {
       // Get our timestamp
       const timestamp = progress.timemark.substring(0, 8)
@@ -243,33 +239,6 @@ const stream = async (path, config, outputLocation) => {
 
   // Finally, save the stream to our stream URL
   ffmpegCommand.save(outputLocation);
-}
 
-// Finally our exports
-module.exports = (path, config, outputLocation) => {
-
-  console.log('\n');
-  console.log(chalk.green('Starting Stream!'));
-  console.log('\n');
-
-  //  Build our stream url 
-  if (!outputLocation) {
-    let streamUrl = config.stream_url;
-    streamUrl = streamUrl.replace('$stream_key', config.stream_key);
-    outputLocation = streamUrl;
-  }
-
-  console.log(`${chalk.green('Streaming to:')} ${outputLocation}`);
-  console.log('\n');
-
-  stream(path, config, outputLocation);
-
-  // TODO: Make a better wait / restart
-  // TODO: Make the next gif in the background
-  const wait = () => {
-    setTimeout(() => {
-      wait();
-    }, 500);
-  };
-  wait();
+  return ffmpegCommand;
 }
