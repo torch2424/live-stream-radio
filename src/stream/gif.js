@@ -9,7 +9,7 @@ const getOptimizedGif = async (gifPath, config, errorCallback) => {
   const palAppliedGif = '/tmp/live-stream-radio-gif-with-pal.gif';
 
   const getFfmpeg = input => {
-    const ffmpegCommand = ffmpeg();
+    let ffmpegCommand = ffmpeg();
     // Set our ffmpeg path if we have one
     if (config.ffmpeg_path) {
       ffmpegCommand = ffmpegCommand.setFfmpegPath(config.ffmpeg_path);
