@@ -55,7 +55,9 @@
       },
       "image": {
         "enabled": true,
-        "image_path": "./live-stream-radio-overlay-image.png"
+        "image_path": "./live-stream-radio-overlay-image.png",
+        "position_x": 0,
+        "position_y": 0
       }
     }
   },
@@ -78,7 +80,9 @@
       },
       "image": {
         "enabled": true,
-        "image_path": "./live-stream-radio-overlay-image.png"
+        "image_path": "./live-stream-radio-overlay-image.png",
+        "position_x": 0,
+        "position_y": 0
       }
     }
   }

@@ -152,10 +152,10 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   // Note: Positions and sizes are done relative to the input video width and height
   // Therefore position x/y is a percentage, like CSS style.
   // Font size is simply just a fraction of the width
-  let overlayFilterString = '';
+  let overlayTextFilterString = '';
   if (config[typeKey].overlay && config[typeKey].overlay.enabled) {
     const overlayConfigObject = config[typeKey].overlay;
-    const overlayItems = [];
+    const overlayTextItems = [];
 
     const fontPath = `${path}${overlayConfigObject.font_path}`;
 
@@ -175,7 +175,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
       } else {
         itemString += `:x=(w * ${itemObject.position_x / 100})`;
       }
-      overlayItems.push(itemString);
+      overlayTextItems.push(itemString);
     }
 
     // Check if we have an artist option
@@ -190,7 +190,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
         `:fontcolor=${itemObject.font_color}` +
         `:y=(h * ${itemObject.position_y / 100})` +
         `:x=(w * ${itemObject.position_x / 100})`;
-      overlayItems.push(itemString);
+      overlayTextItems.push(itemString);
     }
 
     // Check if we have an album option
@@ -205,7 +205,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
         `:fontcolor=${itemObject.font_color}` +
         `:y=(h * ${itemObject.position_y / 100})` +
         `:x=(w * ${itemObject.position_x / 100})`;
-      overlayItems.push(itemString);
+      overlayTextItems.push(itemString);
     }
 
     // Check if we have an artist option
@@ -220,17 +220,20 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
         `:fontcolor=${itemObject.font_color}` +
         `:y=(h * ${itemObject.position_y / 100})` +
         `:x=(w * ${itemObject.position_x / 100})`;
-      overlayItems.push(itemString);
+      overlayTextItems.push(itemString);
     }
 
     // Add our video filter with all of our overlays
-    overlayItems.forEach((item, index) => {
-      overlayFilterString += `${item}`;
-      if (index < overlayItems.length - 1) {
-        overlayFilterString += ',';
+    overlayTextItems.forEach((item, index) => {
+      overlayTextFilterString += `${item}`;
+      if (index < overlayTextItems.length - 1) {
+        overlayTextFilterString += ',';
       }
     });
   }
+
+  // Start creating our complex filter for overlaying things
+  let complexFilterString = '';
 
   // Add our video as a movie filter, and our overlay
   // This is the only thing I could find to loop mp4
@@ -239,7 +242,38 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   // https://stackoverflow.com/questions/47885877/adding-loop-video-to-sound-ffmpeg
   // https://ffmpeg.org/ffmpeg-filters.html#movie-1
   // https://trac.ffmpeg.org/wiki/FilteringGuide#FiltergraphChainFilterrelationship
-  ffmpegCommand = ffmpegCommand.complexFilter(`movie=${optimizedVideo}:loop=0,setpts=N/FRAME_RATE/TB,` + `${overlayFilterString}`);
+  complexFilterString += `movie=${optimizedVideo}:loop=0,setpts=N/FRAME_RATE/TB`;
+
+  // Add our overlayText
+  if (overlayTextFilterString) {
+    complexFilterString += `,${overlayTextFilterString}`;
+  }
+
+  // Add our overlay image
+  // This works by getting the initial filter chain applied to the first
+  // input, aka [0:v], and giving it a label, [videowithtext].
+  // Then using the overlay filter to combine the first input, with the video of
+  // a second input, aka [1:v], which in this case is our image.
+  // Lastly using scale2ref filter to ensure the image size is consistent on all
+  // videos
+  if (
+    config[typeKey].overlay &&
+    config[typeKey].overlay.enabled &&
+    config[typeKey].overlay.image &&
+    config[typeKey].overlay.image.enabled
+  ) {
+    // Add our image input
+    const imageObject = config[typeKey].overlay.image;
+    const imagePath = `${path}${imageObject.image_path}`;
+    ffmpegCommand = ffmpegCommand.input(imagePath);
+    complexFilterString +=
+      ` [videowithtext];` +
+      `[videowithtext][1:v] scale2ref [scaledvideowithtext][scaledoverlayimage];` +
+      `[scaledvideowithtext][scaledoverlayimage] overlay=x=${imageObject.position_x}:y=${imageObject.position_y}`;
+  }
+
+  // Apply our complext filter
+  ffmpegCommand = ffmpegCommand.complexFilter(complexFilterString);
 
   // Add our output options for the stream
   ffmpegCommand = ffmpegCommand.outputOptions([

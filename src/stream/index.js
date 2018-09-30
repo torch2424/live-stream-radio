@@ -24,6 +24,7 @@ const errorCallback = (err, stdout, stderr) => {
   if (shouldListenForFfmpegErrors) {
     console.log('\n');
     chalkLine.red();
+    console.log('\n');
     console.log(chalk.red('ffmpeg stderr:'), '\n\n', stderr);
     console.log('\n');
     console.log(`${chalk.red('ffmpeg encountered an error.')} 😨`);
