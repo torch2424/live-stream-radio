@@ -5,8 +5,8 @@ const imageminGifsicle = require('imagemin-gifsicle');
 // Async function to optimize a gif using ffmpeg
 // http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
 const getOptimizedGif = async (gifPath, config, errorCallback) => {
-  const tempPalPath = '/tmp/live-stream-radio-gif-pal.png';
-  const palAppliedGif = '/tmp/live-stream-radio-gif-with-pal.gif';
+  const tempPalPath = `/tmp/live-stream-radio-gif-pal-${Date.now().toString()}.png`;
+  const palAppliedGif = `/tmp/live-stream-radio-gif-with-pal-${Date.now().toString()}.gif`;
 
   const getFfmpeg = input => {
     let ffmpegCommand = ffmpeg();

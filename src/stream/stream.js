@@ -6,31 +6,26 @@ const chalk = require('chalk');
 const musicMetadata = require('music-metadata');
 const progress = require('cli-progress');
 
-// Function to start a stream
-module.exports = async (path, config, outputLocation, endCallback, errorCallback) => {
-  // Find what type of stream we want, radio, interlude, etc...
+// Allow pre rendering the next video if needed
+let nextVideo = undefined;
+let nextTypeKey = undefined;
+
+const getTypeKey = config => {
   let typeKey = 'radio';
   const randomNumber = Math.random();
   const frequency = parseFloat(config.interlude.frequency, 10);
   if (randomNumber <= frequency) {
-    console.log(chalk.magenta(`Playing an interlude...`));
-    console.log('\n');
     typeKey = 'interlude';
   }
 
-  // Find a random song from the config directory
-  const randomSong = await getRandomFileWithExtensionFromPath([/\.mp3$/], `${path}${config[typeKey].audio_directory}`);
+  return typeKey;
+};
 
-  console.log(chalk.blue(`Playing the audio:`));
-  console.log(randomSong);
-  console.log('\n');
-
-  // Get the stream video
-  let randomVideo = await getRandomFileWithExtensionFromPath([/\.mp4$/, /\.webm$/, /\.gif$/], `${path}${config[typeKey].video_directory}`);
-
-  console.log(chalk.blue(`Playing the video:`));
-  console.log(randomVideo);
-  console.log('\n');
+const getVideo = async (path, config, typeKey, errorCallback) => {
+  const randomVideo = await getRandomFileWithExtensionFromPath(
+    [/\.mp4$/, /\.webm$/, /\.gif$/],
+    `${path}${config[typeKey].video_directory}`
+  );
 
   // Do some optimizations to our video as we need
   let optimizedVideo;
@@ -40,6 +35,58 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   } else {
     optimizedVideo = randomVideo;
   }
+
+  return {
+    randomVideo: randomVideo,
+    optimizedVideo: optimizedVideo
+  };
+};
+
+// Function to start a stream
+module.exports = async (path, config, outputLocation, endCallback, errorCallback) => {
+  // Find what type of stream we want, radio, interlude, etc...
+  let typeKey = 'radio';
+  if (nextTypeKey) {
+    typeKey = nextTypeKey;
+    nextTypeKey = undefined;
+  } else {
+    typeKey = getTypeKey(config);
+  }
+
+  if (typeKey !== 'radio') {
+    console.log(chalk.magenta(`Playing an ${typeKey}...`));
+    console.log('\n');
+  }
+
+  console.log(chalk.magenta(`Finding audio...`));
+  console.log('\n');
+
+  // Find a random song from the config directory
+  const randomSong = await getRandomFileWithExtensionFromPath([/\.mp3$/], `${path}${config[typeKey].audio_directory}`);
+
+  console.log(chalk.blue(`Playing the audio:`));
+  console.log(randomSong);
+  console.log('\n');
+
+  console.log(chalk.magenta(`Finding/Optimizing video...`));
+  console.log('\n');
+
+  // Get the stream video
+  let randomizedVideo;
+  let optimizedVideo;
+  if (nextVideo) {
+    randomVideo = nextVideo.randomVideo;
+    optimizedVideo = nextVideo.optimizedVideo;
+    nextVideo = undefined;
+  } else {
+    const videoObject = await getVideo(path, config, typeKey, errorCallback);
+    randomVideo = videoObject.randomVideo;
+    optimizedVideo = videoObject.optimizedVideo;
+  }
+
+  console.log(chalk.blue(`Playing the video:`));
+  console.log(randomVideo);
+  console.log('\n');
 
   // Get the information about the song
   const metadata = await musicMetadata.parseFile(randomSong, { duration: true });
@@ -247,6 +294,13 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
 
   // Finally, save the stream to our stream URL
   ffmpegCommand.save(outputLocation);
+
+  // Start some pre-rendering
+  const preRenderTask = async () => {
+    nextTypeKey = getTypeKey(config);
+    nextVideo = await getVideo(path, config, nextTypeKey, errorCallback);
+  };
+  preRenderTask();
 
   return ffmpegCommand;
 };
