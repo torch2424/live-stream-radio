@@ -26,13 +26,20 @@ const getRandomFileWithExtensionFromPath = async (extensions, path) => {
 
 // Recursive function to stream repeatedly
 const stream = async (path, config) => {
+
+  // Find what type of stream we want, radio, interlude, etc...
+  const typeKey = "radio";
+  const randomNumber = Math.random();
+  if (randomNumber <= config.interlude.frequency) {
+    const typeKey = "interlude";
+  }
   
-  // First find a random song from the config directory
+  // Find a random song from the config directory
   const randomSong = await getRandomFileWithExtensionFromPath(
     [
       /\.mp3$/
     ],
-    `${path}${config.radio.audio_directory}`
+    `${path}${config[typeKey].audio_directory}`
   );
   
 
@@ -44,10 +51,10 @@ const stream = async (path, config) => {
   let randomVideo = await getRandomFileWithExtensionFromPath(
     [
       /\.mp4$/,
-      // /\.webm$/,
-      // /\.gif$/,
+      /\.webm$/,
+      /\.gif$/,
     ],
-    `${path}${config.radio.video_directory}`
+    `${path}${config[typeKey].video_directory}`
   );
 
   console.log(chalk.blue(`Playing the video:`));
@@ -93,29 +100,8 @@ const stream = async (path, config) => {
   let streamUrl = config.stream_url;
   streamUrl = streamUrl.replace('$stream_key', config.stream_key);
 
-  // Create our command with the video as input
-  let ffmpegCommand = ffmpeg(optimizedVideo);
-
-  // Add input options depending on video type
-  if (optimizedVideo.endsWith('.gif')) {
-    // Allow gifs to loop infitely
-    ffmpegCommand = ffmpegCommand
-      .inputOptions(
-      `-ignore_loop 0`
-      );
-  } else {
-    // Set video to render at normal speed   
-    ffmpegCommand = ffmpegCommand.loop()
-      .inputOptions(
-        `-re`
-      )
-      /*
-      // Loop the video
-      // https://video.stackexchange.com/questions/12905/repeat-loop-input-video-with-ffmpeg
-      .complexFilter(
-        `loop=-1`
-      );*/
-  }
+  // Create our command
+  let ffmpegCommand = ffmpeg();
 
   // Add our audio as input
   ffmpegCommand = ffmpegCommand.input(randomSong)
@@ -126,6 +112,98 @@ const stream = async (path, config) => {
     .inputOptions(
       `-re`
     );
+
+  // Create our overlay
+  let overlayFilterString = '';
+  if (config[typeKey].overlay && config[typeKey].overlay.enabled) {
+    
+    const overlayConfigObject = config[typeKey].overlay;
+    const overlayItems = [];
+
+    const fontPath = `${path}${overlayConfigObject.font}`;
+
+    // Check if we have a title option
+    if(overlayConfigObject.title && overlayConfigObject.title.enabled) {
+      const itemObject = overlayConfigObject.title;
+      let itemString = `drawtext=text='${itemObject.text}'` + 
+        `:fontfile=${fontPath}` + 
+        `:fontsize=(w * ${itemObject.font_size / 300})` +
+        `:bordercolor=${itemObject.font_border}` + 
+        `:borderw=1` +
+        `:fontcolor=${itemObject.font_color}` +
+        `:y=(h * ${itemObject.position_y / 100})`;
+      if (itemObject.enable_scroll) {
+        itemString += `:x=w-mod(max(t\\, 0) * (w + tw) / ${itemObject.font_scroll_speed}\\, (w + tw))`;
+      } else {
+        itemString += `:x=(w * ${itemObject.position_x / 100})`;
+      }
+      overlayItems.push(itemString);
+    }
+
+    // Check if we have an artist option
+    if(overlayConfigObject.artist && overlayConfigObject.artist.enabled) {
+      const itemObject = overlayConfigObject.artist;
+      let itemString = `drawtext=text='${itemObject.label}\\: ${metadata.common.artist}'` + 
+        `:fontfile=${fontPath}` + 
+        `:fontsize=(w * ${itemObject.font_size / 300})` +
+        `:bordercolor=${itemObject.font_border}` + 
+        `:borderw=1` +
+        `:fontcolor=${itemObject.font_color}` +
+        `:y=(h * ${itemObject.position_y / 100})` +
+        `:x=(w * ${itemObject.position_x / 100})`
+      overlayItems.push(itemString);
+    }
+
+    // Check if we have an album option
+    if(overlayConfigObject.album && overlayConfigObject.album.enabled) {
+      const itemObject = overlayConfigObject.album;
+      let itemString = `drawtext=text='${itemObject.label}\\: ${metadata.common.album}'` + 
+        `:fontfile=${fontPath}` +         
+        `:fontsize=(w * ${itemObject.font_size / 300})` +
+        `:bordercolor=${itemObject.font_border}` + 
+        `:borderw=1` +
+        `:fontcolor=${itemObject.font_color}` +
+        `:y=(h * ${itemObject.position_y / 100})` +
+        `:x=(w * ${itemObject.position_x / 100})`
+      overlayItems.push(itemString);
+    }
+
+    // Check if we have an artist option
+    if(overlayConfigObject.song && overlayConfigObject.song.enabled) {
+      const itemObject = overlayConfigObject.song;
+      let itemString = `drawtext=text='${itemObject.label}\\: ${metadata.common.title}'` + 
+        `:fontfile=${fontPath}` + 
+        `:fontsize=(w * ${itemObject.font_size / 300})` +
+        `:bordercolor=${itemObject.font_border}` + 
+        `:borderw=1` +
+        `:fontcolor=${itemObject.font_color}` +
+        `:y=(h * ${itemObject.position_y / 100})` +
+        `:x=(w * ${itemObject.position_x / 100})`
+      overlayItems.push(itemString);
+    }
+
+    // Add our video filter with all of our overlays
+    overlayItems.forEach((item, index) => {
+      overlayFilterString += `${item}`;
+      if (index < overlayItems.length - 1) {
+        overlayFilterString += ',';
+      }
+    });
+  }
+
+  // Add our video as a movie filter, and our overlay
+  // This is the only thing I could find to loop mp4
+  // NOTE: Need to add , instead of semi colon. Comma will make the 
+  // filters applied in sucession, rather than create overlayed outputs per filter.
+  // https://stackoverflow.com/questions/47885877/adding-loop-video-to-sound-ffmpeg
+  // https://ffmpeg.org/ffmpeg-filters.html#movie-1
+  // https://trac.ffmpeg.org/wiki/FilteringGuide#FiltergraphChainFilterrelationship
+  ffmpegCommand = ffmpegCommand
+    .complexFilter(
+      `movie=${optimizedVideo}:loop=0,setpts=N/FRAME_RATE/TB,` + 
+      `${overlayFilterString}`
+    );
+
 
   // Add our output options for the stream
   ffmpegCommand = ffmpegCommand.outputOptions([
@@ -158,7 +236,8 @@ const stream = async (path, config) => {
     });
 
   // Finally, save the stream to our stream URL
-  ffmpegCommand.save(streamUrl);
+  //ffmpegCommand.save(streamUrl);
+  ffmpegCommand.save('test.flv');
 }
 
 // Finally our exports

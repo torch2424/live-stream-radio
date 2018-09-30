@@ -12,30 +12,46 @@
     "audio_directory": "./audio",
     "video_directory": "./video",
     "overlay": {
+      "enabled": true,
       "font": "./fonts/Lato-Regular.ttf",
       "title": {
-        "text": "Pi Stream Radio, 24/7 Open Source Radio",
+        "enabled": true,
+        "text": "Live Stream Radio, 24/7 Open Source Radio",
         "font_color": "#FFFFFF",
         "font_border": "#000000",
         "font_size": "10",
+        "enable_scroll": true,
         "font_scroll_speed": "20",
         "position_x": "0",
         "position_y": "5"
       },
-      "song": {
+      "artist": {
+        "enabled": true,
+        "label": "Artist",
         "font_color": "#FFFFFF",
         "font_border": "#000000",
         "font_size": "10",
-        "position_x": "5",
+        "position_x": "2",
+        "position_y": "15"
+      },
+      "album": {
+        "enabled": false,
+        "label": "Album",
+        "font_color": "#FFFFFF",
+        "font_border": "#000000",
+        "font_size": "10",
+        "position_x": "2",
         "position_y": "25"
       },
-      "artist": {
+      "song": {
+        "enabled": true,
+        "label": "Song",
         "font_color": "#FFFFFF",
         "font_border": "#000000",
         "font_size": "10",
-        "position_x": "5",
-        "position_y": "55"
-      }
+        "position_x": "2",
+        "position_y": "25"
+      }    
     }
   },
   "interlude": {
@@ -44,8 +60,10 @@
     "audio_directory": "./interludes/audio",
     "video_directory": "./interludes/video",
     "overlay": {
+      "enabled": true,
       "font": "./fonts/Lato-Regular.ttf",
       "title": {
+        "enabled": true,
         "text": "Please wait, music shall resume shortly...",
         "font_color": "#FFFFFF",
         "font_border": "#000000",

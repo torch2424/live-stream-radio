@@ -5,6 +5,9 @@
 **/myStream/**/*
 **/pi-stream-radio/**/*
 
+# Stream Testing to a file
+**/*.flv
+
 # Logs
 logs
 *.log
