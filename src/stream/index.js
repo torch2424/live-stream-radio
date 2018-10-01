@@ -12,7 +12,7 @@ let currentConfig = undefined;
 let currentOutputLocation = undefined;
 
 // Save a reference to our ffmpegCommand
-let ffmpegCommand = undefined;
+let ffmpegCommandPromise = undefined;
 
 // Killing ffmpeg throws an expected error,
 // Thus we want to make sure we don't call our error callback if so
@@ -39,57 +39,88 @@ const errorCallback = (err, stdout, stderr) => {
 const endCallback = () => {
   // Simply start a new stream
   console.log('\n');
-  moduleExports.start(currentPath, currentConfig, currentOutputLocation);
+  moduleExports.start();
 };
 
 // Create our exports
 const moduleExports = {
-  start: (path, config, outputLocation) => {
+  start: async (path, config, outputLocation) => {
     console.log('\n');
     chalkLine.white();
     console.log('\n');
     console.log(`${chalk.green('Starting stream!')} 🛠️`);
     console.log('\n');
 
+    // Save our passed params for later use
+    if (path) {
+      currentPath = path;
+    }
+    if (config) {
+      currentConfig = config;
+    }
+    if (outputLocation) {
+      currentOutputLocation = outputLocation;
+    }
+
     //  Build our stream url
-    if (!outputLocation) {
-      if (!config.stream_url || !config.stream_key) {
+    if (!currentOutputLocation) {
+      if (!currentConfig.stream_url || !currentConfig.stream_key) {
         console.log(`${chalk.red('Missing a stream_url or a stream_key in your config.json !')} 😟`);
         console.log(chalk.red('Exiting...'));
         console.log('\n');
         process.exit(1);
       }
 
-      let streamUrl = config.stream_url;
-      streamUrl = streamUrl.replace('$stream_key', config.stream_key);
-      outputLocation = streamUrl;
+      let streamUrl = currentConfig.stream_url;
+      streamUrl = streamUrl.replace('$stream_key', currentConfig.stream_key);
+      currentOutputLocation = streamUrl;
     }
 
-    console.log(`${chalk.magenta('Streaming to:')} ${outputLocation}`);
+    console.log(`${chalk.magenta('Streaming to:')} ${currentOutputLocation}`);
     console.log('\n');
 
     // Listen for errors again
     shouldListenForFfmpegErrors = true;
 
     // Start the stream again
-    stream(path, config, outputLocation, endCallback, errorCallback);
-
-    // Save our passed params for later use
-    currentPath = path;
-    currentConfig = config;
-    currentOutputLocation = outputLocation;
+    ffmpegCommandPromise = stream(currentPath, currentConfig, currentOutputLocation, endCallback, errorCallback);
+    await ffmpegCommandPromise;
   },
-  stop: () => {
+  stop: async () => {
     console.log('\n');
-    console.log(`${chalk.red('Stopping stream...')} ✋`);
+    console.log(`${chalk.magenta('Stopping stream...')} ✋`);
     console.log('\n');
 
     shouldListenForFfmpegErrors = false;
-    ffmpegCommand.kill();
-    ffmpegCommand = undefined;
+    if (ffmpegCommandPromise) {
+      // Get our command, its pid, and kill it.
+      const ffmpegCommand = await ffmpegCommandPromise;
+      const ffmpegCommandPid = ffmpegCommand.ffmpegProc.pid;
+      ffmpegCommand.kill();
+      ffmpegCommandPromise = undefined;
 
+      // Wait until the pid is no longer running
+      const isRunning = require('is-running');
+      await new Promise(resolve => {
+        const waitForPidToBeKilled = () => {
+          if (isRunning(ffmpegCommandPid)) {
+            setTimeout(() => {
+              waitForPidToBeKilled();
+            }, 250);
+          } else {
+            resolve();
+          }
+        };
+        waitForPidToBeKilled();
+      });
+    }
+
+    console.log('\n');
     console.log(`${chalk.red('Stream stopped!')} 😃`);
     console.log('\n');
+  },
+  isRunning: () => {
+    return shouldListenForFfmpegErrors;
   }
 };
 

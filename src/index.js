@@ -42,15 +42,16 @@ try {
   process.exit(1);
 }
 
-// Call stream.js
-const stream = require('./stream/index.js');
-stream.start(path, config, argv.output);
+// Async task to start the radio
+const startRadioTask = async () => {
+  // Define our stream
+  let stream = require('./stream/index.js');
 
-// TODO: Make a better wait / restart
-// TODO: Make the next gif in the background
-const wait = () => {
-  setTimeout(() => {
-    wait();
-  }, 500);
+  // Start the api
+  const api = require('./api/index.js');
+  await api.start(stream);
+
+  // Start our stream
+  stream.start(path, config, argv.output);
 };
-wait();
+startRadioTask();

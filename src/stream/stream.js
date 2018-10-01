@@ -327,7 +327,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     });
 
   // Finally, save the stream to our stream URL
-  ffmpegCommand.save(outputLocation);
+  ffmpegCommand = ffmpegCommand.save(outputLocation);
 
   // Start some pre-rendering
   const preRenderTask = async () => {
