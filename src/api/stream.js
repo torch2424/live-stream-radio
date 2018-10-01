@@ -12,6 +12,14 @@ const preCheck = (stream, config, fastify, request, reply) => {
 
 // File to return all of our /stream/* routes
 module.exports = (stream, config, fastify) => {
+  // Get stream status
+  fastify.get('/stream', async (request, reply) => {
+    reply.type('application/json').code(200);
+    return {
+      isRunning: stream.isRunning()
+    };
+  });
+
   // Start the stream
   fastify.post('/stream/start', async (request, reply) => {
     preCheckResponse = preCheck(stream, config, fastify, request, reply);
