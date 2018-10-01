@@ -3,6 +3,7 @@ const fastify = require('fastify')({});
 
 // Get our routes
 const addStreamRoutes = require('./stream.js');
+const addHistoryRoutes = require('./history.js');
 
 let currentStream;
 let currentConfig;
@@ -22,6 +23,7 @@ module.exports = {
 
     // Implement our other routes
     addStreamRoutes(currentStream, currentConfig, fastify);
+    addHistoryRoutes(currentStream, currentConfig, fastify);
 
     await new Promise((resolve, reject) => {
       fastify.listen(3000, (err, address) => {

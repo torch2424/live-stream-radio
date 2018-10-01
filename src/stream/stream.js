@@ -1,10 +1,12 @@
 // Get our ffmpeg
-const getRandomFileWithExtensionFromPath = require('./randomFile.js');
-
 const ffmpeg = require('fluent-ffmpeg');
 const chalk = require('chalk');
 const musicMetadata = require('music-metadata');
 const progress = require('cli-progress');
+
+// Get our Services and helper fucntions
+const getRandomFileWithExtensionFromPath = require('./randomFile.js');
+const historyService = require('../history.js');
 
 // Allow pre rendering the next video if needed
 let nextVideo = undefined;
@@ -72,7 +74,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   console.log('\n');
 
   // Get the stream video
-  let randomizedVideo;
+  let randomVideo;
   let optimizedVideo;
   if (nextVideo) {
     randomVideo = nextVideo.randomVideo;
@@ -335,6 +337,19 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     nextVideo = await getVideo(path, config, nextTypeKey, errorCallback);
   };
   preRenderTask();
+
+  // Add this item to our history
+  const historyMetadata = metadata.common;
+  delete historyMetadata.picture;
+  historyService.addItemToHistory({
+    audio: {
+      path: randomSong,
+      metadata: historyMetadata
+    },
+    video: {
+      path: randomVideo
+    }
+  });
 
   return ffmpegCommand;
 };
