@@ -9,6 +9,15 @@
   "video_bit_rate": "500k",
   "video_fps": "24",
   "max_gif_size": "720",
+  "api": {
+    "number_of_history_items": 100,
+    "users": [
+      {
+        "username": "admin",
+        "passowrd": "password"
+      }
+    ]
+  },
   "radio": {
     "audio_directory": "./audio",
     "video_directory": "./video",

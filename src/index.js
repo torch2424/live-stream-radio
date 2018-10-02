@@ -51,6 +51,10 @@ const startRadioTask = async () => {
   const api = require('./api/index.js');
   await api.start(path, config, stream);
 
+  // Set our number of history items
+  const historyService = require('./history.service');
+  historyService.setNumberOfHistoryItems(config.api.number_of_history_items);
+
   // Start our stream
   stream.start(path, config, argv.output);
 };
