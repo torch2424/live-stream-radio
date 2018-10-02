@@ -49,7 +49,7 @@ const startRadioTask = async () => {
 
   // Start the api
   const api = require('./api/index.js');
-  await api.start(stream);
+  await api.start(path, config, stream);
 
   // Start our stream
   stream.start(path, config, argv.output);

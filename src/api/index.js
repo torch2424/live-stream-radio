@@ -4,13 +4,14 @@ const fastify = require('fastify')({});
 // Get our routes
 const addStreamRoutes = require('./stream.js');
 const addHistoryRoutes = require('./history.js');
+const addRadioRoutes = require('./radio.js');
 
 let currentStream;
 let currentConfig;
 
 // Export our
 module.exports = {
-  start: async (stream, config) => {
+  start: async (path, config, stream) => {
     // save a reference to our stream and config
     currentStream = stream;
     currentConfig = config;
@@ -22,8 +23,9 @@ module.exports = {
     });
 
     // Implement our other routes
-    addStreamRoutes(currentStream, currentConfig, fastify);
-    addHistoryRoutes(currentStream, currentConfig, fastify);
+    addStreamRoutes(fastify, path, currentStream, currentConfig);
+    addHistoryRoutes(fastify, path, currentStream, currentConfig);
+    addRadioRoutes(fastify, path, currentStream, currentConfig);
 
     await new Promise((resolve, reject) => {
       fastify.listen(3000, (err, address) => {

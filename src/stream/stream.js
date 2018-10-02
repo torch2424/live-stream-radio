@@ -5,8 +5,9 @@ const musicMetadata = require('music-metadata');
 const progress = require('cli-progress');
 
 // Get our Services and helper fucntions
-const getRandomFileWithExtensionFromPath = require('./randomFile.js');
-const historyService = require('../history.js');
+const getRandomFileWithExtensionFromPath = require('./randomFile');
+const historyService = require('../history.service');
+const supportedFileTypes = require('../supportedFileTypes');
 
 // Allow pre rendering the next video if needed
 let nextVideo = undefined;
@@ -25,7 +26,7 @@ const getTypeKey = config => {
 
 const getVideo = async (path, config, typeKey, errorCallback) => {
   const randomVideo = await getRandomFileWithExtensionFromPath(
-    [/\.mp4$/, /\.webm$/, /\.gif$/],
+    supportedFileTypes.supportedVideoTypes,
     `${path}${config[typeKey].video_directory}`
   );
 
@@ -64,7 +65,10 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   console.log('\n');
 
   // Find a random song from the config directory
-  const randomSong = await getRandomFileWithExtensionFromPath([/\.mp3$/], `${path}${config[typeKey].audio_directory}`);
+  const randomSong = await getRandomFileWithExtensionFromPath(
+    supportedFileTypes.supportedAudioTypes,
+    `${path}${config[typeKey].audio_directory}`
+  );
 
   console.log(chalk.blue(`Playing the audio:`));
   console.log(randomSong);

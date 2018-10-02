@@ -11,7 +11,7 @@ const preCheck = (stream, config, fastify, request, reply) => {
 };
 
 // File to return all of our /stream/* routes
-module.exports = (stream, config, fastify) => {
+module.exports = (fastify, path, stream, config) => {
   // Get stream status
   fastify.get('/stream', async (request, reply) => {
     reply.type('application/json').code(200);
