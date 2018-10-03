@@ -8,7 +8,7 @@ _formerly known as piStreamRadio._
 
 [![Galaxy Noise Radio Live Stream link](https://files.aaronthedev.com/$/ugbbg)](https://www.youtube.com/channel/UCLkeIxbDJ8-kH7B9qJkyxQg/live)
 
-<img src="./docsAssets/CLIUsage.png" style="width: 300px;">
+<img src="./docsAssets/CLIUsage.png" style="width: 250px;">
 
 [In-Depth Documentation](https://torch2424.github.io/live-stream-radio/) 📚
 
@@ -25,7 +25,7 @@ _formerly known as piStreamRadio._
 
 # Getting Started
 
-For a complete Installation / Usage guide, please see our [In-Depth Documentation](https://torch2424.github.io/live-stream-radio/) 📚.
+_For a complete Installation / Usage guide, please see our [In-Depth Documentation](https://torch2424.github.io/live-stream-radio/) 📚._
 
 1. Install the latest LTS version of [Node.js](https://nodejs.org/) (which includes npm). The reccomended way of doing this is with `nvm`. (Mac and Linux: [here](https://github.com/creationix/nvm), Windows: [here](https://github.com/coreybutler/nvm-windows)). Then run the following in your command line:
 
