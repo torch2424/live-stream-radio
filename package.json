@@ -1,7 +1,7 @@
 {
   "name": "live-stream-radio",
   "version": "2.0.0",
-  "description": "24/7 music live streaming service",
+  "description": "24/7 live stream video radio station CLI / API",
   "main": "index.js",
   "bin": {
     "live-stream-radio": "./src/index.js"
