@@ -14,9 +14,10 @@
     "prettier": "npm run prettier:fix",
     "lint": " echo \"Listing unlinted files, will show nothing if everything is fine.\" && npx prettier --config .prettierrc --list-different src/**/*.js",
     "lint:fix": "npx prettier --config .prettierrc --write src/**/*.js",
+    "deploy": "npx np",
     "docz:dev": "docz dev",
     "docz:build": "docz build",
-    "deploy": "npx np"
+    "docz:deploy": "npm run docz:build && gh-pages -d .docz/dist"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,7 @@
   },
   "devDependencies": {
     "docz": "^0.12.5",
+    "gh-pages": "^2.0.0",
     "husky": "^1.0.1",
     "np": "^3.0.4",
     "prettier": "1.14.3",
