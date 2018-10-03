@@ -6,7 +6,7 @@ const Src = path.resolve(__dirname, 'src');
 
 export default {
   src: './src',
-  base: 'live-stream-radio',
+  base: '/live-stream-radio/',
   title: 'live-stream-radio',
   description: 'Coming Soon!',
   ordering: 'ascending',
