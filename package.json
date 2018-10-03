@@ -1,6 +1,6 @@
 {
   "name": "live-stream-radio",
-  "version": "2.0.0",
+  "version": "1.99.98",
   "description": "24/7 music live streaming service",
   "main": "index.js",
   "bin": {
@@ -13,7 +13,8 @@
     "dev": "node src/index.js live-stream-radio --output dev.flv",
     "prettier": "npm run prettier:fix",
     "lint": " echo \"Listing unlinted files, will show nothing if everything is fine.\" && npx prettier --config .prettierrc --list-different src/**/*.js",
-    "lint:fix": "npx prettier --config .prettierrc --write src/**/*.js"
+    "lint:fix": "npx prettier --config .prettierrc --write src/**/*.js",
+    "deploy": "npx np"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
   },
   "devDependencies": {
     "husky": "^1.0.1",
+    "np": "^3.0.4",
     "prettier": "1.14.3",
     "pretty-quick": "^1.7.0"
   }
