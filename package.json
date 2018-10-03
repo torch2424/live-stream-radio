@@ -1,5 +1,5 @@
 {
-  "name": "pi-stream-radio",
+  "name": "live-stream-radio",
   "version": "2.0.0",
   "description": "24/7 music live streaming service",
   "main": "index.js",

@@ -32,6 +32,7 @@ module.exports = {
         if (err) {
           reject(err);
         }
+        console.log('\n');
         console.log(`${chalk.blue('API Started at:')} ${address}`);
         resolve();
       });
