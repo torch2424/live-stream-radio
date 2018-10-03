@@ -1,6 +1,6 @@
 {
   "name": "live-stream-radio",
-  "version": "1.99.98",
+  "version": "1.99.99",
   "description": "24/7 music live streaming service",
   "main": "index.js",
   "bin": {
