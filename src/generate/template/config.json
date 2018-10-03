@@ -10,13 +10,8 @@
   "video_fps": "24",
   "max_gif_size": "720",
   "api": {
-    "number_of_history_items": 100,
-    "users": [
-      {
-        "username": "admin",
-        "passowrd": "password"
-      }
-    ]
+    "key": "super-secret-api-key",
+    "number_of_history_items": 100
   },
   "radio": {
     "audio_directory": "./audio",

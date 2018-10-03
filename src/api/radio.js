@@ -1,11 +1,8 @@
 const find = require('find');
 const musicMetadata = require('music-metadata');
 
+const authService = require('./auth');
 const supportedFileTypes = require('../supportedFileTypes');
-
-// Cache some values
-let allAudio = undefined;
-let allAudioWithMetadata = undefined;
 
 const getAllAudio = async (path, config) => {
   // Find al of our files with the extensions
@@ -42,27 +39,20 @@ const getAllAudioWithMetadata = async (path, config) => {
 
 // File to return all of our /radio/* routes
 module.exports = (fastify, path, stream, config) => {
-  fastify.get('/radio/audio', async (request, reply) => {
-    reply.type('application/json').code(200);
+  fastify.get(
+    '/radio/audio',
+    authService.secureRouteHandler(config, async (request, reply) => {
+      let response;
+      if (request.query.include_metadata !== undefined) {
+        response = await getAllAudioWithMetadata(path, config);
+      } else {
+        response = await getAllAudio(path, config);
+      }
 
-    if (!allAudio) {
-      allAudio = await getAllAudio(path, config);
-    }
-
-    return {
-      audio: allAudio
-    };
-  });
-
-  fastify.get('/radio/audio/metadata', async (request, reply) => {
-    reply.type('application/json').code(200);
-
-    if (!allAudioWithMetadata) {
-      allAudioWithMetadata = await getAllAudioWithMetadata(path, config);
-    }
-
-    return {
-      audioWithMetadata: allAudioWithMetadata
-    };
-  });
+      reply.type('application/json').code(200);
+      return {
+        audio: response
+      };
+    })
+  );
 };
