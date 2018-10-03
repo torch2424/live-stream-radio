@@ -8,7 +8,7 @@ _formerly known as piStreamRadio._
 
 [![Galaxy Noise Radio Live Stream link](https://files.aaronthedev.com/$/ugbbg)](https://www.youtube.com/channel/UCLkeIxbDJ8-kH7B9qJkyxQg/live)
 
-[CLI Usage Screenshot](./docsAssets/CLIUsage.png) 🖼️
+[CLI Usage Screenshot](./docz/assets/CLIUsage.png) 🖼️
 
 [In-Depth Documentation](https://torch2424.github.io/live-stream-radio/) 📚
 
