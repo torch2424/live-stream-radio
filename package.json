@@ -1,0 +1,56 @@
+{
+  "name": "live-stream-radio",
+  "version": "1.99.99",
+  "description": "24/7 music live streaming service",
+  "main": "index.js",
+  "bin": {
+    "live-stream-radio": "./src/index.js"
+  },
+  "scripts": {
+    "precommit": "pretty-quick --staged",
+    "start": "node src/index.js live-stream-radio",
+    "generate": "rm -rf live-stream-radio && node src/index.js --generate",
+    "dev": "node src/index.js live-stream-radio --output dev.flv",
+    "prettier": "npm run prettier:fix",
+    "lint": " echo \"Listing unlinted files, will show nothing if everything is fine.\" && npx prettier --config .prettierrc --list-different src/**/*.js",
+    "lint:fix": "npx prettier --config .prettierrc --write src/**/*.js",
+    "deploy": "npx np",
+    "docz:dev": "docz dev",
+    "docz:build": "docz build",
+    "docz:deploy": "npm run docz:build && gh-pages -d .docz/dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/torch2424/piStreamRadio.git"
+  },
+  "author": "Aaron Turner",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/torch2424/piStreamRadio/issues"
+  },
+  "homepage": "https://github.com/torch2424/piStreamRadio#readme",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "chalkline": "0.0.5",
+    "cli-progress": "^2.1.0",
+    "fastify": "^1.12.1",
+    "find": "^0.2.9",
+    "fluent-ffmpeg": "^2.1.2",
+    "fs-extra": "^7.0.0",
+    "imagemin": "^6.0.0",
+    "imagemin-gifsicle": "^5.2.0",
+    "is-running": "^2.1.0",
+    "minimist": "^1.2.0",
+    "music-metadata": "^3.1.0",
+    "term-img": "^2.1.0"
+  },
+  "devDependencies": {
+    "docz": "^0.12.5",
+    "gh-pages": "^2.0.0",
+    "husky": "^1.0.1",
+    "np": "^3.0.4",
+    "prettier": "1.14.3",
+    "pretty-quick": "^1.7.0",
+    "remark-external-links": "^3.0.0"
+  }
+}
