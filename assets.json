@@ -1,7 +1,14 @@
 {
-  "app.js": "/live-stream-radio/static/js/app.4d436f52.js",
-  "index.js": "/live-stream-radio/static/js/index.3f166c39.js",
-  "vendors.js": "/live-stream-radio/static/js/vendors.92e36ed9.js",
-  "runtime~app.js": "/live-stream-radio/static/js/runtime~app.8f5eaeb2d85b13ea8a45.js",
+  "app.js": "/live-stream-radio/static/js/app.c7ab65f3.js",
+  "index.js": "/live-stream-radio/static/js/index.e130a882.js",
+  "api-endpoints.js": "/live-stream-radio/static/js/api-endpoints.95f012b1.js",
+  "api-frontend-development.js": "/live-stream-radio/static/js/api-frontend-development.6fb1dc46.js",
+  "generate-faq.js": "/live-stream-radio/static/js/generate-faq.091866bf.js",
+  "generate-config.js": "/live-stream-radio/static/js/generate-config.a369c148.js",
+  "generate-tips.js": "/live-stream-radio/static/js/generate-tips.05fce765.js",
+  "stream-installation.js": "/live-stream-radio/static/js/stream-installation.4f2ddb8f.js",
+  "stream-usage.js": "/live-stream-radio/static/js/stream-usage.e09464bc.js",
+  "vendors.js": "/live-stream-radio/static/js/vendors.0491d627.js",
+  "runtime~app.js": "/live-stream-radio/static/js/runtime~app.7579818e5fb065ed279c.js",
   "index.html": "/live-stream-radio/index.html"
 }
