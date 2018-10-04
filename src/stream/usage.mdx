@@ -5,30 +5,28 @@ route: /cli/usage
 ---
 
 # Usage
+## Starting the stream
+Starts the stream.
 
-```
-USAGE: live-stream-radio
+`live-stream-radio --start myStream`
 
-  --help, -h : Print this usage message.
+**Shorthand:** -s
 
-  -generate, -g [Project Name/Directory] : Generate a new stream project,
-  in a directory with the Project name.
+You can also ommit the --start flag.
 
-  --output, -o [Stream Output Location] : Override the 'stream_url/stream_key', 
-  in the config.json, and output to the location. 
-  Helpful for testing output and development.
+`live-stream-radio myStream`
 
-  --start, -s [Project Name/Directory] : Start the stream using the passed directory.
+## Help
+`live-stream-radio --help`
 
-  Default:
+**Shorthand:** -h
 
-  Will assume the --start flag if no flag is passed.
+## Generate a project
+`live-stream-radio -generate myStream`
 
-  E.g 
+**Shorthand:** -g
 
-  live-stream-radio [Project Name/Directory]
+## Override Stream Output
+Overrides the stream_url/stream_key config. Useful for testing output and development.
 
-  Will Become:
-
-  live-stream-radio --start [Project Name/Directory]
-```
+`live-stream-radio --output='rmtp://example.org'`
