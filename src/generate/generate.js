@@ -1,7 +1,6 @@
 // Require our dependencies
 const chalk = require('chalk');
 const fs = require('fs-extra');
-const path = require('path');
 
 module.exports = projectName => {
   // Add a default project name if none
@@ -19,11 +18,6 @@ module.exports = projectName => {
 
   // Fill the project diretory with the template
   createDirectoryContents(process.cwd(), `${__dirname}/template`, projectName);
-
-  // Rewrite all ./ to / in the config if running on windows
-  if (process.platform == 'win32') {
-    windowsChangePaths(process.cwd(), projectName);
-  }
 
   console.log(chalk.green(`Project created at: ${newProjectPath} !`), '🎉');
 };
@@ -56,15 +50,4 @@ function createDirectoryContents(currentPath, templatePath, newProjectPath) {
       createDirectoryContents(currentPath, `${templatePath}/${file}`, `${newProjectPath}/${file}`);
     }
   });
-}
-
-// Function to rewrite paths for windows os
-function windowsChangePaths(currentPath, newProjectPath) {
-  var configPath = path.join(currentPath, newProjectPath, 'config.json');
-  var configContent = fs.readFileSync(configPath, 'utf-8');
-
-  var rewrittenConfig = configContent.replace(/\.\//g, '/');
-
-  fs.writeFileSync(configPath, rewrittenConfig);
-  console.log('Successfully rewritten config.json');
 }
