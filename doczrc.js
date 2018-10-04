@@ -8,7 +8,7 @@ export default {
   src: './src',
   base: '/live-stream-radio/',
   title: 'live-stream-radio',
-  description: 'Coming Soon!',
+  description: '24/7 live stream video radio station CLI / API 📹 📻',
   ordering: 'ascending',
   propsParser: false,
   indexHtml: 'docz/index.html',

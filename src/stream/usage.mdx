@@ -1,0 +1,34 @@
+---
+name: Usage
+menu: CLI
+route: /cli/usage
+---
+
+# Usage
+
+```
+USAGE: live-stream-radio
+
+  --help, -h : Print this usage message.
+
+  -generate, -g [Project Name/Directory] : Generate a new stream project,
+  in a directory with the Project name.
+
+  --output, -o [Stream Output Location] : Override the 'stream_url/stream_key', 
+  in the config.json, and output to the location. 
+  Helpful for testing output and development.
+
+  --start, -s [Project Name/Directory] : Start the stream using the passed directory.
+
+  Default:
+
+  Will assume the --start flag if no flag is passed.
+
+  E.g 
+
+  live-stream-radio [Project Name/Directory]
+
+  Will Become:
+
+  live-stream-radio --start [Project Name/Directory]
+```

@@ -10,7 +10,7 @@ _formerly known as piStreamRadio._
 
 [CLI Usage Screenshot](./docz/assets/CLIUsage.png) 🖼️
 
-[In-Depth Documentation](https://torch2424.github.io/live-stream-radio/) 📚
+[Documentation](https://torch2424.github.io/live-stream-radio/) 📚
 
 `live-stream-radio` is a 24/7 live stream video radio station 📹 📻 CLI built with [Node.js](https://nodejs.org/) and powered by [FFmpeg](http://ffmpeg.org). Meaning, This will allow for live streaming a video of music, playing over a video/gif, with the music information, and other overlay items 🖼️. Music and video are chosen from their respective folders in a defined `config.json` that can be generated using the CLI. Generated projects come included with some songs and videos to get up and running quickly! Also, this project has a REST HTTP JSON Api, to allow for interfacing with your stream using a frontend 👩‍💻.
 
@@ -25,51 +25,11 @@ _formerly known as piStreamRadio._
 
 # Getting Started
 
-_For a complete Installation / Usage guide, please see our [In-Depth Documentation](https://torch2424.github.io/live-stream-radio/) 📚._
-
-1. Install the latest LTS version of [Node.js](https://nodejs.org/) (which includes npm). The reccomended way of doing this is with `nvm`. (Mac and Linux: [here](https://github.com/creationix/nvm), Windows: [here](https://github.com/coreybutler/nvm-windows)). Then run the following in your command line:
-
-```shell
-nvm install --lts
-```
-
-2. Download/Compile the latest version of [FFmpeg](http://ffmpeg.org). However, the FFmpeg build must be compiled with [libfreetype to support the `drawtext` filter](https://ffmpeg.org/ffmpeg-filters.html#drawtext). For example, on macOS with brew you can do: `brew install ffmpeg --with-freetype`. For other Operating Systems, you may find luck using [hosted static builds](https://ffmpeg.zeranoe.com/builds/), or refer to the [FFmpeg Compilation Guide](https://trac.ffmpeg.org/wiki/CompilationGuide). For Raspbian / Raspberry Pi users, feel free to use the [Raspbian Stretch FFmpeg binary](https://github.com/torch2424/piStreamRadio/tree/0b75cae32cadb21d8af07584f0cfc4b9a287c077/ffmpeg) that was previously in the repo from version `1.0.0`.
-
-3. Globally install the `live-stream-radio` module:
-
-```shell
-npm install -g live-stream-radio
-```
-
-4. Print the Usage to ensure the module was installed correctly 🐾:
-
-```shell
-live-stream-radio --help
-```
-
-5. Generate a stream project 🛠️:
-
-```shell
-live-stream-radio --generate myStream/
-```
-
-6. Edit your `config.json`, particularly, the `stream_url` and `stream_key` attributes. **Note:** The `$stream_key` is replaced in the `stream_url` value, with the value of the `stream_key`
-
-```shell
-vim myStream/config.json
-```
-
-7. Start the stream 📹:
-
-```shell
-live-stream-radio --start myStream/
-```
-
-8. Add any content in their according directories mentioned in the `config.json`! 🎉
+Please see the [Documentation](https://torch2424.github.io/live-stream-radio/) 📚 for how to get started using `live-stream-radio`. In particular, the [Instllation Guide](https://torch2424.github.io/live-stream-radio/cli/installation) and [CLI Usage](https://torch2424.github.io/live-stream-radio/cli/usage) will be the most useful to new users. 😄
 
 # API Frontends
 
-_For building your own API frontend, please see the [In-Depth Documentation](https://torch2424.github.io/live-stream-radio/) 📚 on API Endpoints._
+_For building your own API frontend, please see the [API Documentation](https://torch2424.github.io/live-stream-radio/api/endpoints) 📚 on API Endpoints._
 
 Currently, there are no supported API frontends. However, Contributions are welcome! If you make a `live-stream-radio` frontend, please open an issue and so we can add the project here 😄!
 
