@@ -15,10 +15,12 @@ let nextTypeKey = undefined;
 
 const getTypeKey = config => {
   let typeKey = 'radio';
-  const randomNumber = Math.random();
-  const frequency = parseFloat(config.interlude.frequency, 10);
-  if (randomNumber <= frequency) {
-    typeKey = 'interlude';
+  if (config.interlude.enabled) {
+    const randomNumber = Math.random();
+    const frequency = parseFloat(config.interlude.frequency, 10);
+    if (randomNumber <= frequency) {
+      typeKey = 'interlude';
+    }
   }
 
   return typeKey;
