@@ -28,7 +28,7 @@ module.exports = {
     addRadioRoutes(fastify, path, currentStream, currentConfig);
 
     await new Promise((resolve, reject) => {
-      fastify.listen(3000, (err, address) => {
+      fastify.listen(currentConfig.api.port, currentConfig.api.host, (err, address) => {
         if (err) {
           reject(err);
         }

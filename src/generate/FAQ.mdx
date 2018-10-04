@@ -1,0 +1,35 @@
+---
+name: FAQ
+menu: Project Management
+route: /projectmanagement/FAQ
+---
+
+# FAQ
+
+## What are the Supported File Types
+
+### Audio
+
+`.mp3`
+
+### Video
+
+`.mp4`, `.webm`, `.gif`
+
+However, I reccomend avoiding gifs, as you can get much better quality out of other formats, and will run much more performant.
+
+### Font
+
+`.ttf`
+
+## How is Audio Metadata determined
+
+Audio metadata is collected using [music-metadata](https://www.npmjs.com/package/music-metadata). I'd suggest ensuring that all of your audio has the correct metadata before uploading it to your project.
+
+## Can I Edit the Project While it is Running
+
+*In Theory*, yes. You should be able to add files while the stream is running, and have them added to be streamed at a later point. However, be cautious of deleting files, as they may be streaming at the time of deletion and cause a crash. 
+
+The `config.json` currently requires a reboot of the stream to apply any changes.
+
+

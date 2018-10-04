@@ -1,7 +1,7 @@
 {
   "name": "live-stream-radio",
   "version": "2.0.0",
-  "description": "24/7 music live streaming service",
+  "description": "24/7 live stream video radio station CLI / API",
   "main": "index.js",
   "bin": {
     "live-stream-radio": "./src/index.js"
@@ -21,14 +21,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/torch2424/piStreamRadio.git"
+    "url": "git+https://github.com/torch2424/live-stream-radio.git"
   },
   "author": "Aaron Turner",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/torch2424/piStreamRadio/issues"
+    "url": "https://github.com/torch2424/live-stream-radio/issues"
   },
-  "homepage": "https://github.com/torch2424/piStreamRadio#readme",
+  "homepage": "https://github.com/torch2424/live-stream-radio#readme",
   "dependencies": {
     "chalk": "^2.4.1",
     "chalkline": "0.0.5",

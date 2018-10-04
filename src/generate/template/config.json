@@ -10,6 +10,8 @@
   "video_fps": "24",
   "max_gif_size": "720",
   "api": {
+    "host": "localhost",
+    "port": "8000",
     "key": "super-secret-api-key",
     "number_of_history_items": 100
   },
