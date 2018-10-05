@@ -12,7 +12,7 @@ This page will go in detail with every field of a projects `config.json`. If you
 
 | Field | Usage |
 | - | - |
-| stream_url | The URL of the stream. You can use $stream_key as a variable and overwrite it with the `--output` CLI flag. |
+| stream_url | The URL of the stream. You can use $stream_key as a variable, this will replace it with the value of stream_key. You can overwrite this field with the `--output` CLI flag. |
 | stream_key | The stream key provided by your stream platform. |
 | ffmpeg_path | The path to your ffmpeg binaries. If this field is left empty, the project will try to find ffmpeg binaries specified in your path. |
 | audio_bit_rate | The audio bitrate of your stream. |
