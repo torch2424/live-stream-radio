@@ -6,237 +6,199 @@ route: /projectmanagement/config
 
 # Config
 
-This documents the fields of a project `config.json`. This will use an invalid comments in json in order to show what each field means. Please see the [default project generator config.json](https://github.com/torch2424/live-stream-radio/blob/master/src/generate/template/config.json) if you ever need to reset your config to the default settings.
+This page will go in detail with every field of a projects `config.json`. If you ever need to reset the default settings, please check out the [default config.json](https://github.com/torch2424/live-stream-radio/blob/master/src/generate/template/config.json)
 
-## General Config Settings
+## Settings Fields
 
+| Field | Usage |
+| - | - |
+| stream_url | The URL of the stream. You can use $stream_key as a variable, this will replace it with the value of stream_key. You can overwrite this field with the `--output` CLI flag. |
+| stream_key | The stream key provided by your stream platform. |
+| ffmpeg_path | The path to your ffmpeg binaries. If this field is left empty, the project will try to find ffmpeg binaries specified in your path. |
+| audio_bit_rate | The audio bitrate of your stream. |
+| audio_sample_rate | The audio sample rate of your steam. |
+| video_height | The height of your stream. |
+| video_width | The width of your stream. |
+| video_bit_rate | The bitrate of your stream. |
+| video_fps | The fps (frames per second) of your stream. |
+| max_gif_size | The maximum width or height of a gif for your stream. This is used by the optimization used on gifs. |
+| api.host | Host of the API. (usually localhost) |
+| api.port | Port on which the API runs on. |
+| api.key | API Key used for authentication. This is basically your admin password, so keep it secret! |
+| api.number_of_history_items | Number of items to store in the streams history to get the last played songs. |
+| radio.audio_directory | Path to your music. Check out the FAQ for supported file types. |
+| radio.video_directory | Path to your videos and gifs. Check out the FAQ for supported file types. |
+| radio.overlay.enabled | Enables/Disables overlays. |
+| radio.overlay.font_path | Path to the fonts used for the stream overlays. Check out the FAQ for supported file types. |
+| radio.overlay.title.enable_scroll | Enables horizontal scrolling of the title. |
+| radio.overlay.title.font_scroll_speed | The speed at which the title scrolls. |
+| radio.overlay.artist | Common Text Object for the artist. |
+| radio.overlay.album | Common Text Object for the album. |
+| radio.overlay.song | Common Text Object for the song. |
+| radio.overlay.image | Common Image Object for an overlay over the text and video. |
+| interlude.enabled | Enables interludes which are are transition videos/audios played in-between songs. |
+| interlude.frequency | Percentage of how often an interlude should be played. Valid values are from 0.0 (never) to 1.0 (100% of the time). |
+| interlude.audio_directory | Path to your interlude music. Check out the FAQ for supported file types. |
+| interlude.video_directory | Path to your interlude videos and gifs. Check out the FAQ for supported file types. |
+| interlude.overlay.enabled | Enables overlays in interludes. |
+| interlude.overlay.font_path | Path to the fonts used for the stream overlays. Check out the FAQ for supported file types. |
+| interlude.overlay.title | Common Text Object for the a title. |
+| interlude.overlay.image | Common Image Object for an overlay over the text and video. |
+
+### Video HeightWidth Ratio
+These are common values for the `video_height` and `video_width` fields.
+
+| Quality | Width | Height |
+| - | - | - |
+| 240p | 426 | 240 |
+| 360p | 640 | 360 |
+| 480p | 854 | 480 |
+| 720p | 1280 | 720|
+| 1080p | 1920 | 1080 |
+
+## Common Text Object
+
+Common Text Objects contain all settings required to display text.
+
+| Field | Usage |
+| - | - |
+| enabled | Enables/Disables this text object |
+| text | Text string for this object |
+| font_color | HEX color with leading # of the fonts color |
+| font_border | HEX color with leading # of the fonts border color |
+| font_size | Size of the font |
+| position_x | Percentage value (without the %) of the X position of the font. |
+| position_y | Percentage value (without the %) of the Y position of the font. |
+
+### Example 
 ```
-{   
-
-    // URL where the stream will be output to. 
-    // The `$stream_key` in the `stream_url` field is replaced by the following `stream_key` field.
-    // Note: The `stream_url` and the `stream_key` field can be overwritten by the `--ouput` CLI flag
-    "stream_url": "rtmp://a.rtmp.youtube.com/live2/$stream_key",
-
-    // The key provided by your stream platform to be placed into the URL. 
-    // The `$stream_key` in the `stream_url` field is replaced by the following `stream_key` field.
-    // Note: The `stream_url` and the `stream_key` field can be overwritten by the `--ouput` CLI flag
-    "stream_key": "",
-
-    // The path to the ffmpeg binary you would like to use.
-    // This field is optional, and if left blank, 
-    // will use the default system wide ffmpeg binary.
-    "ffmpeg_path": "",
-
-    // Audio bit rate of the stream output.
-    "audio_bit_rate": "128k",
-
-    // Audio sample rate of the stream output.
-    "audio_sample_rate": "44100",
-
-    // Height/Width of the video output.
-    // Common values are as follows:
-    // 240P - 240x426
-    // 360P - 360x640
-    // 480P - 480x854
-    // 720P - 720x1280
-    // 1080P - 1080x1920
-    "video_height": "480",
-    "video_width": "854",
-
-    // Video bit rate of the stream output
-    "video_bit_rate": "500k",
-
-    // Frames per second of the video output
-    "video_fps": "24",
-
-    // The maximum width or height of a gif when optimizing a gif file for streaming.
-    // This only applies if you have gif files as video output.
-    "max_gif_size": "720",
-
-    // Settings relating to the stream API
-    "api": {
-
-      // Host of the API is served on.
-      "host": "localhost",
-
-      // Port that the API is served on.
-      "port": "8000",
-
-      // API Key used with all API requests
-      // When building/using a frontend, this API Key will be required to use
-      // This key should be something long, and kept secret.
-      "key": "super-secret-api-key",
-
-      // Number of items to story in stream history, for history endpoints.
-      "number_of_history_items": 100
-    },
-
-    // Settings relating to the general radio of the project
-    "radio": {
-
-      // Directory where all audio files live, and should be recursively found and used.
-      // Please see the FAQ for supported file types.
-      "audio_directory": "./audio",
-
-      // Directory where all video files live, and should be recursively found and used.
-      // Please see the FAQ for supported file types.
-      "video_directory": "./video",
-
-      // Settings relating to the radio overlay that is shown
-      "overlay": {
-
-        // Should the overlay be enabled
-        "enabled": true,
-
-        // Font to be used when showing text on the overlay .
-        // Please see the FAQ for supported file types.
-        "font_path": "./fonts/Lato-Regular.ttf",
-
-        // Name / Title of the stream
-        "title": {
-          
-          // See Common Text Object Settings
-          
-          // Title Unique Settingss
-
-          // Should the title scroll across the screen.
-          "enable_scroll": true,
-
-          // Speed at which the title scrolls
-          "font_scroll_speed": "20",
-        },
-
-        // Artist of the Current Playing Song, from the file metadata
-        "artist": {
-          
-          // See Common Text Object Settings
-
-        },
-
-        // Album of the Current Playing Song, from the file metadata
-        "album": {
-
-          // See Common Text Object Settings
-
-        },
-
-        // Title of the Current Playing Song, from the file metadata
-        "song": {
-
-          // See Common Text Object Settings
-
-        },
-
-        // Image overlay shown on top of the text and the video
-        "image": {
-
-          // See Common Image Object Settings
-
-        }
-      }
-    },
-
-    // Settings reffering to interludes that are occasionally played along with radio songs
-    "interlude": {
-
-      // Should interludes be played
-      "enabled": "true",
-
-      // How often should interludes by played. This is a non-negative float representing a percentage.
-      // Valid values are from 0.0 (never) - 1.0 (100% of the time)
-      "frequency": "0.2",
-
-      // Directory where Interlude audio is stored.
-      // Can be the same as the radio directories.
-      "audio_directory": "./interludes/audio",
-
-      // Directory where Interlude video is stored. 
-      // Can be the same as the radio directories.
-      "video_directory": "./interludes/video",
-
-      // Overlay that is shown above interlude streams
-      "overlay": {
-
-        // Should the overlay be shown
-        "enabled": true,
-
-
-        // Please see the FAQ for supported file types.
-        "font_path": "./fonts/Lato-Regular.ttf",
-
-        // See Common Text Object Settings
-
-        "title": {
-
-           // See Common Text Object Settings
-
-        },
-        "image": {
-
-          // See Common Image Object Settings
-
-        }
-      }
-    }
-}
-```
-
-## Common Text Object Settings
-
-Common keys that all text objects support and are required to display the text
-
-```
-...
-
 "some-text-object": {
-
-  // Whethere this text object should be visible or not
   "enabled": true
-
-  // Test string to display
   "text": "Live Stream Radio, 24/7 Open Source Radio",
-
-  // Color of the font, in hex
   "font_color": "#FFFFFF",
-
-  // Color of the text border, in hex
   "font_border": "#000000",
-
-  // Size of the font
   "font_size": "10",
-
-  // X position of the font. This is a percentage, similar to CSS percents. Do NOT include the `%`.
   "position_x": "0",
-
-  // Y porition of the font. This is a percentage, similar to CSS percents. Do NOT include the `%`.
   "position_y": "5"
 }
-
-...
 ```
 
-## Common Image Object Settings
+## Common Image Object
 
-Common keys that all image objects support and are required to display the text
+Common Image Objects contain all settings required to display an image.
 
+| Field | Usage |
+| - | - |
+| enabled | Enables/Disables this image object |
+| image_path | Path to the image. Check out the FAQ for supported file types. |
+| position_x | Horizontal position of the image in pixels from left. |
+| position_y | Vertical position of the image in pixels from the top. |
+
+### Example
 ```
-...
-
 "image": {
-
-  // Whether the image should be shown or not
   "enabled": true,
-
-  // Path to the image to be displayed. Must be a PNG. See FAQ for information about images.
   "image_path": "./live-stream-radio-overlay-image.png",
-
-  // X position in pixels. 0 refers to the most left, increasing places the image more to the right.
   "position_x": 0,
-
-  // Y position in pixels. 0 refers to the most top, increasing places the image more to the bottom.
   "position_y": 0
 }
+```
 
-...
+## Example config.json
+```
+{
+  "stream_url": "rtmp://a.rtmp.youtube.com/live2/$stream_key",
+  "stream_key": "",
+  "ffmpeg_path": "",
+  "audio_bit_rate": "128k",
+  "audio_sample_rate": "44100",
+  "video_height": "480",
+  "video_width": "854",
+  "video_bit_rate": "500k",
+  "video_fps": "24",
+  "max_gif_size": "720",
+  "api": {
+    "host": "localhost",
+    "port": "8000",
+    "key": "super-secret-api-key",
+    "number_of_history_items": 100
+  },
+  "radio": {
+    "audio_directory": "./audio",
+    "video_directory": "./video",
+    "overlay": {
+      "enabled": true,
+      "font_path": "./fonts/Lato-Regular.ttf",
+      "title": {
+        "enabled": true,
+        "text": "Live Stream Radio, 24/7 Open Source Radio",
+        "font_color": "#FFFFFF",
+        "font_border": "#000000",
+        "font_size": "10",
+        "enable_scroll": true,
+        "font_scroll_speed": "20",
+        "position_x": "0",
+        "position_y": "5"
+      },
+      "artist": {
+        "enabled": true,
+        "label": "Artist",
+        "font_color": "#FFFFFF",
+        "font_border": "#000000",
+        "font_size": "10",
+        "position_x": "2",
+        "position_y": "15"
+      },
+      "album": {
+        "enabled": false,
+        "label": "Album",
+        "font_color": "#FFFFFF",
+        "font_border": "#000000",
+        "font_size": "10",
+        "position_x": "2",
+        "position_y": "25"
+      },
+      "song": {
+        "enabled": true,
+        "label": "Song",
+        "font_color": "#FFFFFF",
+        "font_border": "#000000",
+        "font_size": "10",
+        "position_x": "2",
+        "position_y": "25"
+      },
+      "image": {
+        "enabled": true,
+        "image_path": "./live-stream-radio-overlay-image.png",
+        "position_x": 0,
+        "position_y": 0
+      }
+    }
+  },
+  "interlude": {
+    "enabled": "true",
+    "frequency": "0.2",
+    "audio_directory": "./interludes/audio",
+    "video_directory": "./interludes/video",
+    "overlay": {
+      "enabled": true,
+      "font_path": "./fonts/Lato-Regular.ttf",
+      "title": {
+        "enabled": true,
+        "text": "Please wait, music shall resume shortly...",
+        "font_color": "#FFFFFF",
+        "font_border": "#000000",
+        "font_size": "10",
+        "position_x": "2",
+        "position_y": "5"
+      },
+      "image": {
+        "enabled": true,
+        "image_path": "./live-stream-radio-overlay-image.png",
+        "position_x": 0,
+        "position_y": 0
+      }
+    }
+  }
+}
 ```

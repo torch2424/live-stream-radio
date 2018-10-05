@@ -1,8 +1,31 @@
 ---
 name: Introduction
 route: /
+order: 1
 ---
 
 # Introduction
+`live-stream-radio` is a 24/7 live stream radiostation CLI built with Node.js and powered by FFmpeg. This means that you'll be able to start a livestream radio for music, a looping gif/video, music information and other overlay items. This project is highly customizable and also features a REST HTTP JSON API for frontend interfaces.
 
-This is the documentation for [`live-stream-radio`](https://github.com/torch2424/live-stream-radio), a 24/7 live stream video radio station CLI / API 📹 📻. Please use the sidebar to navigate the documentation. **For new users:** I'd suggest looking into the *CLI > Installation* section.
+To get a first glimpse on how to use this project, head over to the [Getting Started](/cli/getting-started) page!
+
+## Compatibility
+We try to make this project compatible with any OS that supports both NodeJS and FFmpeg. As this projects roots are in the raspberry-pi community (funfact: this projects was named piStreamRadio before 2.0.0), we specifically try to support the Raspbian plattform.
+
+## Contributing
+
+Feel free to fork this project, open up issues and even push pull-requests to make this project better! We suggest that you first open up an issue before working on a pull-request so everyone is on the same page and can discuss on the proposed changes!
+
+To access the GitHub repo, simply click on the GitHub corner on the top-right.
+
+## License
+### Apache
+LICENSE under [Apache 2.0](https://choosealicense.com/licenses/apache-2.0/). 🐦
+
+### FFmpeg
+This software uses code of [FFmpeg](http://ffmpeg.org/) licensed under the [LGPLv2.1](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html) and its source can be downloaded [here](https://github.com/torch2424/live-stream-radio/blob/master/deps/ffmpeg).
+
+As such, this software tries to respect the LGPLv2 License as close as possible to respect FFmpeg and its authors. Huge shoutout to them for building such an awesome and crazy tool!
+
+### Example Assets
+The generate command already comes with a bunch of example assets. Music is provided by [Aviscerall](https://aviscerall.bandcamp.com/), and [Marquice Turner](https://marquiceturner.bandcamp.com/) (Which is actually me, @torch2424, but I have a musical identity problem 😛). The video assets are an 8bit gif of [Star Samurai](https://github.com/torch2424/StarSamurai), [Code and Coffee LB](http://codeandcoffeelb.org/) and [this](https://www.youtube.com/watch?v=uuY1RXZyUFs) public domain YouTube video. The image overlay uses art assets from EmojiOne, more specifically [this video camera](https://www.emojione.com/emoji/1f4f9) and [this radio](https://www.emojione.com/emoji/1f4fb) emoji.
