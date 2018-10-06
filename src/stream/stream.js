@@ -252,7 +252,6 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   // https://ffmpeg.org/ffmpeg-filters.html#movie-1
   // https://trac.ffmpeg.org/wiki/FilteringGuide#FiltergraphChainFilterrelationship
   doubleSlashOptimizedVideo = optimizedVideo.replace(/\\/g, '\\\\').replace(/:/g, '\\:');
-  console.log(doubleSlashOptimizedVideo);
   complexFilterString += `movie=\'${doubleSlashOptimizedVideo}\':loop=0,setpts=N/FRAME_RATE/TB`;
 
   // Add our overlayText
