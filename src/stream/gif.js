@@ -1,6 +1,7 @@
 const ffmpeg = require('fluent-ffmpeg');
 const imagemin = require('imagemin');
 const imageminGifsicle = require('imagemin-gifsicle');
+const upath = require('upath');
 
 // Async function to optimize a gif using ffmpeg
 // http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
