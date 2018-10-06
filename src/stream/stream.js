@@ -190,7 +190,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     if (overlayConfigObject.artist && overlayConfigObject.artist.enabled) {
       const itemObject = overlayConfigObject.artist;
       let itemString =
-        `drawtext=text='${itemObject.label}\\: ${metadata.common.artist}'` +
+        `drawtext=text='${itemObject.label}${metadata.common.artist}'` +
         `:fontfile=${fontPath}` +
         `:fontsize=(w * ${itemObject.font_size / 300})` +
         `:bordercolor=${itemObject.font_border}` +
@@ -205,7 +205,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     if (overlayConfigObject.album && overlayConfigObject.album.enabled) {
       const itemObject = overlayConfigObject.album;
       let itemString =
-        `drawtext=text='${itemObject.label}\\: ${metadata.common.album}'` +
+        `drawtext=text='${itemObject.label}${metadata.common.album}'` +
         `:fontfile=${fontPath}` +
         `:fontsize=(w * ${itemObject.font_size / 300})` +
         `:bordercolor=${itemObject.font_border}` +
@@ -220,7 +220,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     if (overlayConfigObject.song && overlayConfigObject.song.enabled) {
       const itemObject = overlayConfigObject.song;
       let itemString =
-        `drawtext=text='${itemObject.label}\\: ${metadata.common.title}'` +
+        `drawtext=text='${itemObject.label}${metadata.common.title}'` +
         `:fontfile=${fontPath}` +
         `:fontsize=(w * ${itemObject.font_size / 300})` +
         `:bordercolor=${itemObject.font_border}` +
