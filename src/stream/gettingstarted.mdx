@@ -17,7 +17,15 @@ Simply download nvm from [this (Mac/Linux)](https://github.com/creationix/nvm) o
 Next, you have to donwload or compile the latest version of [FFmpeg](http://ffmpeg.org/). It specifically needs to be compiled with [libfreetype](https://ffmpeg.org/ffmpeg-filters.html#drawtext) so we can draw text within the stream image. You can either add the folder of your ffmpeg binaries to your system's PATH or directly put the path to them in the config file.
 
 #### Downloading FFmpeg
-If you are lucky, you can find hosted static builds for your operating system from [this](https://ffmpeg.zeranoe.com/builds/) resource. If you want to run this project on Raspbian/ a Raspberry Pi, feel free to use our prebuilt Raspbian Stretch FFmpeg binary from [here](https://github.com/torch2424/piStreamRadio/tree/0b75cae32cadb21d8af07584f0cfc4b9a287c077/ffmpeg).
+If you are lucky, you can find hosted static builds for your operating system from [this](https://ffmpeg.zeranoe.com/builds/) resource. If you want to run this project on Raspbian/ a Raspberry Pi, feel free to use our prebuilt Raspbian Stretch FFmpeg binary from [here](https://github.com/torch2424/piStreamRadio/tree/0b75cae32cadb21d8af07584f0cfc4b9a287c077/ffmpeg). Downloading FFmpeg may require some shared libraries to already be installed. For example, on Raspbian you would need to install the following using the command:
+
+```
+sudo apt-get install -y gifsicle \
+autoconf automake build-essential libass-dev \
+libfreetype6-dev libtheora-dev libtool libvorbis-dev \
+pkg-config texinfo zlib1g-dev libgnutls28-dev \
+librtmp-dev libssl-dev libx264-dev libasound2-dev
+```
 
 #### Compiling FFmpeg
 Please check out the [FFmpeg Compilation Guide](https://trac.ffmpeg.org/wiki/CompilationGuide) for a more detailled guide. Again, please check that you build FFmpeg with the libfreetype module. If you using macOS, building ffmpeg may be as easy as running `brew install ffmpeg --with-freetype` on your terminal.
