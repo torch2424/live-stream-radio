@@ -2,6 +2,7 @@
 const ffmpeg = require('fluent-ffmpeg');
 const chalk = require('chalk');
 const musicMetadata = require('music-metadata');
+const upath = require('upath');
 const progress = require('cli-progress');
 
 // Get our Services and helper fucntions
@@ -250,7 +251,8 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   // https://stackoverflow.com/questions/47885877/adding-loop-video-to-sound-ffmpeg
   // https://ffmpeg.org/ffmpeg-filters.html#movie-1
   // https://trac.ffmpeg.org/wiki/FilteringGuide#FiltergraphChainFilterrelationship
-  complexFilterString += `movie=${optimizedVideo}:loop=0,setpts=N/FRAME_RATE/TB`;
+  doubleSlashOptimizedVideo = optimizedVideo.replace(/\\/g, '\\\\');
+  complexFilterString += `movie=${doubleSlashOptimizedVideo}:loop=0,setpts=N/FRAME_RATE/TB`;
 
   // Add our overlayText
   if (overlayTextFilterString) {
@@ -272,7 +274,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   ) {
     // Add our image input
     const imageObject = config[typeKey].overlay.image;
-    const imagePath = `${path}${imageObject.image_path}`;
+    const imagePath = upath.join(path, imageObject.image_path);
     ffmpegCommand = ffmpegCommand.input(imagePath);
     complexFilterString +=
       ` [videowithtext];` +
