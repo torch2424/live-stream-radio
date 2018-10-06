@@ -3,8 +3,7 @@ const fastify = require('fastify')({});
 
 // Get our routes
 const addStreamRoutes = require('./stream.js');
-const addHistoryRoutes = require('./history.js');
-const addRadioRoutes = require('./radio.js');
+const addLibraryRoutes = require('./library.js');
 
 let currentStream;
 let currentConfig;
@@ -24,8 +23,7 @@ module.exports = {
 
     // Implement our other routes
     addStreamRoutes(fastify, path, currentStream, currentConfig);
-    addHistoryRoutes(fastify, path, currentStream, currentConfig);
-    addRadioRoutes(fastify, path, currentStream, currentConfig);
+    addLibraryRoutes(fastify, path, currentStream, currentConfig);
 
     await new Promise((resolve, reject) => {
       fastify.listen(currentConfig.api.port, currentConfig.api.host, (err, address) => {

@@ -1,4 +1,4 @@
-// Get our auth
+const historyService = require('../history.service');
 const authService = require('./auth');
 
 // Function to perform all checks before performing route
@@ -87,6 +87,17 @@ module.exports = (fastify, path, stream, config) => {
       reply.type('application/json').code(200);
       return {
         message: 'OK'
+      };
+    })
+  );
+
+  // Stream History
+  fastify.get(
+    '/stream/history',
+    authService.secureRouteHandler(config, async (request, reply) => {
+      reply.type('application/json').code(200);
+      return {
+        history: historyService.getHistory()
       };
     })
   );

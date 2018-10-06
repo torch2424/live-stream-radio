@@ -40,7 +40,7 @@ const getAllAudioWithMetadata = async (path, config) => {
 // File to return all of our /radio/* routes
 module.exports = (fastify, path, stream, config) => {
   fastify.get(
-    '/radio/audio',
+    '/library/audio',
     authService.secureRouteHandler(config, async (request, reply) => {
       let response;
       if (request.query.include_metadata !== undefined) {
