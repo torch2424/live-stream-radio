@@ -56,13 +56,13 @@ function createDirectoryContents(currentPath, templatePath, newProjectPath) {
       createDirectoryContents(currentPath, `${templatePath}/${file}`, `${newProjectPath}/${file}`);
     }
   });
+}
 
-  // Function to rewrite paths for windows os
-  function windowsChangePaths(currentPath, newProjectPath) {
-    var configPath = path.join(currentPath, newProjectPath, 'config.json');
-    var configContent = fs.readFileSync(configPath, 'utf-8');
-    var rewrittenConfig = configContent.replace(/\.\//g, '/');
-    fs.writeFileSync(configPath, rewrittenConfig);
-    console.log('📁', chalk.magenta(`Successfully rewritten config.json for your system`));
-  }
+// Function to rewrite paths for windows os
+function windowsChangePaths(currentPath, newProjectPath) {
+  var configPath = path.join(currentPath, newProjectPath, 'config.json');
+  var configContent = fs.readFileSync(configPath, 'utf-8');
+  var rewrittenConfig = configContent.replace(/\.\//g, '/');
+  fs.writeFileSync(configPath, rewrittenConfig);
+  console.log('📁', chalk.magenta(`Successfully rewritten config.json for your system`));
 }
