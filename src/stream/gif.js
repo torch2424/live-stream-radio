@@ -2,12 +2,13 @@ const ffmpeg = require('fluent-ffmpeg');
 const imagemin = require('imagemin');
 const imageminGifsicle = require('imagemin-gifsicle');
 const upath = require('upath');
+const os = require('os');
 
 // Async function to optimize a gif using ffmpeg
 // http://blog.pkh.me/p/21-high-quality-gif-with-ffmpeg.html
 const getOptimizedGif = async (gifPath, config, errorCallback) => {
-  const tempPalPath = `/tmp/live-stream-radio-gif-pal-${Date.now().toString()}.png`;
-  const palAppliedGif = `/tmp/live-stream-radio-gif-with-pal-${Date.now().toString()}.gif`;
+  const tempPalPath = upath.join(os.tmpdir(), `/live-stream-radio-gif-pal-${Date.now().toString()}.png`);
+  const palAppliedGif = upath.join(os.tmpdir(), `/live-stream-radio-gif-with-pal-${Date.now().toString()}.gif`);
 
   const getFfmpeg = input => {
     let ffmpegCommand = ffmpeg();
@@ -63,7 +64,7 @@ const getOptimizedGif = async (gifPath, config, errorCallback) => {
 
   // Generate the final gif with an optimized byte size
   // Using gifsicle
-  const files = await imagemin([palAppliedGif], '/tmp', {
+  const files = await imagemin([palAppliedGif], os.tmpdir(), {
     plugins: [
       imageminGifsicle({
         optimizationLevel: 3
