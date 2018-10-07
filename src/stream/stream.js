@@ -157,10 +157,10 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
       // Livestream, encode in realtime as audio comes in
       // https://superuser.com/questions/508560/ffmpeg-stream-a-file-with-original-playing-rate
       `-re`,
-      // Add a 3 second delay to beginning of video,
+      // Add a short delay to beginning of video,
       // this fixes cut off on beginning and end on streaming platforms
       // https://superuser.com/questions/538031/what-is-difference-between-ss-and-itsoffset-in-ffmpeg
-      `-itsoffset 3`
+      `-itsoffset 2`
     ]);
 
   // Create our overlay
