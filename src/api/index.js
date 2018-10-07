@@ -3,6 +3,7 @@ const fastify = require('fastify')({});
 
 // Get our routes
 const addStreamRoutes = require('./stream.js');
+const addConfigRoutes = require('./config.js');
 const addLibraryRoutes = require('./library.js');
 
 let currentStream;
@@ -23,6 +24,7 @@ module.exports = {
 
     // Implement our other routes
     addStreamRoutes(fastify, path, currentStream, currentConfig);
+    addConfigRoutes(fastify, path, currentStream, currentConfig);
     addLibraryRoutes(fastify, path, currentStream, currentConfig);
 
     await new Promise((resolve, reject) => {
