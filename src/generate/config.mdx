@@ -6,7 +6,7 @@ route: /projectmanagement/config
 
 # Config
 
-This page will go in detail with every field of a projects `config.json`. If you ever need to reset the default settings, or see an example `config.json`, please check out the [default config.json](https://github.com/torch2424/live-stream-radio/blob/master/src/generate/template/config.json)
+This page will go in detail with every field of a projects `config.json`. If you ever need to reset the default settings, or see an example `config.json`, please check out the [default config.json](https://github.com/torch2424/live-stream-radio/blob/master/src/generate/template/config.json).
 
 ## Settings Fields
 
@@ -15,12 +15,20 @@ This page will go in detail with every field of a projects `config.json`. If you
 | stream_url | The URL of the stream. You can use $stream_key as a variable, this will replace it with the value of stream_key. You can overwrite this field with the `--output` CLI flag. |
 | stream_key | The stream key provided by your stream platform. |
 | ffmpeg_path | The path to your ffmpeg binaries. If this field is left empty, the project will try to find ffmpeg binaries specified in your path. |
+| video_codec | The codec used by ffmpeg to encode the stream video output. |
+| audio_codec | The codec used by ffmpeg to encode the stream audio output. |
+| audio_bit_rate | The bit rate of the stream audio output. |
+| audio_sample_rate | The audio sample rate of the stream audio output. |
 | audio_bit_rate | The audio bitrate of your stream. |
 | audio_sample_rate | The audio sample rate of your steam. |
 | video_height | The height of your stream. |
 | video_width | The width of your stream. |
 | video_bit_rate | The bitrate of your stream. |
 | video_fps | The fps (frames per second) of your stream. |
+| bufsize | Buffer size for the stream output, denoted by `-bufsize` flag in FFmpeg |
+| crf | Standard constant rate used by FFmpeg used to improve streaming. Denoted by the `-crf` flag in FFmpeg. |
+| preset | Preset used by FFmpeg to acheive a balance of quality and performance in FFmpeg, denoted by the `-preset` flag in FFmpeg. |
+| threads | Number of threads to limit the FFmpeg process to. Denoted by the `-threads` flag in FFmpeg. |
 | max_gif_size | The maximum width or height of a gif for your stream. This is used by the optimization used on gifs. |
 | api.host | Host of the API. (usually localhost) |
 | api.port | Port on which the API runs on. |
