@@ -6,7 +6,7 @@ route: /projectmanagement/config
 
 # Config
 
-This page will go in detail with every field of a projects `config.json`. If you ever need to reset the default settings, please check out the [default config.json](https://github.com/torch2424/live-stream-radio/blob/master/src/generate/template/config.json)
+This page will go in detail with every field of a projects `config.json`. If you ever need to reset the default settings, or see an example `config.json`, please check out the [default config.json](https://github.com/torch2424/live-stream-radio/blob/master/src/generate/template/config.json)
 
 ## Settings Fields
 
@@ -104,101 +104,3 @@ Common Image Objects contain all settings required to display an image.
 }
 ```
 
-## Example config.json
-```
-{
-  "stream_url": "rtmp://a.rtmp.youtube.com/live2/$stream_key",
-  "stream_key": "",
-  "ffmpeg_path": "",
-  "audio_bit_rate": "128k",
-  "audio_sample_rate": "44100",
-  "video_height": "480",
-  "video_width": "854",
-  "video_bit_rate": "500k",
-  "video_fps": "24",
-  "max_gif_size": "720",
-  "api": {
-    "host": "localhost",
-    "port": "8000",
-    "key": "super-secret-api-key",
-    "number_of_history_items": 100
-  },
-  "radio": {
-    "audio_directory": "./audio",
-    "video_directory": "./video",
-    "overlay": {
-      "enabled": true,
-      "font_path": "./fonts/Lato-Regular.ttf",
-      "title": {
-        "enabled": true,
-        "text": "Live Stream Radio, 24/7 Open Source Radio",
-        "font_color": "#FFFFFF",
-        "font_border": "#000000",
-        "font_size": "10",
-        "enable_scroll": true,
-        "font_scroll_speed": "20",
-        "position_x": "0",
-        "position_y": "5"
-      },
-      "artist": {
-        "enabled": true,
-        "label": "Artist",
-        "font_color": "#FFFFFF",
-        "font_border": "#000000",
-        "font_size": "10",
-        "position_x": "2",
-        "position_y": "15"
-      },
-      "album": {
-        "enabled": false,
-        "label": "Album",
-        "font_color": "#FFFFFF",
-        "font_border": "#000000",
-        "font_size": "10",
-        "position_x": "2",
-        "position_y": "25"
-      },
-      "song": {
-        "enabled": true,
-        "label": "Song",
-        "font_color": "#FFFFFF",
-        "font_border": "#000000",
-        "font_size": "10",
-        "position_x": "2",
-        "position_y": "25"
-      },
-      "image": {
-        "enabled": true,
-        "image_path": "./live-stream-radio-overlay-image.png",
-        "position_x": 0,
-        "position_y": 0
-      }
-    }
-  },
-  "interlude": {
-    "enabled": "true",
-    "frequency": "0.2",
-    "audio_directory": "./interludes/audio",
-    "video_directory": "./interludes/video",
-    "overlay": {
-      "enabled": true,
-      "font_path": "./fonts/Lato-Regular.ttf",
-      "title": {
-        "enabled": true,
-        "text": "Please wait, music shall resume shortly...",
-        "font_color": "#FFFFFF",
-        "font_border": "#000000",
-        "font_size": "10",
-        "position_x": "2",
-        "position_y": "5"
-      },
-      "image": {
-        "enabled": true,
-        "image_path": "./live-stream-radio-overlay-image.png",
-        "position_x": 0,
-        "position_y": 0
-      }
-    }
-  }
-}
-```

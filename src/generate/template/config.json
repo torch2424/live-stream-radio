@@ -11,7 +11,7 @@
   "video_bit_rate": "500k",
   "video_fps": "24",
   "bufsize": "960k",
-  "crf": "30",
+  "crf": "28",
   "preset": "superfast",
   "threads": 2,
   "max_gif_size": "720",
