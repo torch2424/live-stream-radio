@@ -34,7 +34,7 @@
       },
       "artist": {
         "enabled": true,
-        "label": "Artist",
+        "label": "Artist\\: ",
         "font_color": "#FFFFFF",
         "font_border": "#000000",
         "font_size": "10",
@@ -43,7 +43,7 @@
       },
       "album": {
         "enabled": false,
-        "label": "Album",
+        "label": "Album\\: ",
         "font_color": "#FFFFFF",
         "font_border": "#000000",
         "font_size": "10",
@@ -52,7 +52,7 @@
       },
       "song": {
         "enabled": true,
-        "label": "Song",
+        "label": "Song\\: ",
         "font_color": "#FFFFFF",
         "font_border": "#000000",
         "font_size": "10",
