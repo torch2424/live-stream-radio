@@ -1,6 +1,9 @@
 const chalk = require('chalk');
 const fastify = require('fastify')({});
 
+// www-form-urlencoded parser for fastify
+fastify.register(require('fastify-formbody'));
+
 // Get our routes
 const addStreamRoutes = require('./stream.js');
 const addConfigRoutes = require('./config.js');
