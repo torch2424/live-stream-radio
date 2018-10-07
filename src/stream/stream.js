@@ -211,6 +211,31 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   // Apply our complext filter
   ffmpegCommand = ffmpegCommand.complexFilter(complexFilterString);
 
+  // Set our event handlers
+  ffpmepgCommand = ffmpegCommand
+    .on('end', () => {
+      progressBar.stop();
+      if (endCallback) {
+        endCallback();
+      }
+    })
+    .on('error', (err, stdout, stderr) => {
+      progressBar.stop();
+
+      if (errorCallback) {
+        errorCallback(err, stdout, stderr);
+      }
+    })
+    .on('progress', progress => {
+      // Get our timestamp
+      const timestamp = progress.timemark.substring(0, 8);
+      const splitTimestamp = timestamp.split(':');
+      const seconds = parseInt(splitTimestamp[0], 10) * 60 * 60 + parseInt(splitTimestamp[1], 10) * 60 + parseInt(splitTimestamp[2], 10);
+
+      // Set seconds onto progressBar
+      progressBar.update(seconds);
+    });
+
   // Create our ouput options
   // Some defaults we don't want changed
   const outputOptions = [
@@ -250,12 +275,16 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   // Set our audio codec, this can drastically affect performance
   if (config.audio_codec) {
     outputOptions.push(`-acodec ${config.audio_codec}`);
+  } else {
+    outputOptions.push(`-acodec aac`);
   }
 
   // Set our video codec, and encoder options
   // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
   if (config.video_codec) {
     outputOptions.push(`-vcodec ${config.video_codec}`);
+  } else {
+    outputOptions.push(`-vcodec libx264`);
   }
   if (config.preset) {
     outputOptions.push(`-preset ${config.preset}`);
@@ -270,40 +299,21 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     outputOptions.push(`-threads ${config.threads}`);
   }
 
+  // Finally, save the stream to our stream URL
+  let singleOutputLocation = '';
+  if (Array.isArray(outputLocation)) {
+    singleOutputLocation = outputLocation[0];
+  } else {
+    singleOutputLocation = outputLocation;
+  }
+
   // Add our output options for the stream
   ffmpegCommand = ffmpegCommand.outputOptions([
     ...outputOptions,
     // Set format to flv (Youtube/Twitch)
     `-f flv`
   ]);
-
-  // Set our event handlers
-  ffpmepgCommand = ffmpegCommand
-    .on('end', () => {
-      progressBar.stop();
-      if (endCallback) {
-        endCallback();
-      }
-    })
-    .on('error', (err, stdout, stderr) => {
-      progressBar.stop();
-
-      if (errorCallback) {
-        errorCallback(err, stdout, stderr);
-      }
-    })
-    .on('progress', progress => {
-      // Get our timestamp
-      const timestamp = progress.timemark.substring(0, 8);
-      const splitTimestamp = timestamp.split(':');
-      const seconds = parseInt(splitTimestamp[0], 10) * 60 * 60 + parseInt(splitTimestamp[1], 10) * 60 + parseInt(splitTimestamp[2], 10);
-
-      // Set seconds onto progressBar
-      progressBar.update(seconds);
-    });
-
-  // Finally, save the stream to our stream URL
-  ffmpegCommand = ffmpegCommand.save(outputLocation);
+  ffmpegCommand = ffmpegCommand.save(singleOutputLocation);
 
   // Start some pre-rendering
   const preRenderTask = async () => {

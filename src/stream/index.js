@@ -63,16 +63,20 @@ const moduleExports = {
 
     //  Build our stream outputs
     if (!currentOutputLocation) {
-      if (!config.stream_url || !config.stream_key) {
-        console.log(`${chalk.red('Missing a stream_url or a stream_key in your config.json !')} 😟`);
-        console.log(chalk.red('Exiting...'));
-        console.log('\n');
-        process.exit(1);
-      }
+      if (config.stream_outputs) {
+        currentOutputLocation = config.stream_outputs;
+      } else {
+        if (!config.stream_url || !config.stream_key) {
+          console.log(`${chalk.red('Missing stream_outputs in your config.json !')} 😟`);
+          console.log(chalk.red('Exiting...'));
+          console.log('\n');
+          process.exit(1);
+        }
 
-      let streamUrl = config.stream_url;
-      streamUrl = streamUrl.replace('$stream_key', config.stream_key);
-      currentOutputLocation = streamUrl;
+        let streamUrl = config.stream_url;
+        streamUrl = streamUrl.replace('$stream_key', config.stream_key);
+        currentOutputLocation = streamUrl;
+      }
     }
 
     console.log(`${chalk.magenta('Streaming to:')} ${currentOutputLocation}`);
