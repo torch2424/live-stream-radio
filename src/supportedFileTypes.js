@@ -3,6 +3,6 @@
 // But gifs require pre-encoding
 // https://superuser.com/questions/486325/lossless-universal-video-format
 module.exports = {
-  supportedAudioTypes: [/\.mp3$/],
-  supportedVideoTypes: [/\.mp4$/, /\.webm$/, /\.gif$/]
+  supportedAudioTypes: [/\.mp3$/, /\.flac$/, /\.wav$/],
+  supportedVideoTypes: [/\.mov$/, /\.avi$/, /\.mkv$/, /\.webm$/, /\.mp4$/, /\.gif$/]
 };
