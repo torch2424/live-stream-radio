@@ -153,9 +153,15 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     .input(randomSong)
     // Copy over the video audio
     .audioCodec('copy')
-    // Livestream, encode in realtime as audio comes in
-    // https://superuser.com/questions/508560/ffmpeg-stream-a-file-with-original-playing-rate
-    .inputOptions(`-re`);
+    .inputOptions([
+      // Livestream, encode in realtime as audio comes in
+      // https://superuser.com/questions/508560/ffmpeg-stream-a-file-with-original-playing-rate
+      `-re`,
+      // Add a 3 second delay to beginning of video,
+      // this fixes cut off on beginning and end on streaming platforms
+      // https://superuser.com/questions/538031/what-is-difference-between-ss-and-itsoffset-in-ffmpeg
+      `-itsoffset 3`
+    ]);
 
   // Create our overlay
   // Note: Positions and sizes are done relative to the input video width and height
@@ -254,11 +260,6 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   doubleSlashOptimizedVideo = optimizedVideo.replace(/\\/g, '\\\\').replace(/:/g, '\\:');
   complexFilterString += `movie=\'${doubleSlashOptimizedVideo}\':loop=0,setpts=N/FRAME_RATE/TB`;
 
-  // Add our overlayText
-  if (overlayTextFilterString) {
-    complexFilterString += `,${overlayTextFilterString}`;
-  }
-
   // Add our overlay image
   // This works by getting the initial filter chain applied to the first
   // input, aka [0:v], and giving it a label, [videowithtext].
@@ -277,9 +278,14 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     const imagePath = upath.join(path, imageObject.image_path);
     ffmpegCommand = ffmpegCommand.input(imagePath);
     complexFilterString +=
-      ` [videowithtext];` +
-      `[1:v][videowithtext] scale2ref [scaledoverlayimage][scaledvideowithtext];` +
-      `[scaledvideowithtext][scaledoverlayimage] overlay=x=${imageObject.position_x}:y=${imageObject.position_y}`;
+      ` [video];` +
+      `[1:v][video] scale2ref [scaledoverlayimage][scaledvideo];` +
+      `[scaledvideo][scaledoverlayimage] overlay=x=${imageObject.position_x}:y=${imageObject.position_y}`;
+  }
+
+  // Add our overlayText
+  if (overlayTextFilterString) {
+    complexFilterString += `,${overlayTextFilterString}`;
   }
 
   // Apply our complext filter
@@ -299,14 +305,19 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     `-b:a ${config.audio_bit_rate}`,
     // Set audio sample rate
     `-ar ${config.audio_sample_rate}`,
+    // Set our audio codec, this can drastically affect performance
+    `-acodec ${config.audio_codec}`,
     // Set our video codec, and encoder options
     // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
-    `-vcodec libx264`,
-    `-preset veryfast`,
+    `-vcodec ${config.video_codec}`,
+    `-preset ${config.preset}`,
     `-pix_fmt yuv420p`,
-    `-bufsize 960k`,
-    `-crf 28`,
-    `-x264opts keyint=${config.video_fps * 2}:min-keyint=${config.video_fps * 2}:scenecut=-1`,
+    `-bufsize ${config.bufsize}`,
+    `-crf ${config.crf}`,
+    `-x264-params keyint=${config.video_fps * 2}:min-keyint=${config.video_fps * 2}:scenecut=-1`,
+    // Set the maximum number of threads ffmpeg should use
+    // This is useful for maxing sure ffmpeg wont use 100% of cpu
+    `-threads ${config.threads}`,
     // Set format to flv (Youtube/Twitch)
     `-f flv`
   ]);
