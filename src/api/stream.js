@@ -101,4 +101,41 @@ module.exports = (fastify, path, stream, config) => {
       };
     })
   );
+
+  // Returns 405
+  fastify.post(
+    '/stream',
+    authService.secureRouteHandler(config, async (request, reply) => {
+      reply.type('application/json').code(405);
+      return {};
+    })
+  );
+  fastify.get(
+    '/stream/start',
+    authService.secureRouteHandler(config, async (request, reply) => {
+      reply.type('application/json').code(405);
+      return {};
+    })
+  );
+  fastify.get(
+    '/stream/stop',
+    authService.secureRouteHandler(config, async (request, reply) => {
+      reply.type('application/json').code(405);
+      return {};
+    })
+  );
+  fastify.get(
+    '/stream/restart',
+    authService.secureRouteHandler(config, async (request, reply) => {
+      reply.type('application/json').code(405);
+      return {};
+    })
+  );
+  fastify.post(
+    '/stream/history',
+    authService.secureRouteHandler(config, async (request, reply) => {
+      reply.type('application/json').code(405);
+      return {};
+    })
+  );
 };
