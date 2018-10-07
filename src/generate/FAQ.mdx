@@ -10,16 +10,29 @@ route: /projectmanagement/FAQ
 
 | Type | Supported Filetypes |
 | - | - |
-| Audio | `.mp3` |
-| Video | `.mp4` `.webm` `.gif` |
+| Audio | `.mp3`, `.wav`, `.flac` |
+| Video | `.mp4`, `.gif`, `.avi`, `.mov`, `.mkv`, `.webm` |
 | Font | `.ttf` |
+| Image | `.png` |
 
-Using .gifs is not recommended, as both file-size and performance are better for video files.
+In terms of encoding video, `.gif` files are the slowest as they need to be pre-encoded before encoded onto the stream.
 
 
 ## How is Audio Metadata determined
 
 Audio metadata is collected using [music-metadata](https://www.npmjs.com/package/music-metadata). I'd suggest ensuring that all of your audio has the correct metadata before uploading it to your project.
+
+## How are the overlays layered
+
+The overlays are layered over one another in the following order:
+
+* Video (bottom)
+* Image
+* Text (top)
+
+Also, as a comparison to CSS z-index, The video could be 0, the image could be 1, and the text could be 2. 
+
+Also, this means that if we enabled the image overlay, it should contain transparency to see the video underneath.
 
 ## Can I Edit the Project While it is Running
 

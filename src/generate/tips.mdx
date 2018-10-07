@@ -13,3 +13,7 @@ I'd suggest using a lightweight file server like [Droppy](https://github.com/sil
 ## Systemd / Run on Boot
 
 On Ubuntu and Raspbian machine, you can get the stream to run on boot using systemd. I have a [systemctl service](https://github.com/torch2424/dotFiles/blob/master/.files_templates/systemctl.service) in my personal dotfiles I fill out to do this. I'd suggest looking there, and the links I provided in the comments to see how to get up and running with this. Another alternative is to look into setting this up in a crontab using `@reboot`.
+
+## Config Settings
+
+For more context on the config settings, see this [FFmpeg wiki on encoding for streaming](https://trac.ffmpeg.org/wiki/EncodingForStreamingSites). If you are familiar with FFmpeg and it's usage, see the [`stream.js`](https://github.com/torch2424/live-stream-radio/blob/master/src/stream/stream.js) source file for how FFmpeg flags are bing used.

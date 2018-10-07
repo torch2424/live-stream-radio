@@ -5,9 +5,6 @@ const stream = require('./stream.js');
 // Save our current path
 let currentPath = undefined;
 
-// Save our current config
-let currentConfig = undefined;
-
 // Save our current outputlocation
 let currentOutputLocation = undefined;
 
@@ -46,7 +43,7 @@ const endCallback = () => {
 
 // Create our exports
 const moduleExports = {
-  start: async (path, config, outputLocation) => {
+  start: async (path, outputLocation) => {
     console.log('\n');
     chalkLine.white();
     console.log('\n');
@@ -57,25 +54,29 @@ const moduleExports = {
     if (path) {
       currentPath = path;
     }
-    if (config) {
-      currentConfig = config;
-    }
     if (outputLocation) {
       currentOutputLocation = outputLocation;
     }
 
-    //  Build our stream url
-    if (!currentOutputLocation) {
-      if (!currentConfig.stream_url || !currentConfig.stream_key) {
-        console.log(`${chalk.red('Missing a stream_url or a stream_key in your config.json !')} 😟`);
-        console.log(chalk.red('Exiting...'));
-        console.log('\n');
-        process.exit(1);
-      }
+    // Get our config, this will refresh on every song
+    let config = require(`${currentPath}/config.json`);
 
-      let streamUrl = currentConfig.stream_url;
-      streamUrl = streamUrl.replace('$stream_key', currentConfig.stream_key);
-      currentOutputLocation = streamUrl;
+    //  Build our stream outputs
+    if (!currentOutputLocation) {
+      if (config.stream_outputs) {
+        currentOutputLocation = config.stream_outputs;
+      } else {
+        if (!config.stream_url || !config.stream_key) {
+          console.log(`${chalk.red('Missing stream_outputs in your config.json !')} 😟`);
+          console.log(chalk.red('Exiting...'));
+          console.log('\n');
+          process.exit(1);
+        }
+
+        let streamUrl = config.stream_url;
+        streamUrl = streamUrl.replace('$stream_key', config.stream_key);
+        currentOutputLocation = streamUrl;
+      }
     }
 
     console.log(`${chalk.magenta('Streaming to:')} ${currentOutputLocation}`);
@@ -85,7 +86,7 @@ const moduleExports = {
     shouldListenForFfmpegErrors = true;
 
     // Start the stream again
-    ffmpegCommandPromise = stream(currentPath, currentConfig, currentOutputLocation, endCallback, errorCallback);
+    ffmpegCommandPromise = stream(currentPath, config, currentOutputLocation, endCallback, errorCallback);
     await ffmpegCommandPromise;
   },
   stop: async () => {

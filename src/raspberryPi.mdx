@@ -1,0 +1,57 @@
+---
+name: Raspberry Pi
+route: /raspberry-pi
+order: 999
+---
+
+# Raspberry Pi
+
+This page contains tips for setting up `live-stream-radio` on a raspberry pi.
+
+### FFmpeg Installation
+
+Installing live-stream-radio on a raspberry pi follows the same proedures from the [CLI Getting Started](/cli/getting-started), however, there is a more streamlined way of getting FFmpeg installed. Since the project was formerly called `piStreamRadio`, we have a FFmpeg build that can still be downloaded and used directly. First, you need to install the build dependencies:
+
+```
+# Install some shared libs
+sudo apt-get install -y gifsicle \
+       autoconf automake build-essential libass-dev \
+       libfreetype6-dev libtheora-dev libtool libvorbis-dev \
+       pkg-config texinfo zlib1g-dev libgnutls28-dev \
+       librtmp-dev libssl-dev libx264-dev libasound2-dev
+
+# Install an audio decoder
+wget http://ftp.us.debian.org/debian/pool/non-free/f/fdk-aac/libfdk-aac-dev_0.1.3+20140816-2_armhf.deb
+wget http://ftp.us.debian.org/debian/pool/non-free/f/fdk-aac/libfdk-aac0_0.1.3+20140816-2_armhf.deb
+
+# Install our audio decoders
+sudo dpkg -i libfdk-aac0_0.1.3+20140816-2_armhf.deb
+sudo dpkg -i libfdk-aac-dev_0.1.3+20140816-2_armhf.deb
+
+# Clean up the .deb files for the decoders
+rm libfdk-aac0_0.1.3+20140816-2_armhf.deb
+rm libfdk-aac-dev_0.1.3+20140816-2_armhf.deb
+```
+
+Next, you can download `piStreamRadio` 1.2.0 [ffmpeg raspberry pi build](https://github.com/torch2424/live-stream-radio/blob/1.2.0/ffmpeg/ffmpeg). **Remember where this file is saved, as it will be used in the config.json later**.
+
+### Configuring your project
+
+After following the easy FFmpeg installation steps above, and completing the rest of the [CLI Getting Started](/cli/getting-started), here are some nice defaults for raspberry pi to get things performing better. You want to replace the values of the keys in your project `congig.json` with the ones below:
+
+| Field | Usage |
+| - | - |
+| audio_codec | "libfdk_aac" |
+| video_height | "360" |
+| video_width | "640" |
+| video_fps | "18" |
+| crf | "32" |
+| preset | "ultrafast" |
+
+This should definitely help performance and reduce buffering for your viewers.
+
+### Adding Video to your project
+
+We **Definitely** reccomend using the fastest formats for decoding so that they can be encoded faster and put less strain on the pi. We reccomend adding `.webm` to store your video, as for some reason FFmpeg tends to handle this to best.
+
+

@@ -6,9 +6,10 @@ const upath = require('upath');
 const progress = require('cli-progress');
 
 // Get our Services and helper fucntions
-const getRandomFileWithExtensionFromPath = require('./randomFile');
 const historyService = require('../history.service');
 const supportedFileTypes = require('../supportedFileTypes');
+const getRandomFileWithExtensionFromPath = require('./randomFile');
+const getOverlayTextString = require('./overlayText');
 
 // Allow pre rendering the next video if needed
 let nextVideo = undefined;
@@ -153,93 +154,18 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     .input(randomSong)
     // Copy over the video audio
     .audioCodec('copy')
-    // Livestream, encode in realtime as audio comes in
-    // https://superuser.com/questions/508560/ffmpeg-stream-a-file-with-original-playing-rate
-    .inputOptions(`-re`);
+    .inputOptions([
+      // Livestream, encode in realtime as audio comes in
+      // https://superuser.com/questions/508560/ffmpeg-stream-a-file-with-original-playing-rate
+      `-re`,
+      // Add a short delay to beginning of video,
+      // this fixes cut off on beginning and end on streaming platforms
+      // https://superuser.com/questions/538031/what-is-difference-between-ss-and-itsoffset-in-ffmpeg
+      `-itsoffset 2`
+    ]);
 
-  // Create our overlay
-  // Note: Positions and sizes are done relative to the input video width and height
-  // Therefore position x/y is a percentage, like CSS style.
-  // Font size is simply just a fraction of the width
-  let overlayTextFilterString = '';
-  if (config[typeKey].overlay && config[typeKey].overlay.enabled) {
-    const overlayConfigObject = config[typeKey].overlay;
-    const overlayTextItems = [];
-
-    const fontPath = `${path}${overlayConfigObject.font_path}`;
-
-    // Check if we have a title option
-    if (overlayConfigObject.title && overlayConfigObject.title.enabled) {
-      const itemObject = overlayConfigObject.title;
-      let itemString =
-        `drawtext=text='${itemObject.text}'` +
-        `:fontfile=${fontPath}` +
-        `:fontsize=(w * ${itemObject.font_size / 300})` +
-        `:bordercolor=${itemObject.font_border}` +
-        `:borderw=1` +
-        `:fontcolor=${itemObject.font_color}` +
-        `:y=(h * ${itemObject.position_y / 100})`;
-      if (itemObject.enable_scroll) {
-        itemString += `:x=w-mod(max(t\\, 0) * (w + tw) / ${itemObject.font_scroll_speed}\\, (w + tw))`;
-      } else {
-        itemString += `:x=(w * ${itemObject.position_x / 100})`;
-      }
-      overlayTextItems.push(itemString);
-    }
-
-    // Check if we have an artist option
-    if (overlayConfigObject.artist && overlayConfigObject.artist.enabled) {
-      const itemObject = overlayConfigObject.artist;
-      let itemString =
-        `drawtext=text='${itemObject.label}${metadata.common.artist}'` +
-        `:fontfile=${fontPath}` +
-        `:fontsize=(w * ${itemObject.font_size / 300})` +
-        `:bordercolor=${itemObject.font_border}` +
-        `:borderw=1` +
-        `:fontcolor=${itemObject.font_color}` +
-        `:y=(h * ${itemObject.position_y / 100})` +
-        `:x=(w * ${itemObject.position_x / 100})`;
-      overlayTextItems.push(itemString);
-    }
-
-    // Check if we have an album option
-    if (overlayConfigObject.album && overlayConfigObject.album.enabled) {
-      const itemObject = overlayConfigObject.album;
-      let itemString =
-        `drawtext=text='${itemObject.label}${metadata.common.album}'` +
-        `:fontfile=${fontPath}` +
-        `:fontsize=(w * ${itemObject.font_size / 300})` +
-        `:bordercolor=${itemObject.font_border}` +
-        `:borderw=1` +
-        `:fontcolor=${itemObject.font_color}` +
-        `:y=(h * ${itemObject.position_y / 100})` +
-        `:x=(w * ${itemObject.position_x / 100})`;
-      overlayTextItems.push(itemString);
-    }
-
-    // Check if we have an artist option
-    if (overlayConfigObject.song && overlayConfigObject.song.enabled) {
-      const itemObject = overlayConfigObject.song;
-      let itemString =
-        `drawtext=text='${itemObject.label}${metadata.common.title}'` +
-        `:fontfile=${fontPath}` +
-        `:fontsize=(w * ${itemObject.font_size / 300})` +
-        `:bordercolor=${itemObject.font_border}` +
-        `:borderw=1` +
-        `:fontcolor=${itemObject.font_color}` +
-        `:y=(h * ${itemObject.position_y / 100})` +
-        `:x=(w * ${itemObject.position_x / 100})`;
-      overlayTextItems.push(itemString);
-    }
-
-    // Add our video filter with all of our overlays
-    overlayTextItems.forEach((item, index) => {
-      overlayTextFilterString += `${item}`;
-      if (index < overlayTextItems.length - 1) {
-        overlayTextFilterString += ',';
-      }
-    });
-  }
+  // Get our overlay text
+  const overlayTextFilterString = await getOverlayTextString(path, config, typeKey, metadata);
 
   // Start creating our complex filter for overlaying things
   let complexFilterString = '';
@@ -253,11 +179,6 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   // https://trac.ffmpeg.org/wiki/FilteringGuide#FiltergraphChainFilterrelationship
   doubleSlashOptimizedVideo = optimizedVideo.replace(/\\/g, '\\\\').replace(/:/g, '\\:');
   complexFilterString += `movie=\'${doubleSlashOptimizedVideo}\':loop=0,setpts=N/FRAME_RATE/TB`;
-
-  // Add our overlayText
-  if (overlayTextFilterString) {
-    complexFilterString += `,${overlayTextFilterString}`;
-  }
 
   // Add our overlay image
   // This works by getting the initial filter chain applied to the first
@@ -277,39 +198,18 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     const imagePath = upath.join(path, imageObject.image_path);
     ffmpegCommand = ffmpegCommand.input(imagePath);
     complexFilterString +=
-      ` [videowithtext];` +
-      `[1:v][videowithtext] scale2ref [scaledoverlayimage][scaledvideowithtext];` +
-      `[scaledvideowithtext][scaledoverlayimage] overlay=x=${imageObject.position_x}:y=${imageObject.position_y}`;
+      ` [video];` +
+      `[1:v][video] scale2ref [scaledoverlayimage][scaledvideo];` +
+      `[scaledvideo][scaledoverlayimage] overlay=x=${imageObject.position_x}:y=${imageObject.position_y}`;
+  }
+
+  // Add our overlayText
+  if (overlayTextFilterString) {
+    complexFilterString += `,${overlayTextFilterString}`;
   }
 
   // Apply our complext filter
   ffmpegCommand = ffmpegCommand.complexFilter(complexFilterString);
-
-  // Add our output options for the stream
-  ffmpegCommand = ffmpegCommand.outputOptions([
-    // Stop once the shortest input ends (audio)
-    `-shortest`,
-    // Add our fps
-    `-r ${config.video_fps}`,
-    // Define our video size
-    `-s ${config.video_width}x${config.video_height}`,
-    // Set video bitrate
-    `-b:v ${config.video_bit_rate}`,
-    // Set audio bitrate
-    `-b:a ${config.audio_bit_rate}`,
-    // Set audio sample rate
-    `-ar ${config.audio_sample_rate}`,
-    // Set our video codec, and encoder options
-    // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
-    `-vcodec libx264`,
-    `-preset veryfast`,
-    `-pix_fmt yuv420p`,
-    `-bufsize 960k`,
-    `-crf 28`,
-    `-x264opts keyint=${config.video_fps * 2}:min-keyint=${config.video_fps * 2}:scenecut=-1`,
-    // Set format to flv (Youtube/Twitch)
-    `-f flv`
-  ]);
 
   // Set our event handlers
   ffpmepgCommand = ffmpegCommand
@@ -336,8 +236,84 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
       progressBar.update(seconds);
     });
 
+  // Create our ouput options
+  // Some defaults we don't want changed
+  const outputOptions = [
+    // Stop once the shortest input ends (audio)
+    `-shortest`,
+    // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
+    `-pix_fmt yuv420p`,
+    // Setting keyframes, alternative newer option to -x264opts
+    `-x264-params keyint=${config.video_fps * 2}:min-keyint=${config.video_fps * 2}:scenecut=-1`
+  ];
+
+  // Optional values
+  if (config.video_fps) {
+    outputOptions.push(`-r ${config.video_fps}`);
+  } else {
+    outputOptions.push(`-r 24`);
+  }
+
+  if (config.video_width && config.video_height) {
+    outputOptions.push(`-s ${config.video_width}x${config.video_height}`);
+  } else {
+    outputOptions.push(`-s 480x854`);
+  }
+
+  if (config.video_bit_rate) {
+    outputOptions.push(`-b:v ${config.video_bit_rate}`);
+  }
+
+  if (config.audio_bit_rate) {
+    outputOptions.push(`-b:a ${config.audio_bit_rate}`);
+  }
+
+  if (config.audio_sample_rate) {
+    outputOptions.push(`-ar ${config.audio_sample_rate}`);
+  }
+
+  // Set our audio codec, this can drastically affect performance
+  if (config.audio_codec) {
+    outputOptions.push(`-acodec ${config.audio_codec}`);
+  } else {
+    outputOptions.push(`-acodec aac`);
+  }
+
+  // Set our video codec, and encoder options
+  // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
+  if (config.video_codec) {
+    outputOptions.push(`-vcodec ${config.video_codec}`);
+  } else {
+    outputOptions.push(`-vcodec libx264`);
+  }
+  if (config.preset) {
+    outputOptions.push(`-preset ${config.preset}`);
+  }
+  if (config.bufsize) {
+    outputOptions.push(`-bufsize ${config.bufsize}`);
+  }
+  if (config.crf) {
+    outputOptions.push(`-crf ${config.crf}`);
+  }
+  if (config.threads) {
+    outputOptions.push(`-threads ${config.threads}`);
+  }
+
   // Finally, save the stream to our stream URL
-  ffmpegCommand = ffmpegCommand.save(outputLocation);
+  let singleOutputLocation = '';
+  if (Array.isArray(outputLocation)) {
+    singleOutputLocation = outputLocation[0];
+  } else {
+    singleOutputLocation = outputLocation;
+  }
+
+  // Add our output options for the stream
+  ffmpegCommand = ffmpegCommand.outputOptions([
+    ...outputOptions,
+    // Set format to flv (Youtube/Twitch)
+    `-f flv`
+  ]);
+  ffmpegCommand = ffmpegCommand.save(singleOutputLocation);
 
   // Start some pre-rendering
   const preRenderTask = async () => {
