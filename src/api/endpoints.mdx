@@ -195,3 +195,60 @@ Only showing one item from the generated example content. And used the `include_
 }
 ```
 
+## GET /config
+
+### Description
+
+Returns a param of the config.json. If no key is set, all config params will be returned
+
+### Query Params
+
+* `key` - The config key in dot-notation (example: 'api.host', 'interlude.overlay.enabled')
+
+### Example Response:
+**HTTP 200** - Successful
+```
+{
+    "key": "interlude.enabled",
+    "value": true
+}
+```
+**HTTP 404** - Key not existant
+```
+{
+    "key": "interlude.awesomeness_level",
+    "value": null
+}
+```
+
+## POST /config
+
+### Description
+
+Changes a config param in the config.json. If they key has no value, it will be added
+
+### Body Params
+
+* `key` - The config key in dot-notation (example: 'api.host', 'interlude.overlay.enabled')
+* `value` - The new value for the config in json (example: (string) "test", (number) 5, (boolean) true)
+
+### Example Response:
+**HTTP 200** - Successful
+```
+{
+    "response": {
+        "key": "interlude.frequency",
+        "oldValue": "0.5",
+        "newValue": "0.2"
+    }
+}
+```
+**HTTP 200** - Key not existant, new key will be saved
+```
+{
+    "response": {
+        "key": "interlude.awesomeness_level",
+        "newValue": "over 9000"
+    }
+}
+```
