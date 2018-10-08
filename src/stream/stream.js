@@ -186,7 +186,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   if (config.normalize_audio) {
     // Use the loudnorm filter
     // http://ffmpeg.org/ffmpeg-filters.html#loudnorm
-    complexFilterString += `[delayedaudio] loudnorm [delayedaudio]; `;
+    complexFilterString += `[delayedaudio] loudnorm [audiooutput]; `;
   }
 
   // Okay this some weirdness. Involving fps.
@@ -224,7 +224,8 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     complexFilterString +=
       ` [inputvideo];` +
       `[2:v][inputvideo] scale2ref [scaledoverlayimage][scaledvideo];` +
-      `[scaledvideo][scaledoverlayimage] overlay=x=${imageObject.position_x}:y=${imageObject.position_y}`;
+      // Notice the overlay shortest =1, this is required to stop the video from looping infinitely
+      `[scaledvideo][scaledoverlayimage] overlay=shortest=1:x=${imageObject.position_x}:y=${imageObject.position_y}`;
   }
 
   // Add our overlayText
@@ -234,6 +235,9 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     }
     complexFilterString += `${overlayTextFilterString}`;
   }
+
+  // Set our final output video pad
+  complexFilterString += ` [videooutput]`;
 
   // Apply our complext filter
   ffmpegCommand = ffmpegCommand.complexFilter(complexFilterString);
@@ -281,7 +285,8 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   // Create our ouput options
   // Some defaults we don't want changed
   const outputOptions = [
-    `-map [delayedaudio]`,
+    `-map [videooutput]`,
+    `-map [audiooutput]`,
     // Our fps from earlier
     `-r ${configFps}`,
     // Stop once the shortest input ends (audio)

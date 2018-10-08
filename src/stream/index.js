@@ -59,7 +59,7 @@ const moduleExports = {
     }
 
     // Get our config, this will refresh on every song
-    const configPath = `${path}/config.json`;
+    const configPath = `${currentPath}/config.json`;
     let config;
     try {
       config = require(configPath);
