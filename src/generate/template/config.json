@@ -6,7 +6,7 @@
   "audio_codec": "aac",
   "audio_bit_rate": "128k",
   "audio_sample_rate": "44100",
-  "normalize_audio": false,
+  "normalize_audio": true,
   "video_height": "480",
   "video_width": "854",
   "video_bit_rate": "500k",
