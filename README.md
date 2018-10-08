@@ -4,10 +4,6 @@ _formerly known as piStreamRadio._
 
 [![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/torch2424)
 
-**Example Stream: "Galaxy Noise Radio". Click the image to check out the stream!**
-
-[![Galaxy Noise Radio Live Stream link](https://files.aaronthedev.com/$/zk7xg)](https://www.youtube.com/channel/UCLkeIxbDJ8-kH7B9qJkyxQg/live)
-
 [CLI Usage Screenshot](./docz/assets/CLIUsage.png) 🖼️
 
 [Documentation](https://torch2424.github.io/live-stream-radio/) 📚
