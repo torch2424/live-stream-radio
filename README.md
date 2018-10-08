@@ -6,7 +6,7 @@ _formerly known as piStreamRadio._
 
 **Example Stream: "Galaxy Noise Radio". Click the image to check out the stream!**
 
-[![Galaxy Noise Radio Live Stream link](https://files.aaronthedev.com/$/ugbbg)](https://www.youtube.com/channel/UCLkeIxbDJ8-kH7B9qJkyxQg/live)
+[![Galaxy Noise Radio Live Stream link](https://files.aaronthedev.com/$/zk7xg)](https://www.youtube.com/channel/UCLkeIxbDJ8-kH7B9qJkyxQg/live)
 
 [CLI Usage Screenshot](./docz/assets/CLIUsage.png) 🖼️
 
@@ -39,7 +39,7 @@ Currently, this should work under any OS with support for [Node](https://nodejs.
 
 # Example Assets from the `--generate` template
 
-Music is by [Aviscerall](https://aviscerall.bandcamp.com/), and [Marquice Turner](https://marquiceturner.bandcamp.com/). Which is actually me (@torch2424), but I have a musical identitiy problem 😛 . The 8 bit gif is of a game demo [Star Samurai](https://github.com/torch2424/StarSamurai), and the Driving gif is from [Code and Coffee LB](http://codeandcoffeelb.org/). The .mp4 and .webm of the rotating earth, is a [public domain video I found on Youtube](https://www.youtube.com/watch?v=uuY1RXZyUFs). The image overlay uses images from EmojiOne, in particular, their [video camera emoji](https://www.emojione.com/emoji/1f4f9), and their [radio emoji](https://www.emojione.com/emoji/1f4fb).
+Music is by [Aviscerall](https://aviscerall.bandcamp.com/), and [Marquice Turner](https://marquiceturner.bandcamp.com/). Which is actually me (@torch2424), but I have a musical identitiy problem 😛 . The .mp4 and .webm of the rotating earth, is a [public domain video I found on Youtube](https://www.youtube.com/watch?v=uuY1RXZyUFs). The image overlay uses images from EmojiOne, in particular, their [video camera emoji](https://www.emojione.com/emoji/1f4f9), and their [radio emoji](https://www.emojione.com/emoji/1f4fb).
 
 # Contributing
 

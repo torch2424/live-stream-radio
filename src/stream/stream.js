@@ -111,6 +111,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   if (metadata.common.title) {
     console.log(chalk.yellow(`Song: ${metadata.common.title}`));
   }
+  console.log(chalk.yellow(`Duration (seconds): ${Math.ceil(metadata.format.duration)}`));
   console.log('\n');
   // Log a album cover if available
   if (metadata.common.picture && metadata.common.picture.length > 0) {
@@ -130,17 +131,6 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     }
   }
 
-  // Let's create a nice progress bar
-  // Using the song length as the 100%, as that is when the stream should end
-  const songTotalDuration = Math.floor(metadata.format.duration);
-  const progressBar = new progress.Bar(
-    {
-      format: 'Audio Progress {bar} {percentage}% | Time Playing: {duration_formatted}'
-    },
-    progress.Presets.shades_classic
-  );
-  progressBar.start(songTotalDuration, 0);
-
   // Create a new command
   ffmpegCommand = ffmpeg();
 
@@ -149,36 +139,69 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     ffmpegCommand = ffmpegCommand.setFfmpegPath(config.ffmpeg_path);
   }
 
+  // Create a ffmpeg safe string
+  doubleSlashOptimizedVideo = optimizedVideo.replace(/\\/g, '\\\\').replace(/:/g, '\\:');
+  // Add the video input
+  ffmpegCommand = ffmpegCommand.input(doubleSlashOptimizedVideo).inputOptions([
+    // Loop the video infinitely
+    `-stream_loop -1`
+  ]);
+
   // Add our audio as input
+  ffmpegCommand = ffmpegCommand.input(randomSong).audioCodec('copy');
+
+  // Add a silent input
+  // This is useful for setting the stream -re
+  // pace, as well as not causing any weird bugs where we only have a video
+  // And no audio output
+  // https://trac.ffmpeg.org/wiki/Null#anullsrc
   ffmpegCommand = ffmpegCommand
-    .input(randomSong)
-    // Copy over the video audio
+    .input('anullsrc')
     .audioCodec('copy')
     .inputOptions([
+      // Indicate we are a virtual input
+      `-f lavfi`,
       // Livestream, encode in realtime as audio comes in
       // https://superuser.com/questions/508560/ffmpeg-stream-a-file-with-original-playing-rate
-      `-re`,
-      // Add a short delay to beginning of video,
-      // this fixes cut off on beginning and end on streaming platforms
-      // https://superuser.com/questions/538031/what-is-difference-between-ss-and-itsoffset-in-ffmpeg
-      `-itsoffset 2`
+      // Need the -re here as video can drastically reduce input speed, and input audio has delay
+      `-re`
     ]);
-
-  // Get our overlay text
-  const overlayTextFilterString = await getOverlayTextString(path, config, typeKey, metadata);
 
   // Start creating our complex filter for overlaying things
   let complexFilterString = '';
 
-  // Add our video as a movie filter, and our overlay
-  // This is the only thing I could find to loop mp4
-  // NOTE: Need to add , instead of semi colon. Comma will make the
-  // filters applied in sucession, rather than create overlayed outputs per filter.
-  // https://stackoverflow.com/questions/47885877/adding-loop-video-to-sound-ffmpeg
-  // https://ffmpeg.org/ffmpeg-filters.html#movie-1
-  // https://trac.ffmpeg.org/wiki/FilteringGuide#FiltergraphChainFilterrelationship
-  doubleSlashOptimizedVideo = optimizedVideo.replace(/\\/g, '\\\\').replace(/:/g, '\\:');
-  complexFilterString += `movie=\'${doubleSlashOptimizedVideo}\':loop=0,setpts=N/FRAME_RATE/TB`;
+  // Add silence in front of song to prevent / help with stream cutoff
+  // Since audio is streo, we have two channels
+  // https://ffmpeg.org/ffmpeg-filters.html#adelay
+  // In milliseconds
+  const delayInMilli = 3000;
+  complexFilterString += `[1:a] adelay=${delayInMilli}|${delayInMilli} [delayedaudio]; `;
+
+  // Mix our silent and song audio, se we always have an audio stream
+  // https://ffmpeg.org/ffmpeg-filters.html#amix
+  complexFilterString += `[delayedaudio][2:a] amix=inputs=2:duration=first:dropout_transition=3 [audiooutput]; `;
+
+  // Check if we want normalized audio
+  if (config.normalize_audio) {
+    // Use the loudnorm filter
+    // http://ffmpeg.org/ffmpeg-filters.html#loudnorm
+    complexFilterString += `[audiooutput] loudnorm [audiooutput]; `;
+  }
+
+  // Okay this some weirdness. Involving fps.
+  // So since we are realtime encoding to get the video to stream
+  // At an apporpriate rate, this means that we encode a certain number of frames to match this
+  // Now, let's say we have a 60fps input video, and want to output 24 fps. This is fine and work
+  // FFMPEG will output at ~24 fps (little more or less), and video will run at correct rate.
+  // But if you noticed the output "Current FPS" will slowly degrade to either the input
+  // our output fps. Therefore if we had an input video at lest say 8 fps, it will slowly
+  // Degrade to 8 fps, and then we start buffering. Thus we need to use a filter to force
+  // The input video to be converted to the output fps to get the correct speed at which frames are rendered
+  let configFps = '24';
+  if (config.video_fps) {
+    configFps = config.video_fps;
+  }
+  complexFilterString += `[0:v] fps=fps=${configFps}`;
 
   // Add our overlay image
   // This works by getting the initial filter chain applied to the first
@@ -198,21 +221,48 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     const imagePath = upath.join(path, imageObject.image_path);
     ffmpegCommand = ffmpegCommand.input(imagePath);
     complexFilterString +=
-      ` [video];` +
-      `[1:v][video] scale2ref [scaledoverlayimage][scaledvideo];` +
+      ` [inputvideo];` +
+      `[3:v][inputvideo] scale2ref [scaledoverlayimage][scaledvideo];` +
+      // Notice the overlay shortest =1, this is required to stop the video from looping infinitely
       `[scaledvideo][scaledoverlayimage] overlay=x=${imageObject.position_x}:y=${imageObject.position_y}`;
   }
 
   // Add our overlayText
+  const overlayTextFilterString = await getOverlayTextString(path, config, typeKey, metadata);
   if (overlayTextFilterString) {
-    complexFilterString += `,${overlayTextFilterString}`;
+    if (complexFilterString.length > 0) {
+      complexFilterString += `, `;
+    }
+    complexFilterString += `${overlayTextFilterString}`;
   }
+
+  // Set our final output video pad
+  complexFilterString += ` [videooutput]`;
 
   // Apply our complext filter
   ffmpegCommand = ffmpegCommand.complexFilter(complexFilterString);
 
+  // Let's create a nice progress bar
+  // Using the song length as the 100%, as that is when the stream should end
+  const songTotalDuration = Math.floor(metadata.format.duration);
+  const progressBar = new progress.Bar(
+    {
+      format: 'Audio Progress {bar} {percentage}% | Time Playing: {duration_formatted} |'
+    },
+    progress.Presets.shades_classic
+  );
+
   // Set our event handlers
   ffpmepgCommand = ffmpegCommand
+    .on('start', commandString => {
+      console.log(' ');
+      console.log(`${chalk.blue('Spawned Ffmpeg with command:')}`);
+      console.log(commandString);
+      console.log(' ');
+
+      // Start our progress bar
+      progressBar.start(songTotalDuration, 0);
+    })
     .on('end', () => {
       progressBar.stop();
       if (endCallback) {
@@ -236,23 +286,31 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
       progressBar.update(seconds);
     });
 
+  // Get our stream duration
+  // This is done instead of using the -shortest flag
+  // Because of a bug where -shortest can't be used with complex audio filter
+  // https://trac.ffmpeg.org/ticket/3789
+  // This will give us our song duration, plus some beginning and ending padding
+  const delayInSeconds = Math.ceil(delayInMilli / 1000);
+  const streamDuration = delayInSeconds * 2 + Math.ceil(metadata.format.duration);
+
   // Create our ouput options
-  // Some defaults we don't want changed
+  // Some defaults we don't want change
   const outputOptions = [
-    // Stop once the shortest input ends (audio)
-    `-shortest`,
+    `-map [videooutput]`,
+    `-map [audiooutput]`,
+    // Our fps from earlier
+    `-r ${configFps}`,
+    // Group of pictures, want to set to 2 seconds
+    // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
+    `-g ${parseInt(configFps, 10) * 2}`,
+    // Stop audio once we hit the specified duration
+    `-t ${streamDuration}`,
     // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
     `-pix_fmt yuv420p`,
     // Setting keyframes, alternative newer option to -x264opts
     `-x264-params keyint=${config.video_fps * 2}:min-keyint=${config.video_fps * 2}:scenecut=-1`
   ];
-
-  // Optional values
-  if (config.video_fps) {
-    outputOptions.push(`-r ${config.video_fps}`);
-  } else {
-    outputOptions.push(`-r 24`);
-  }
 
   if (config.video_width && config.video_height) {
     outputOptions.push(`-s ${config.video_width}x${config.video_height}`);
@@ -313,6 +371,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     // Set format to flv (Youtube/Twitch)
     `-f flv`
   ]);
+
   ffmpegCommand = ffmpegCommand.save(singleOutputLocation);
 
   // Start some pre-rendering

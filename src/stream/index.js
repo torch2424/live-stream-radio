@@ -59,7 +59,15 @@ const moduleExports = {
     }
 
     // Get our config, this will refresh on every song
-    let config = require(`${currentPath}/config.json`);
+    const configPath = `${currentPath}/config.json`;
+    let config;
+    try {
+      config = require(configPath);
+    } catch (e) {
+      console.log(`${chalk.red('error getting your config.json!')} 😞`);
+      console.log(e.message);
+      process.exit(1);
+    }
 
     //  Build our stream outputs
     if (!currentOutputLocation) {
@@ -67,7 +75,7 @@ const moduleExports = {
         currentOutputLocation = config.stream_outputs;
       } else {
         if (!config.stream_url || !config.stream_key) {
-          console.log(`${chalk.red('Missing stream_outputs in your config.json !')} 😟`);
+          console.log(`${chalk.red('Missing stream_url or stream_key in your config.json !')} 😟`);
           console.log(chalk.red('Exiting...'));
           console.log('\n');
           process.exit(1);
