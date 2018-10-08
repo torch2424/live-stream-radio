@@ -6,7 +6,7 @@ _formerly known as piStreamRadio._
 
 **Example Stream: "Galaxy Noise Radio". Click the image to check out the stream!**
 
-[![Galaxy Noise Radio Live Stream link](https://files.aaronthedev.com/$/ugbbg)](https://www.youtube.com/channel/UCLkeIxbDJ8-kH7B9qJkyxQg/live)
+[![Galaxy Noise Radio Live Stream link](https://files.aaronthedev.com/$/zk7xg)](https://www.youtube.com/channel/UCLkeIxbDJ8-kH7B9qJkyxQg/live)
 
 [CLI Usage Screenshot](./docz/assets/CLIUsage.png) 🖼️
 
