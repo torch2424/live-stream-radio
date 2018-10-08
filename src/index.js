@@ -75,7 +75,8 @@ let config = undefined;
 try {
   config = require(configPath);
 } catch (e) {
-  console.log(`${chalk.red('config.json was not find in project path!')} 😞`);
+  console.log(`${chalk.red('error getting your config.json!')} 😞`);
+  console.log(e.message);
   process.exit(1);
 }
 

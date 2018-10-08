@@ -42,13 +42,10 @@ After following the easy FFmpeg installation steps above, and completing the res
 | Field | Usage |
 | - | - |
 | audio_codec | "libfdk_aac" |
-| video_height | "360" |
-| video_width | "640" |
-| video_fps | "18" |
 | crf | "32" |
 | preset | "ultrafast" |
 
-This should definitely help performance and reduce buffering for your viewers.
+This should definitely help performance and reduce buffering for your viewers. Also, note, that decreasing "video_fps" may not actuall improve your performance, as this can affect how videos are encoded, and the rate at which this happens.
 
 ### Adding Video to your project
 

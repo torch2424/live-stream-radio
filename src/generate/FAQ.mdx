@@ -17,6 +17,9 @@ route: /projectmanagement/FAQ
 
 In terms of encoding video, `.gif` files are the slowest as they need to be pre-encoded before encoded onto the stream.
 
+## What are some reccomended bit rates
+
+Here is the [Youtube Reccomended Livestream](https://support.google.com/youtube/answer/2853702?hl=en) configuration for streaming software.
 
 ## How is Audio Metadata determined
 
@@ -38,6 +41,5 @@ Also, this means that if we enabled the image overlay, it should contain transpa
 
 *In Theory*, yes. You should be able to add files while the stream is running, and have them added to be streamed at a later point. However, be cautious of deleting files, as they may be streaming at the time of deletion and cause a crash. 
 
-The `config.json` currently requires a reboot of the stream to apply any changes.
-
+Also, be cautious editing the `config.json`, as having a bad config will exit the process.
 
