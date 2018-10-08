@@ -94,6 +94,6 @@ const startRadioTask = async () => {
   historyService.setNumberOfHistoryItems(config.api.number_of_history_items);
 
   // Start our stream
-  stream.start(path, argv.output);
+  await stream.start(path, argv.output);
 };
 startRadioTask();

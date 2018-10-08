@@ -148,21 +148,24 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   ]);
 
   // Add our audio as input
-  ffmpegCommand = ffmpegCommand.input(randomSong);
+  ffmpegCommand = ffmpegCommand.input(randomSong).audioCodec('copy');
 
   // Add a silent input
   // This is useful for setting the stream -re
   // pace, as well as not causing any weird bugs where we only have a video
   // And no audio output
   // https://trac.ffmpeg.org/wiki/Null#anullsrc
-  ffmpegCommand = ffmpegCommand.input('anullsrc').inputOptions([
-    // Indicate we are a virtual input
-    `-f lavfi`,
-    // Livestream, encode in realtime as audio comes in
-    // https://superuser.com/questions/508560/ffmpeg-stream-a-file-with-original-playing-rate
-    // Need the -re here as video can drastically reduce input speed, and input audio has delay
-    `-re`
-  ]);
+  ffmpegCommand = ffmpegCommand
+    .input('anullsrc')
+    .audioCodec('copy')
+    .inputOptions([
+      // Indicate we are a virtual input
+      `-f lavfi`,
+      // Livestream, encode in realtime as audio comes in
+      // https://superuser.com/questions/508560/ffmpeg-stream-a-file-with-original-playing-rate
+      // Need the -re here as video can drastically reduce input speed, and input audio has delay
+      `-re`
+    ]);
 
   // Start creating our complex filter for overlaying things
   let complexFilterString = '';
@@ -298,6 +301,9 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     `-map [audiooutput]`,
     // Our fps from earlier
     `-r ${configFps}`,
+    // Group of pictures, want to set to 2 seconds
+    // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
+    `-g ${parseInt(configFps, 10) * 2}`,
     // Stop audio once we hit the specified duration
     `-t ${streamDuration}`,
     // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
