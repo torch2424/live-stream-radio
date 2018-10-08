@@ -3,20 +3,20 @@ const upath = require('upath');
 const fs = require('fs-extra');
 const editJsonFile = require('edit-json-file');
 
-const getFullConfig = async (path, config) => {
+const getFullConfig = async (path) => {
+  // Get current config
+  let config = editJsonFile(upath.join(path, 'config.json'));
+  
   // Return Config
-  return [200, config];
+  return [200, config.toObject()];
 };
 
-// Neat filter function for recursive object idenfitier
-function index(obj, i) {
-  return obj[i];
-}
-
-const getConfigByKey = async (path, config, key) => {
+const getConfigByKey = async (path, key) => {
+  // Get current config
+  let config = editJsonFile(upath.join(path, 'config.json'));
+	
   // Return Config by a specific key
-  // https://stackoverflow.com/questions/6393943/convert-javascript-string-in-dot-notation-into-an-object-reference
-  let configValue = key.split('.').reduce(index, config);
+  let configValue = config.get(key);
 
   // Return 200 if it has a value and 404 if it does not have a value
   if (configValue) {
@@ -52,9 +52,9 @@ module.exports = (fastify, path, stream, config) => {
       // Returns full config is "key" is not set, otherwise only return the requested key
       let response;
       if (request.query.key) {
-        response = await getConfigByKey(path, config, request.query.key);
+        response = await getConfigByKey(path, request.query.key);
       } else {
-        response = await getFullConfig(path, config);
+        response = await getFullConfig(path);
       }
 
       reply.type('application/json').code(response[0]);
