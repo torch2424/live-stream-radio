@@ -1,6 +1,6 @@
 {
-  "app.js": "/live-stream-radio/static/js/app.0c1a4097.js",
-  "index.js": "/live-stream-radio/static/js/index.9a6c27f2.js",
+  "app.js": "/live-stream-radio/static/js/app.de5489c0.js",
+  "index.js": "/live-stream-radio/static/js/index.401635ef.js",
   "raspberry-pi.js": "/live-stream-radio/static/js/raspberry-pi.b58b8ae7.js",
   "api-endpoints.js": "/live-stream-radio/static/js/api-endpoints.851aa803.js",
   "api-frontend-development.js": "/live-stream-radio/static/js/api-frontend-development.2d931483.js",
@@ -9,7 +9,7 @@
   "generate-tips.js": "/live-stream-radio/static/js/generate-tips.cf739c57.js",
   "stream-gettingstarted.js": "/live-stream-radio/static/js/stream-gettingstarted.4a6f4b7e.js",
   "stream-usage.js": "/live-stream-radio/static/js/stream-usage.9886f570.js",
-  "vendors.js": "/live-stream-radio/static/js/vendors.76834237.js",
-  "runtime~app.js": "/live-stream-radio/static/js/runtime~app.5516251034dd3521a836.js",
+  "vendors.js": "/live-stream-radio/static/js/vendors.7f1507b0.js",
+  "runtime~app.js": "/live-stream-radio/static/js/runtime~app.52fdd170b7cc90ab45ae.js",
   "index.html": "/live-stream-radio/index.html"
 }
