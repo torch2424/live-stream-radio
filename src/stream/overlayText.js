@@ -1,4 +1,5 @@
 // Overlay text for the stream
+const safeStrings = require('./safeStrings');
 
 const getOverlayTextString = async (path, config, typeKey, metadata) => {
   // Create our overlay
@@ -15,8 +16,9 @@ const getOverlayTextString = async (path, config, typeKey, metadata) => {
     // Check if we have a title option
     if (overlayConfigObject.title && overlayConfigObject.title.enabled) {
       const itemObject = overlayConfigObject.title;
+      const safeText = safeStrings.text( itemObject.text );
       let itemString =
-        `drawtext=text='${itemObject.text}'` +
+        `drawtext=text='${safeText}'` +
         `:fontfile=${fontPath}` +
         `:fontsize=(w * ${itemObject.font_size / 300})` +
         `:bordercolor=${itemObject.font_border}` +
@@ -34,8 +36,9 @@ const getOverlayTextString = async (path, config, typeKey, metadata) => {
     // Check if we have an artist option
     if (overlayConfigObject.artist && overlayConfigObject.artist.enabled) {
       const itemObject = overlayConfigObject.artist;
+      const safeText = safeStrings.text( itemObject.label .  metadata.common.artist);
       let itemString =
-        `drawtext=text='${itemObject.label}${metadata.common.artist}'` +
+        `drawtext=text='${safeText}'` +
         `:fontfile=${fontPath}` +
         `:fontsize=(w * ${itemObject.font_size / 300})` +
         `:bordercolor=${itemObject.font_border}` +
@@ -49,8 +52,9 @@ const getOverlayTextString = async (path, config, typeKey, metadata) => {
     // Check if we have an album option
     if (overlayConfigObject.album && overlayConfigObject.album.enabled) {
       const itemObject = overlayConfigObject.album;
+      const safeText = safeStrings.text( itemObject.label .  metadata.common.album);
       let itemString =
-        `drawtext=text='${itemObject.label}${metadata.common.album}'` +
+        `drawtext=text='${safeText}'` +
         `:fontfile=${fontPath}` +
         `:fontsize=(w * ${itemObject.font_size / 300})` +
         `:bordercolor=${itemObject.font_border}` +
@@ -64,8 +68,9 @@ const getOverlayTextString = async (path, config, typeKey, metadata) => {
     // Check if we have an artist option
     if (overlayConfigObject.song && overlayConfigObject.song.enabled) {
       const itemObject = overlayConfigObject.song;
+      const safeText = safeStrings.text( itemObject.label .  metadata.common.title);
       let itemString =
-        `drawtext=text='${itemObject.label}${metadata.common.title}'` +
+        `drawtext=text='${safeText}'` +
         `:fontfile=${fontPath}` +
         `:fontsize=(w * ${itemObject.font_size / 300})` +
         `:bordercolor=${itemObject.font_border}` +
