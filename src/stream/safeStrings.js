@@ -32,6 +32,6 @@ var safeStringFilter = function(string) {
 }
 
 module.exports = {
-  forInput: safeStringinput,
+  forInput: safeStringInput,
   forIilter: safeStringFilter
 }
