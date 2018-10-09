@@ -1,5 +1,5 @@
 // Function to make paths safe that are used in an input
-var safeStringPath = function(string) {
+var safeStringInput = function(string) {
   var safeString = string;
 
   // Safen the string
@@ -14,7 +14,7 @@ var safeStringPath = function(string) {
 }
 
 // Function to make string safe that are used in a filter
-var safeStringText = function(string) {
+var safeStringFilter = function(string) {
   var safeString = string;
 
   // Safen the string
@@ -32,6 +32,6 @@ var safeStringText = function(string) {
 }
 
 module.exports = {
-  path: safeStringPath,
-  text: safeStringText
+  forInput: safeStringinput,
+  forIilter: safeStringFilter
 }
