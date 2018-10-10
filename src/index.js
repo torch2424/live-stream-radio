@@ -97,7 +97,7 @@ if (fs.existsSync(configJsPath)) {
     return config;
   };
 } else if (fs.existsSync(configJsonPath)) {
-  console.log(`${chalk.magenta('Using the config.json at:')} ${configJsPath}`);
+  console.log(`${chalk.magenta('Using the config.json at:')} ${configJsonPath}`);
   // Simply set our config to a function that just returns the static config.json
   getConfig = async () => {
     let configJson = undefined;
