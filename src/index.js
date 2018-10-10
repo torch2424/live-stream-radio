@@ -55,6 +55,7 @@ if (argv.generate !== undefined) {
 }
 
 // Start the server
+const fs = require('fs');
 const chalk = require('chalk');
 
 const historyService = require('./history.service');
@@ -72,23 +73,30 @@ if (lastPathChar != '/') {
 }
 
 // Find if we have a config in the path
-const configJsonPath = `${path}/config.json`;
-const configJsPath = `${path}/config.js`;
+const configJsonPath = `${path}config.json`;
+const configJsPath = `${path}config.js`;
 let getConfig = undefined;
 // First check if we have a config.js
 if (fs.existsSync(configJsPath)) {
-
   console.log(`${chalk.green('Using the config.js at:')} ${configJsPath}`);
   const configExport = require(configJsPath);
-  
+
   // Wrap get config in all of our stateful service
   getConfig = () => {
-    configExport({
-      history: historyService.getHistory(); 
-    }) 
-  }
-} else if (fs.existsSync(configJsonPath)) {
+    let config = undefined;
+    try {
+      config = configExport(path, {
+        history: historyService.getHistory()
+      });
+    } catch (e) {
+      console.log(`${chalk.red('error calling the config.js!')} 😞`);
+      console.log(e.message);
+      process.exit(1);
+    }
 
+    return config;
+  };
+} else if (fs.existsSync(configJsonPath)) {
   console.log(`${chalk.magenta('Using the config.json at:')} ${configJsPath}`);
   // Simply set our config to a function that just returns the static config.json
   getConfig = () => {
@@ -102,7 +110,7 @@ if (fs.existsSync(configJsPath)) {
     }
 
     return configJson;
-  }
+  };
 } else {
   // Tell them could not find a config file
   console.log(`${chalk.red('error did not find a config.json at:')} ${configJsonPath} 😞`);

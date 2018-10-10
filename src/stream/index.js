@@ -66,7 +66,7 @@ const moduleExports = {
     }
 
     // Get our config, this will refresh on every song
-    let config = getConfig();
+    let config = currentGetConfig();
 
     //  Build our stream outputs
     if (!currentOutputLocation) {
