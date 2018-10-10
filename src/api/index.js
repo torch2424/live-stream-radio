@@ -10,14 +10,14 @@ const addConfigRoutes = require('./config.js');
 const addLibraryRoutes = require('./library.js');
 
 let currentStream;
-let currentConfig;
+let currentGetConfig;
 
 // Export our
 module.exports = {
-  start: async (path, config, stream) => {
+  start: async (path, getConfig, stream) => {
     // save a reference to our stream and config
     currentStream = stream;
-    currentConfig = config;
+    currentGetConfig = getConfig;
 
     // Create our base "Hello world" route
     fastify.get('/', async (request, reply) => {
@@ -26,12 +26,14 @@ module.exports = {
     });
 
     // Implement our other routes
-    addStreamRoutes(fastify, path, currentStream, currentConfig);
-    addConfigRoutes(fastify, path, currentStream, currentConfig);
-    addLibraryRoutes(fastify, path, currentStream, currentConfig);
+    addStreamRoutes(fastify, path, currentStream, currentGetConfig);
+    addConfigRoutes(fastify, path, currentStream, currentGetConfig);
+    addLibraryRoutes(fastify, path, currentStream, currentGetConfig);
+
+    const config = await getConfig();
 
     await new Promise((resolve, reject) => {
-      fastify.listen(currentConfig.api.port, currentConfig.api.host, (err, address) => {
+      fastify.listen(config.api.port, config.api.host, (err, address) => {
         if (err) {
           reject(err);
         }

@@ -1,39 +1,16 @@
 ---
 name: Raspberry Pi
 route: /raspberry-pi
-order: 999
+order: 6
 ---
 
 # Raspberry Pi
 
-This page contains tips for setting up `live-stream-radio` on a raspberry pi. If you have any performance issues, or are not comfortable using Node.js, feel free to use the older (no longer updated) version of the project, [piStreamRadio v1.2.0](https://github.com/torch2424/live-stream-radio/tree/1.2.0).
+This page contains tips for setting up `live-stream-radio` on a raspberry pi. If you have any performance issues, or are not comfortable using Node.js, feel free to use the older (no longer updated) version of the project, [piStreamRadio v1.2.0](https://github.com/torch2424/live-stream-radio/tree/1.2.0). Please read over the [CLI Getting Started](/cli/getting-started) to have context on what steps are required, and how these steps streamline the usual install process for Raspberry Pis.
 
 ### FFmpeg Installation
 
-Installing live-stream-radio on a raspberry pi follows the same proedures from the [CLI Getting Started](/cli/getting-started), however, there is a more streamlined way of getting FFmpeg installed. Since the project was formerly called `piStreamRadio`, we have a FFmpeg build that can still be downloaded and used directly. First, you need to install the build dependencies:
-
-```
-# Install some shared libs
-sudo apt-get install -y gifsicle \
-       autoconf automake build-essential libass-dev \
-       libfreetype6-dev libtheora-dev libtool libvorbis-dev \
-       pkg-config texinfo zlib1g-dev libgnutls28-dev \
-       librtmp-dev libssl-dev libx264-dev libasound2-dev
-
-# Install an audio decoder
-wget http://ftp.us.debian.org/debian/pool/non-free/f/fdk-aac/libfdk-aac-dev_0.1.3+20140816-2_armhf.deb
-wget http://ftp.us.debian.org/debian/pool/non-free/f/fdk-aac/libfdk-aac0_0.1.3+20140816-2_armhf.deb
-
-# Install our audio decoders
-sudo dpkg -i libfdk-aac0_0.1.3+20140816-2_armhf.deb
-sudo dpkg -i libfdk-aac-dev_0.1.3+20140816-2_armhf.deb
-
-# Clean up the .deb files for the decoders
-rm libfdk-aac0_0.1.3+20140816-2_armhf.deb
-rm libfdk-aac-dev_0.1.3+20140816-2_armhf.deb
-```
-
-Next, you can download `piStreamRadio` 1.2.0 [ffmpeg raspberry pi build](https://github.com/torch2424/live-stream-radio/blob/1.2.0/ffmpeg/ffmpeg). **Remember where this file is saved, as it will be used in the config.json later**.
+Installing live-stream-radio on a raspberry pi follows the same proedures from the [CLI Getting Started](/cli/getting-started), however, there is a more streamlined way of getting FFmpeg installed. Since the project was formerly called `piStreamRadio`, we have an old script to compile FFmpeg for you on the [piStreamRadio v1.2.0 `additionalScripts/compileFFmpeg.sh`](https://github.com/torch2424/live-stream-radio/blob/1.2.0/additionalScripts/compileFFmpeg.sh). Re-iterating from the [CLI Getting Started](/cli/getting-started), **Note: this project requires FFmpeg version 4.2.0 or greater in order to ensure the best performance. [Please see this issue for explanation](https://github.com/torch2424/live-stream-radio/issues/78)**.
 
 ### Configuring your project
 

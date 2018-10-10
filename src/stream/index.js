@@ -5,6 +5,9 @@ const stream = require('./stream.js');
 // Save our current path
 let currentPath = undefined;
 
+// Save our current getConfig cuntion
+let currentGetConfig = undefined;
+
 // Save our current outputlocation
 let currentOutputLocation = undefined;
 
@@ -43,31 +46,27 @@ const endCallback = () => {
 
 // Create our exports
 const moduleExports = {
-  start: async (path, outputLocation) => {
+  start: async (path, getConfig, outputLocation) => {
     console.log('\n');
     chalkLine.white();
     console.log('\n');
     console.log(`${chalk.green('Starting stream!')} 🛠️`);
     console.log('\n');
 
-    // Save our passed params for later use
     if (path) {
       currentPath = path;
     }
+
+    if (getConfig) {
+      currentGetConfig = getConfig;
+    }
+
     if (outputLocation) {
       currentOutputLocation = outputLocation;
     }
 
     // Get our config, this will refresh on every song
-    const configPath = `${currentPath}/config.json`;
-    let config;
-    try {
-      config = require(configPath);
-    } catch (e) {
-      console.log(`${chalk.red('error getting your config.json!')} 😞`);
-      console.log(e.message);
-      process.exit(1);
-    }
+    let config = await currentGetConfig();
 
     //  Build our stream outputs
     if (!currentOutputLocation) {
