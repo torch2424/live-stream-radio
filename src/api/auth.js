@@ -1,5 +1,9 @@
 // Function to verify a key
-const verifyKey = async (config, request) => {
+const verifyKey = async (getConfig, request) => {
+  
+  // Get our returned config
+  config = getConfig();
+
   if (!config.api.key) {
     return true;
   }
@@ -18,9 +22,9 @@ const verifyKey = async (config, request) => {
 };
 
 // Function to wrap a standard route handler
-const secureRouteHandler = (config, routeHandler) => {
+const secureRouteHandler = (getConfig, routeHandler) => {
   return async (request, reply) => {
-    const keyResponse = await verifyKey(config, request);
+    const keyResponse = await verifyKey(getConfig, request);
     if (keyResponse) {
       return await routeHandler(request, reply);
     } else {

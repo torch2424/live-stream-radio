@@ -45,10 +45,10 @@ const toSafeString = function(string) {
   return string;
 };
 
-module.exports = (fastify, path, stream, config) => {
+module.exports = (fastify, path, stream, getConfig) => {
   fastify.get(
     '/config',
-    authService.secureRouteHandler(config, async (request, reply) => {
+    authService.secureRouteHandler(getConfig, async (request, reply) => {
       // Returns full config is "key" is not set, otherwise only return the requested key
       let response;
       if (request.query.key) {
@@ -68,7 +68,9 @@ module.exports = (fastify, path, stream, config) => {
   // Change a setting
   fastify.post(
     '/config',
-    authService.secureRouteHandler(config, async (request, reply) => {
+    authService.secureRouteHandler(getConfig, async (request, reply) => {
+      // We need our actual config here to make sure we are reurning the static json file    
+      const config = require(`${path}/config.json`);
       let response = await changeConfig(path, config, request.body.key, request.body.value);
 
       reply.type('application/json').code(response[0]);

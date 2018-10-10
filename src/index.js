@@ -57,6 +57,8 @@ if (argv.generate !== undefined) {
 // Start the server
 const chalk = require('chalk');
 
+const historyService = require('./history.service');
+
 // Check if we passed in a base path
 let path = process.cwd();
 if ((argv.start && argv.start.length > 0) || argv._.length > 0) {
@@ -70,12 +72,40 @@ if (lastPathChar != '/') {
 }
 
 // Find if we have a config in the path
-const configPath = `${path}/config.json`;
-let config = undefined;
-try {
-  config = require(configPath);
-} catch (e) {
-  console.log(`${chalk.red('error getting your config.json!')} 😞`);
+const configJsonPath = `${path}/config.json`;
+const configJsPath = `${path}/config.js`;
+let getConfig = undefined;
+// First check if we have a config.js
+if (fs.existsSync(configJsPath)) {
+
+  console.log(`${chalk.green('Using the config.js at:')} ${configJsPath}`);
+  const configExport = require(configJsPath);
+  
+  // Wrap get config in all of our stateful service
+  getConfig = () => {
+    configExport({
+      history: historyService.getHistory(); 
+    }) 
+  }
+} else if (fs.existsSync(configJsonPath)) {
+
+  console.log(`${chalk.magenta('Using the config.json at:')} ${configJsPath}`);
+  // Simply set our config to a function that just returns the static config.json
+  getConfig = () => {
+    let configJson = undefined;
+    try {
+      configJson = require(configJsonPath);
+    } catch (e) {
+      console.log(`${chalk.red('error reading the config.json!')} 😞`);
+      console.log(e.message);
+      process.exit(1);
+    }
+
+    return configJson;
+  }
+} else {
+  // Tell them could not find a config file
+  console.log(`${chalk.red('error did not find a config.json at:')} ${configJsonPath} 😞`);
   console.log(e.message);
   process.exit(1);
 }
@@ -87,13 +117,12 @@ const startRadioTask = async () => {
 
   // Start the api
   const api = require('./api/index.js');
-  await api.start(path, config, stream);
+  await api.start(path, getConfig, stream);
 
   // Set our number of history items
-  const historyService = require('./history.service');
-  historyService.setNumberOfHistoryItems(config.api.number_of_history_items);
+  historyService.setNumberOfHistoryItems(getConfig().api.number_of_history_items);
 
   // Start our stream
-  await stream.start(path, argv.output);
+  await stream.start(path, getConfig, argv.output);
 };
 startRadioTask();
