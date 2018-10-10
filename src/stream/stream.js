@@ -6,6 +6,7 @@ const upath = require('upath');
 const progress = require('cli-progress');
 
 // Get our Services and helper fucntions
+const safeStrings = require('./safeStrings');
 const historyService = require('../history.service');
 const supportedFileTypes = require('../supportedFileTypes');
 const getRandomFileWithExtensionFromPath = require('./randomFile');
@@ -139,10 +140,8 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     ffmpegCommand = ffmpegCommand.setFfmpegPath(config.ffmpeg_path);
   }
 
-  // Create a ffmpeg safe string
-  doubleSlashOptimizedVideo = optimizedVideo.replace(/\\/g, '\\\\').replace(/:/g, '\\:');
   // Add the video input
-  ffmpegCommand = ffmpegCommand.input(doubleSlashOptimizedVideo).inputOptions([
+  ffmpegCommand = ffmpegCommand.input(optimizedVideo).inputOptions([
     // Loop the video infinitely
     `-stream_loop -1`
   ]);
