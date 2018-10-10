@@ -30,7 +30,7 @@ module.exports = {
     addConfigRoutes(fastify, path, currentStream, currentGetConfig);
     addLibraryRoutes(fastify, path, currentStream, currentGetConfig);
 
-    const config = getConfig();
+    const config = await getConfig();
 
     await new Promise((resolve, reject) => {
       fastify.listen(config.api.port, config.api.host, (err, address) => {

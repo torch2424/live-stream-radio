@@ -7,7 +7,7 @@ const supportedFileTypes = require('../supportedFileTypes');
 const getAllAudio = async (path, getConfig) => {
   // Find al of our files with the extensions
   let allFiles = [];
-  const config = getConfig();
+  const config = await getConfig();
   supportedFileTypes.supportedAudioTypes.forEach(extension => {
     allFiles = [...allFiles, ...find.fileSync(extension, `${path}${config.radio.audio_directory}`)];
   });

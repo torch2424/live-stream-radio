@@ -82,10 +82,10 @@ if (fs.existsSync(configJsPath)) {
   const configExport = require(configJsPath);
 
   // Wrap get config in all of our stateful service
-  getConfig = () => {
+  getConfig = async () => {
     let config = undefined;
     try {
-      config = configExport(path, {
+      config = await configExport(path, {
         history: historyService.getHistory()
       });
     } catch (e) {
@@ -99,7 +99,7 @@ if (fs.existsSync(configJsPath)) {
 } else if (fs.existsSync(configJsonPath)) {
   console.log(`${chalk.magenta('Using the config.json at:')} ${configJsPath}`);
   // Simply set our config to a function that just returns the static config.json
-  getConfig = () => {
+  getConfig = async () => {
     let configJson = undefined;
     try {
       configJson = require(configJsonPath);
@@ -128,7 +128,8 @@ const startRadioTask = async () => {
   await api.start(path, getConfig, stream);
 
   // Set our number of history items
-  historyService.setNumberOfHistoryItems(getConfig().api.number_of_history_items);
+  const config = await getConfig();
+  historyService.setNumberOfHistoryItems(config.api.number_of_history_items);
 
   // Start our stream
   await stream.start(path, getConfig, argv.output);

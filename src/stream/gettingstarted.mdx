@@ -14,10 +14,11 @@ Simply download nvm from [this (Mac/Linux)](https://github.com/creationix/nvm) o
 `nvm install --lts`
 
 ### FFmpeg
-Next, you have to donwload or compile the latest version of [FFmpeg](http://ffmpeg.org/). It specifically needs to be compiled with [libfreetype](https://ffmpeg.org/ffmpeg-filters.html#drawtext) so we can draw text within the stream image. You can either add the folder of your ffmpeg binaries to your system's PATH or directly put the path to them in the config file.
+Next, you have to download or compile the latest version of [FFmpeg](http://ffmpeg.org/). It specifically needs to be compiled with [libfreetype](https://ffmpeg.org/ffmpeg-filters.html#drawtext) so we can draw text within the stream image. You can either add the folder of your ffmpeg binaries to your system's PATH or directly put the path to them in the config file. **Note: this project requires FFmpeg version 4.2.0 or greater in order to ensure the best performance. [Please see this issue for explanation](https://github.com/torch2424/live-stream-radio/issues/78)** 
 
 #### Downloading FFmpeg
-If you are lucky, you can find hosted static builds for your operating system from [this](https://ffmpeg.zeranoe.com/builds/) resource. However, some used FFmpeg filters in the project require other libraries that may not be in pre-compiled builds. Thus, you may want to try compiling FFmpeg yourself in the following steps. 
+
+We have a mock release page, where we can share Pre-compiled FFmpeg builds that we confirm work well with `live-stream-radio`. Check out the [FFmpeg pre-compiled builds here](https://github.com/torch2424/live-stream-radio/releases/tag/ffmpeg-builds).
 
 #### Compiling FFmpeg
 Please check out the [FFmpeg Compilation Guide](https://trac.ffmpeg.org/wiki/CompilationGuide) for a more detailled guide. Again, please check that you build FFmpeg with the libfreetype module. If you using macOS, building ffmpeg may be as easy as running `brew install ffmpeg --with-freetype` on your terminal.

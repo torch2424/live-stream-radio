@@ -1,8 +1,7 @@
 // Function to verify a key
 const verifyKey = async (getConfig, request) => {
-  
   // Get our returned config
-  config = getConfig();
+  config = await getConfig();
 
   if (!config.api.key) {
     return true;

@@ -31,6 +31,10 @@ _For building your own API frontend, please see the [API Documentation](https://
 
 Currently, there are no supported API frontends. However, Contributions are welcome! If you make a `live-stream-radio` frontend, please open an issue and so we can add the project here 😄!
 
+# Other Notable Projects
+
+- [lsr-wrapper](https://github.com/LSRemote/lsr-wrapper) - A Promise based wrapper around the `live-stream-radio` api.
+
 # Compatibility
 
 Currently, this should work under any OS with support for [Node](https://nodejs.org/en/) and [FFMPEG](https://www.ffmpeg.org/). Specifically in the tradition of this project being developed for raspberry pi, formerly as piStreamRadio , this also supports Raspbian as well.
