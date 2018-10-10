@@ -3,20 +3,20 @@ const upath = require('upath');
 const fs = require('fs-extra');
 const editJsonFile = require('edit-json-file');
 
-const getFullConfig = async (path) => {
+const getFullConfig = async path => {
   // Get current config
   let config = editJsonFile(upath.join(path, 'config.json'));
-  
+
   // Return Config
   return [200, config.toObject()];
 };
 
 const getConfigByKey = async (path, key) => {
   // Get current config
-  let config = editJsonFile(upath.join(path, 'config.json'));
-	
+  let configFile = editJsonFile(upath.join(path, 'config.json'));
+
   // Return Config by a specific key
-  let configValue = config.get(key);
+  let configValue = configFile.get(key);
 
   // Return 200 if it has a value and 404 if it does not have a value
   if (configValue) {
@@ -27,22 +27,14 @@ const getConfigByKey = async (path, key) => {
 };
 
 const changeConfig = async (path, config, key, newValue) => {
-  // Make string safe
-  newValue = toSafeString(newValue);
-  let currentValue = key.split('.').reduce(index, config);
-
   // Change config
   let configFile = editJsonFile(upath.join(path, 'config.json'));
+  let currentValue = configFile.get(key);
 
   configFile.set(key, JSON.parse(newValue));
   configFile.save();
 
   return [200, { key: key, oldValue: currentValue, newValue: JSON.parse(newValue) }];
-};
-
-// Helper function to make a string safe for ffmpeg & json
-const toSafeString = function(string) {
-  return string;
 };
 
 module.exports = (fastify, path, stream, getConfig) => {
@@ -69,7 +61,7 @@ module.exports = (fastify, path, stream, getConfig) => {
   fastify.post(
     '/config',
     authService.secureRouteHandler(getConfig, async (request, reply) => {
-      // We need our actual config here to make sure we are reurning the static json file    
+      // We need our actual config here to make sure we are reurning the static json file
       const config = require(`${path}/config.json`);
       let response = await changeConfig(path, config, request.body.key, request.body.value);
 
