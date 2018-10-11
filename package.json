@@ -48,7 +48,7 @@
     "upath": "^1.1.0"
   },
   "devDependencies": {
-    "docz": "^0.12.5",
+    "docz": "^0.11.2",
     "gh-pages": "^2.0.0",
     "husky": "^1.0.1",
     "np": "^3.0.4",
