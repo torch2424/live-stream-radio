@@ -50,6 +50,13 @@ ${chalk.blue('USAGE:')} ${chalk.yellow(pkg.name)}
   process.exit(0);
 }
 
+// Check if we would like to print the installed version
+if (argv.version !== undefined) {
+  const jsonPackage = require('../package.json');
+  console.log(jsonPackage.version);
+  process.exit(0);
+}
+
 // Check if we would like to generate a project
 if (argv.generate !== undefined) {
   // Call the generate from generator
