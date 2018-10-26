@@ -5,6 +5,7 @@ const argv = require('minimist')(process.argv.slice(2), {
   string: ['help', 'generate', 'output', 'start'],
   alias: {
     h: ['help'],
+    v: ['version'],
     g: ['generate'],
     o: ['output'],
     s: ['start']
@@ -21,6 +22,8 @@ if ((Object.keys(argv).length === 1 && argv._.length <= 0) || argv.help !== unde
 ${chalk.blue('USAGE:')} ${chalk.yellow(pkg.name)}
   
   ${chalk.blue('--help, -h')} : Print this usage message.
+
+  ${chalk.blue('--version, -v')} : Print the current version of this installation.
 
   ${chalk.blue('--generate, -g')} ${chalk.magenta('[Project Name/Directory]')} : Generate a new stream project,
     in a directory with the Project name.
@@ -113,8 +116,10 @@ if (fs.existsSync(configJsPath)) {
   };
 } else {
   // Tell them could not find a config file
-  console.log(`${chalk.red('error did not find a config.json at:')} ${configJsonPath} 😞`);
-  console.log(e.message);
+  console.log(`${chalk.red('Error did not find a config.json at:')} ${configJsonPath} 😞`);
+  if (typeof e !== 'undefined') {
+    console.log(e.message);
+  }
   process.exit(1);
 }
 
