@@ -23,7 +23,7 @@ _formerly known as piStreamRadio._
 
 # Getting Started
 
-Please see the [Documentation](https://torch2424.github.io/live-stream-radio/) 📚 for how to get started using `live-stream-radio`. In particular, the [Instllation Guide](https://torch2424.github.io/live-stream-radio/cli/installation) and [CLI Usage](https://torch2424.github.io/live-stream-radio/cli/usage) will be the most useful to new users. 😄
+Please see the [Documentation](https://torch2424.github.io/live-stream-radio/) 📚 for how to get started using `live-stream-radio`. In particular, the [Instllation Guide](https://torch2424.github.io/live-stream-radio/#/cli/getting-started#installation) and [CLI Usage](https://torch2424.github.io/live-stream-radio/#/cli/usage) will be the most useful to new users. 😄
 
 # API Frontends
 
