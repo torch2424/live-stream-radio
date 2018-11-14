@@ -378,6 +378,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   } else {
     singleOutputLocation = outputLocation;
   }
+  singleOutputLocation = 'rtmp://localhost/live/STREAM_NAME';
 
   // Add our output options for the stream
   ffmpegCommand = ffmpegCommand.outputOptions([
