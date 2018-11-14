@@ -44,6 +44,7 @@
     "is-running": "^2.1.0",
     "minimist": "^1.2.0",
     "music-metadata": "^3.1.0",
+    "node-media-server": "^1.4.7",
     "term-img": "^2.1.0",
     "upath": "^1.1.0"
   },

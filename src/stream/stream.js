@@ -293,6 +293,10 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   const delayInSeconds = Math.ceil(delayInMilli / 1000);
   const streamDuration = delayInSeconds * 2 + Math.ceil(metadata.format.duration);
 
+  // Our keysframe interval
+  // https://superuser.com/questions/908280/what-is-the-correct-way-to-fix-keyframes-in-ffmpeg-for-dash
+  const keyframeInterval = parseInt(configFps, 10) * 2;
+
   // Create our ouput options
   // Some defaults we don't want change
   const outputOptions = [
@@ -302,13 +306,12 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     `-r ${configFps}`,
     // Group of pictures, want to set to 2 seconds
     // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
-    `-g ${parseInt(configFps, 10) * 2}`,
+    `-g ${keyframeInterval}`,
+    `-keyint_min ${keyframeInterval}`,
     // Stop audio once we hit the specified duration
     `-t ${streamDuration}`,
     // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
-    `-pix_fmt yuv420p`,
-    // Setting keyframes, alternative newer option to -x264opts
-    `-x264-params keyint=${config.video_fps * 2}:min-keyint=${config.video_fps * 2}:scenecut=-1`
+    `-pix_fmt yuv420p`
   ];
 
   if (config.video_width && config.video_height) {
@@ -319,6 +322,13 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
 
   if (config.video_bit_rate) {
     outputOptions.push(`-b:v ${config.video_bit_rate}`);
+    // Need this to stop spiking.
+    // See: https://help.twitch.tv/customer/en/portal/articles/2420572-guide-to-broadcast-health-and-using-twitch-inspector
+    // https://stackoverflow.com/questions/10908796/how-to-force-constant-bit-rate-using-ffmpeg
+    // Can ignore buffer underflows, they are on the remote side
+    outputOptions.push(`-minrate ${config.video_bit_rate}`);
+    outputOptions.push(`-maxrate ${config.video_bit_rate}`);
+    outputOptions.push(`-bufsize ${config.video_bit_rate}`);
   }
 
   if (config.audio_bit_rate) {
@@ -338,16 +348,21 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
 
   // Set our video codec, and encoder options
   // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
+  let videoCodecOption = `-vcodec libx264`;
   if (config.video_codec) {
-    outputOptions.push(`-vcodec ${config.video_codec}`);
-  } else {
-    outputOptions.push(`-vcodec libx264`);
+    videoCodecOption = `-vcodec ${config.video_codec}`;
   }
+
+  // Add some x264 options for x24 encoders
+  outputOptions.push(videoCodecOption);
+  if (videoCodecOption.includes('x264')) {
+    // https://stackoverflow.com/questions/30979714/how-to-change-keyframe-interval-in-ffmpeg
+    // https://stream.twitch.tv/encoding/
+    outputOptions.push(`-x264-params keyint=${keyframeInterval}:min-keyint=${keyframeInterval}scenecut=0`);
+  }
+
   if (config.preset) {
     outputOptions.push(`-preset ${config.preset}`);
-  }
-  if (config.bufsize) {
-    outputOptions.push(`-bufsize ${config.bufsize}`);
   }
   if (config.crf) {
     outputOptions.push(`-crf ${config.crf}`);
