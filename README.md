@@ -34,6 +34,7 @@ Currently, there are no supported API frontends. However, Contributions are welc
 # Other Notable Projects
 
 - [lsr-wrapper](https://github.com/LSRemote/lsr-wrapper) - A Promise based wrapper around the `live-stream-radio` api.
+- [live-stream-radio-cp](https://github.com/Tresmos/live-stream-radio-cp) - Simple web control panel for live-stream-radio.
 
 # Radios built with `live-stream-radio`
 
