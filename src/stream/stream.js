@@ -302,13 +302,15 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     `-r ${configFps}`,
     // Group of pictures, want to set to 2 seconds
     // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
+    // https://www.addictivetips.com/ubuntu-linux-tips/stream-to-twitch-command-line-linux/
     `-g ${parseInt(configFps, 10) * 2}`,
+    `-keyint_min ${configFps}`,
     // Stop audio once we hit the specified duration
     `-t ${streamDuration}`,
     // https://trac.ffmpeg.org/wiki/EncodingForStreamingSites
-    `-pix_fmt yuv420p`,
+    `-pix_fmt yuv420p`
     // Setting keyframes, alternative newer option to -x264opts
-    `-x264-params keyint=${config.video_fps * 2}:min-keyint=${config.video_fps * 2}:scenecut=-1`
+    // `-x264-params keyint=${config.video_fps * 3}:min-keyint=${config.video_fps * 3}:scenecut=0`
   ];
 
   if (config.video_width && config.video_height) {
@@ -319,6 +321,8 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
 
   if (config.video_bit_rate) {
     outputOptions.push(`-b:v ${config.video_bit_rate}`);
+    outputOptions.push(`-minrate ${config.video_bit_rate}`);
+    outputOptions.push(`-maxrate ${config.video_bit_rate}`);
   }
 
   if (config.audio_bit_rate) {
