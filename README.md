@@ -23,7 +23,7 @@ _formerly known as piStreamRadio._
 
 # Getting Started
 
-Please see the [Documentation](https://torch2424.github.io/live-stream-radio/) 📚 for how to get started using `live-stream-radio`. In particular, the [Instllation Guide](https://torch2424.github.io/live-stream-radio/#/cli/getting-started#installation) and [CLI Usage](https://torch2424.github.io/live-stream-radio/#/cli/usage) will be the most useful to new users. 😄
+Please see the [Documentation](https://torch2424.github.io/live-stream-radio/) 📚 for how to get started using `live-stream-radio`. In particular, the [Installation Guide](https://torch2424.github.io/live-stream-radio/#/cli/getting-started#installation) and [CLI Usage](https://torch2424.github.io/live-stream-radio/#/cli/usage) will be the most useful to new users. 😄
 
 # API Frontends
 
@@ -42,7 +42,7 @@ Please feel free to share your radio if you are using `live-stream-radio`. Just 
 
 # Compatibility
 
-Currently, this should work under any OS with support for [Node](https://nodejs.org/en/) and [FFMPEG](https://www.ffmpeg.org/). Specifically in the tradition of this project being developed for raspberry pi, formerly as piStreamRadio , this also supports Raspbian as well.
+Currently, this should work under any OS with support for [Node](https://nodejs.org/en/) and [FFMPEG](https://www.ffmpeg.org/). Specifically in the tradition of this project being developed for Raspberry Pi, formerly as piStreamRadio , this also supports Raspbian as well.
 
 # Example Assets from the `--generate` template
 
@@ -56,6 +56,6 @@ Feel free to fork the project, open up a PR, and give any contributions! I'd sug
 
 LICENSE under [Apache 2.0](https://choosealicense.com/licenses/apache-2.0/). 🐦
 
-This software uses code of [FFmpeg](http://ffmpeg.org) licensed under the [LGPLv2.1](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html) and its source can be downloaded [here](./deps/ffmpeg).
+This software uses code of [FFmpeg](http://ffmpeg.org) licensed under the [LGPLv2.1](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html) and it's source can be downloaded [here](./deps/ffmpeg).
 
-As such, this software tries to respect the LGPLv2 License as close as possible to respect FFmpeg and its authors. Huge shoutout to them for building such an awesome and crazy tool!
+As such, this software tries to respect the LGPLv2 License as close as possible to respect FFmpeg and it's authors. Huge shoutout to them for building such an awesome and crazy tool!
