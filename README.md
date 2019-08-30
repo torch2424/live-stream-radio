@@ -27,7 +27,7 @@ Please see the [Documentation](https://torch2424.github.io/live-stream-radio/) �
 
 # API Frontends
 
-_For building your own API frontend, please see the [API Documentation](https://torch2424.github.io/live-stream-radio/api/endpoints) 📚 on API Endpoints._
+_For building your own API frontend, please see the [API Documentation](https://torch2424.github.io/live-stream-radio/#/api/endpoints) 📚 on API Endpoints._
 
 Currently, there are no supported API frontends. However, Contributions are welcome! If you make a `live-stream-radio` frontend, please open an issue and so we can add the project here 😄!
 
