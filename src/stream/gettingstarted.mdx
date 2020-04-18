@@ -1,0 +1,47 @@
+---
+name: Getting Started
+menu: CLI
+route: /cli/getting-started
+---
+
+# Getting Started
+## Installation
+### nvm
+First, you have to install the latest LTS version of [Node.js](https://nodejs.org/) (this also includes `npm`, the package manager of Node.js). We recommend you to do this by using `nvm`, the `node version manager`.
+
+Simply download nvm from [this (Mac/Linux)](https://github.com/creationix/nvm) or [this (Windows)](https://github.com/coreybutler/nvm-windows) website and install it. After that you'll be able to install the latest LTS version by running the following command in a terminal or console.
+
+`nvm install --lts`
+
+### FFmpeg
+Next, you have to donwload or compile the latest version of [FFmpeg](http://ffmpeg.org/). It specifically needs to be compiled with [libfreetype](https://ffmpeg.org/ffmpeg-filters.html#drawtext) so we can draw text within the stream image. You can either add the folder of your ffmpeg binaries to your system's PATH or directly put the path to them in the config file.
+
+#### Downloading FFmpeg
+If you are lucky, you can find hosted static builds for your operating system from [this](https://ffmpeg.zeranoe.com/builds/) resource. However, some used FFmpeg filters in the project require other libraries that may not be in pre-compiled builds. Thus, you may want to try compiling FFmpeg yourself in the following steps. 
+
+#### Compiling FFmpeg
+Please check out the [FFmpeg Compilation Guide](https://trac.ffmpeg.org/wiki/CompilationGuide) for a more detailled guide. Again, please check that you build FFmpeg with the libfreetype module. If you using macOS, building ffmpeg may be as easy as running `brew install ffmpeg --with-freetype` on your terminal.
+
+### live-stream-radio
+We're getting somewhere! Next, you will finally install live-stream-radio. We recommend you to install it globally to use the command from everywhere! Installing is as easy as running the following command in a terminal/console.
+
+`npm install -g live-stream-radio`
+
+After that, you can check if you installed it correctly by running `live-stream-radio --help`!
+
+## Generating a stream project
+Let's get to the good stuff! Now you have to generate your first stream project. Go ahead, fire up a terminal/console and run this command:
+
+`live-stream-radio --generate myStream`
+
+**myStream** can be any name for your stream. Keep in mind that this will also be the folder name, so don't get too crazy!
+
+Looking good! Now for some customization!
+
+## Configuration
+check out the `config.json` file in your streams project folder. Put in your `stream_url` and `stream_key` and also check out the other settings. If you want to stream on YouTube, we even already setup the stream url for you (you might noticed the $stream_key in the url, this is a variable and will be replaced with the stream key!). Now might also be a good time to put your music and videos in their dedicated folders.
+
+## Starting the stream
+Starting your newly created stream is as simple as running `live-stream-radio --start myStream`.
+
+Now you can get some popcorn and enjoy your live-stream-radio! Or, you might want to check out the [configuration](/api/endpoints) or [api](/projectmanagement/config)!

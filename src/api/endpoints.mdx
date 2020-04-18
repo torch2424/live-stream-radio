@@ -1,0 +1,254 @@
+---
+name: Endpoints
+route: /api/endpoints
+menu: API
+---
+
+# Endpoints
+
+The API is written as an HTTP JSON REST API. Meaning all requests are expected to be of `Content-Type: application/json`, and will return JSON. Also, will use the standard [HTTP REST status codes](https://www.restapitutorial.com/httpstatuscodes.html).
+
+All Api Endpoints require the API key within the `config.json` to make / return responses to requests.
+
+The API Key can be provided in 3 ways:
+
+* Through an `Authorization` Header.
+
+`Authorization: my-api-key`
+
+* Through the `api_key` query paramater
+
+`localhost:3000/stream?api_key=my-api-key`
+
+* Through the `api_key` POST body
+
+```
+{
+
+"api_key": "my-api-key"
+
+...
+
+}
+```
+
+## GET /stream
+
+### Description
+
+Returns the status of the stream.
+
+### Query Params
+
+None
+
+### Example Successful Response:
+
+```
+{
+    "isRunning": true
+}
+```
+
+## POST /stream/start
+
+### Description
+
+Starts the stream, if not already running.
+
+### Body Params
+
+None
+
+### Example Successful Response:
+
+```
+{
+    "message": "OK"
+}
+```
+
+## POST /stream/stop
+
+### Description
+
+Stops the stream, if running.
+
+### Body Params
+
+None
+
+### Example Successful Response:
+
+```
+{
+  "message": "OK"
+}
+```
+
+## POST /stream/restart
+
+### Description
+
+Restarts the stream, if running will stop and then start, if not running will simply start.
+
+### Body Params
+
+None
+
+### Example Successful Response:
+
+```
+{
+  "message": "OK"
+}
+```
+
+## GET /history
+
+### Description
+
+Returns the recorded history activites. This will return an array under the `history` key. To limit the size of this response, use the `number_of_history_items` in the `config.json`.
+
+### Query Params
+
+None
+
+### Example Successfule Response:
+
+Only one thing played on the stream so far in this history example
+
+```
+{
+    "history": [
+        {
+            "audio": {
+                "path": "/Users/aaron/Source/piStreamRadio/live-stream-radio/interludes/audio/tapeDeckSound.mp3",
+                "metadata": {
+                    "track": {
+                        "no": null,
+                        "of": null
+                    },
+                    "disk": {
+                        "no": null,
+                        "of": null
+                    },
+                    "artists": [
+                        "Stephan"
+                    ],
+                    "artist": "Stephan",
+                    "title": "tapedeck sound",
+                    "encodersettings": "Lavf57.72.101"
+                }
+            },
+            "video": {
+                "path": "/Users/aaron/Source/piStreamRadio/live-stream-radio/interludes/video/example 1.gif"
+            },
+            "date": 1538637389778
+        }
+    ]
+}
+```
+
+## GET /radio/audio
+
+### Description
+
+This will return information about all found audio files in the project by following the `config.json`.
+
+### Query Params
+
+* `include_metadata` - if true, will also include the common metadata for the found audio files.
+
+### Example Successful Response
+
+Only showing one item from the generated example content. And used the `include_metadata` query param.
+
+```
+{
+    "audio": [
+        {
+            "path": "/Users/aaron/Source/piStreamRadio/live-stream-radio/audio/Aviscerall - Just Livin' - 05 Unhappy.mp3",
+            "metadata": {
+                "track": {
+                    "no": 5,
+                    "of": null
+                },
+                "disk": {
+                    "no": null,
+                    "of": null
+                },
+                "title": "Unhappy",
+                "artists": [
+                    "Aviscerall"
+                ],
+                "artist": "Aviscerall",
+                "album": "Just Livin'",
+                "year": 2017,
+                "comment": [
+                    "Visit http://aviscerall.bandcamp.com"
+                ],
+                "albumartist": "Aviscerall"
+            }
+        },
+    ]
+}
+```
+
+## GET /config
+
+### Description
+
+Returns a param of the config.json. If no key is set, all config params will be returned
+
+### Query Params
+
+* `key` - The config key in dot-notation (example: 'api.host', 'interlude.overlay.enabled')
+
+### Example Response:
+**HTTP 200** - Successful
+```
+{
+    "key": "interlude.enabled",
+    "value": true
+}
+```
+**HTTP 404** - Key not existant
+```
+{
+    "key": "interlude.awesomeness_level",
+    "value": null
+}
+```
+
+## POST /config
+
+### Description
+
+Changes a config param in the config.json. If they key has no value, it will be added
+
+### Body Params
+
+* `key` - The config key in dot-notation (example: 'api.host', 'interlude.overlay.enabled')
+* `value` - The new value for the config in json (example: (string) "test", (number) 5, (boolean) true)
+
+### Example Response:
+**HTTP 200** - Successful
+```
+{
+    "response": {
+        "key": "interlude.frequency",
+        "oldValue": "0.5",
+        "newValue": "0.2"
+    }
+}
+```
+**HTTP 200** - Key not existant, new key will be saved
+```
+{
+    "response": {
+        "key": "interlude.awesomeness_level",
+        "newValue": "over 9000"
+    }
+}
+```

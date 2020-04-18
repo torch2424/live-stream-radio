@@ -1,0 +1,21 @@
+---
+name: Frontend Development
+route: /api/frontenddevelopment
+menu: API
+---
+
+# Frontend Development
+
+Frontends for `live-stream-radio` are very much appreciated, and should be seperated from the main Project CLI/API. Please open an issue on the Github repo if you would like your frontend mentioned on the project README or Documentation.
+
+## Tips for Building Frontends
+
+Two types of frontends that could be built are Server Side Rendered Frontends, and Client Side Frontends. Either way, looking through the API endpoints is a great place to start.
+
+### Server Side Rendered Frontends
+
+An **example** of a possible server side rendered frontend is an application that is build in [Express](https://github.com/expressjs/express). Authentication using the API key in the `config.json` could be passed through an environment variable or flag for the application. Then a more secure/proper authentication could be handled by your application. Express could then act as the proxy between the stream API, and the user, and render views as static pages, or in a Javascript framework like [React](https://reactjs.org/).
+
+### Client Side Frontends
+
+An **example** of a possible client side frontend is an application written using [Preact](https://preactjs.com/) or [Angular](https://angular.io/). The API key for authentication could be prompted by the user on "login", and then stored in localstorage to act as the authentication token. This would require exposing the API publicly, and honestly, isn't very secure. Thus I would suggest putting the client behind something at least slightly more secure like basic auth. After the API Key is stored, then it could be used to access the API endpoints by the user.

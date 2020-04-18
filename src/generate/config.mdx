@@ -1,0 +1,115 @@
+---
+name: Config
+menu: Project Management
+route: /projectmanagement/config
+---
+
+# Config
+
+This page will go in detail with every field of a projects `config.json`. If you ever need to reset the default settings, or see an example `config.json`, please check out the [default config.json](https://github.com/torch2424/live-stream-radio/blob/master/src/generate/template/config.json).
+
+## Settings Fields
+
+| Field | Usage |
+| - | - |
+| stream_url | The URL of the stream. You can use $stream_key as a variable, this will replace it with the value of stream_key. You can overwrite this field with the `--output` CLI flag. |
+| stream_key | The stream key provided by your stream platform. |
+| ffmpeg_path | The path to your ffmpeg binaries. If this field is left empty, the project will try to find ffmpeg binaries specified in your path. |
+| video_codec | The codec used by ffmpeg to encode the stream video output. |
+| audio_codec | The codec used by ffmpeg to encode the stream audio output. |
+| audio_bit_rate | The bit rate of the stream audio output. |
+| audio_sample_rate | The audio sample rate of the stream audio output. |
+| audio_bit_rate | The audio bitrate of your stream. |
+| audio_sample_rate | The audio sample rate of your steam. |
+| normalize_audio | True/false value to enable or disable audio normalization across the stream. This can degrade audio quality. |
+| video_height | The height of your stream. |
+| video_width | The width of your stream. |
+| video_bit_rate | The bitrate of your stream. |
+| video_fps | The fps (frames per second) of your stream. |
+| bufsize | Buffer size for the stream output, denoted by `-bufsize` flag in FFmpeg |
+| crf | Standard constant rate used by FFmpeg used to improve streaming. Denoted by the `-crf` flag in FFmpeg. |
+| preset | Preset used by FFmpeg to acheive a balance of quality and performance in FFmpeg, denoted by the `-preset` flag in FFmpeg. |
+| threads | Number of threads to limit the FFmpeg process to. Denoted by the `-threads` flag in FFmpeg. |
+| max_gif_size | The maximum width or height of a gif for your stream. This is used by the optimization used on gifs. |
+| api.host | Host of the API. (usually localhost) |
+| api.port | Port on which the API runs on. |
+| api.key | API Key used for authentication. This is basically your admin password, so keep it secret! |
+| api.number_of_history_items | Number of items to store in the streams history to get the last played songs. |
+| radio.audio_directory | Path to your music. Check out the FAQ for supported file types. |
+| radio.video_directory | Path to your videos and gifs. Check out the FAQ for supported file types. |
+| radio.overlay.enabled | Enables/Disables overlays. |
+| radio.overlay.font_path | Path to the fonts used for the stream overlays. Check out the FAQ for supported file types. |
+| radio.overlay.title.enable_scroll | Enables horizontal scrolling of the title. |
+| radio.overlay.title.font_scroll_speed | The speed at which the title scrolls. |
+| radio.overlay.artist | Common Text Object for the artist. |
+| radio.overlay.album | Common Text Object for the album. |
+| radio.overlay.song | Common Text Object for the song. |
+| radio.overlay.image | Common Image Object for an overlay over the text and video. |
+| interlude.enabled | Enables interludes which are are transition videos/audios played in-between songs. |
+| interlude.frequency | Percentage of how often an interlude should be played. Valid values are from 0.0 (never) to 1.0 (100% of the time). |
+| interlude.audio_directory | Path to your interlude music. Check out the FAQ for supported file types. |
+| interlude.video_directory | Path to your interlude videos and gifs. Check out the FAQ for supported file types. |
+| interlude.overlay.enabled | Enables overlays in interludes. |
+| interlude.overlay.font_path | Path to the fonts used for the stream overlays. Check out the FAQ for supported file types. |
+| interlude.overlay.title | Common Text Object for the a title. |
+| interlude.overlay.image | Common Image Object for an overlay over the text and video. |
+
+### Video HeightWidth Ratio
+These are common values for the `video_height` and `video_width` fields.
+
+| Quality | Width | Height |
+| - | - | - |
+| 240p | 426 | 240 |
+| 360p | 640 | 360 |
+| 480p | 854 | 480 |
+| 720p | 1280 | 720|
+| 1080p | 1920 | 1080 |
+
+## Common Text Object
+
+Common Text Objects contain all settings required to display text.
+
+| Field | Usage |
+| - | - |
+| enabled | Enables/Disables this text object |
+| text | Text string for this object |
+| font_color | HEX color with leading # of the fonts color |
+| font_border | HEX color with leading # of the fonts border color |
+| font_size | Size of the font |
+| position_x | Percentage value (without the %) of the X position of the font. |
+| position_y | Percentage value (without the %) of the Y position of the font. |
+
+### Example 
+```
+"some-text-object": {
+  "enabled": true
+  "text": "Live Stream Radio, 24/7 Open Source Radio",
+  "font_color": "#FFFFFF",
+  "font_border": "#000000",
+  "font_size": "10",
+  "position_x": "0",
+  "position_y": "5"
+}
+```
+
+## Common Image Object
+
+Common Image Objects contain all settings required to display an image.
+
+| Field | Usage |
+| - | - |
+| enabled | Enables/Disables this image object |
+| image_path | Path to the image. Check out the FAQ for supported file types. |
+| position_x | Horizontal position of the image in pixels from left. |
+| position_y | Vertical position of the image in pixels from the top. |
+
+### Example
+```
+"image": {
+  "enabled": true,
+  "image_path": "./live-stream-radio-overlay-image.png",
+  "position_x": 0,
+  "position_y": 0
+}
+```
+
