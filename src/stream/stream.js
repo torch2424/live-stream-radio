@@ -1,13 +1,10 @@
 // Get our ffmpeg
 const ffmpeg = require('fluent-ffmpeg');
 const chalk = require('chalk');
-const musicMetadata = require('music-metadata');
 const upath = require('upath');
 const progress = require('cli-progress');
 
 // Get our Services and helper fucntions
-const safeStrings = require('./safeStrings');
-const historyService = require('../history.service');
 const supportedFileTypes = require('../supportedFileTypes');
 const getRandomFileWithExtensionFromPath = require('./randomFile');
 const getOverlayTextString = require('./overlayText');
@@ -55,12 +52,6 @@ const getVideo = async (path, config, typeKey, errorCallback) => {
   };
 };
 
-// const getAudioMetaData = async (path, config, typeKey) => {
-//   const meta = await getMetaData(supportedFileTypes.supportedAudioTypes, `${path}${config[typeKey].audio_directory}`);
-
-//   return meta;
-// };
-
 // Function to start a stream
 module.exports = async (path, config, outputLocation, endCallback, errorCallback) => {
   // Find what type of stream we want, radio, interlude, etc...
@@ -86,10 +77,12 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
 
   // CALLS THE FILE CREATED FROM concatAudio
 
-  const randomSong = `/Users/Semmes/Documents/VS-STUDIO/LIVESTREAMRADIO/live-stream-radio-ffmpeg-builds/live-stream-radio/final/all.mp3`;
+  const finalSong = `/Users/Semmes/Documents/VS-STUDIO/LIVESTREAMRADIO/live-stream-radio-ffmpeg-builds/live-stream-radio/final/finalSong.mp3`;
+
+  // const finalSong = `${path}${config[typeKey].final_audio}`;
 
   console.log(chalk.blue(`Playing the audio:`));
-  console.log(randomSong);
+  console.log(finalSong);
   console.log('\n');
 
   console.log(chalk.magenta(`Finding/Optimizing video... 📺`));
@@ -113,47 +106,10 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   console.log('\n');
 
   // Get the information about the song
-  const metaDataTest = await getMetaData(supportedFileTypes.supportedAudioTypes, `${path}${config[typeKey].audio_directory}`);
-  let currentMetaData = 0;
-  // while (currentMetaData < metaDataTest.length) {
-  //   console.log(metaDataTest[currentMetaData].format.duration);
-  //   setTimeout(() => (currentMetaData = currentMetaData + 1), metaDataTest[currentMetaData].format.duration);
-  // }
-  // setInterval(() => (currentMetaData = currentMetaData + 1), metaDataTest[currentMetaData].format.duration);
+  const metaDataGet = await getMetaData(supportedFileTypes.supportedAudioTypes, `${path}${config[typeKey].audio_directory}`);
 
-  // const metadata = await musicMetadata.parseFile(randomSong, { duration: true });
-  console.log(metaDataTest);
-  const metadata = metaDataTest[1];
-
-  // Log data about the song
-  if (metadata.common.artist) {
-    console.log(chalk.yellow(`Artist: ${metadata.common.artist}`));
-  }
-  if (metadata.common.album) {
-    console.log(chalk.yellow(`Album: ${metadata.common.album}`));
-  }
-  if (metadata.common.title) {
-    console.log(chalk.yellow(`Song: ${metadata.common.title}`));
-  }
-  console.log(chalk.yellow(`Duration (seconds): ${Math.ceil(metadata.format.duration)}`));
-  console.log('\n');
-  // Log a album cover if available
-  if (metadata.common.picture && metadata.common.picture.length > 0) {
-    // windows is not supported by termImg
-    // process.platform always will be win32 on windows, no matter if it is 32bit or 64bit
-    if (process.platform != 'win32') {
-      try {
-        const termImg = require('term-img');
-        termImg(metadata.common.picture[0].data, {
-          width: '300px',
-          height: 'auto'
-        });
-        console.log('\n');
-      } catch (e) {
-        // Do nothing, we dont need the album art
-      }
-    }
-  }
+  //Array of metadata for every track
+  const metadata = metaDataGet;
 
   // Create a new command
   let ffmpegCommand = ffmpeg();
@@ -170,7 +126,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   ]);
 
   // Add our audio as input
-  ffmpegCommand = ffmpegCommand.input(randomSong).audioCodec('copy');
+  ffmpegCommand = ffmpegCommand.input(finalSong).audioCodec('copy');
 
   // Add a silent input
   // This is useful for setting the stream -re
@@ -250,11 +206,13 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   }
 
   // Add our overlayText
-  const overlayTextFilterString = await getOverlayTextString(path, config, typeKey, metadata);
+  const overlayTextFilterStringAndDuration = await getOverlayTextString(path, config, typeKey, metadata);
+  const overlayTextFilterString = overlayTextFilterStringAndDuration[0];
   if (overlayTextFilterString) {
     if (complexFilterString.length > 0) {
       complexFilterString += `, `;
     }
+
     complexFilterString += `${overlayTextFilterString}`;
   }
 
@@ -265,9 +223,11 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
 
   ffmpegCommand = ffmpegCommand.complexFilter(complexFilterString);
 
+  let metadataFinal = overlayTextFilterStringAndDuration[1];
+
   // Let's create a nice progress bar
   // Using the song length as the 100%, as that is when the stream should end
-  const songTotalDuration = Math.floor(metadata.format.duration);
+  const songTotalDuration = Math.floor(metadataFinal);
   const progressBar = new progress.Bar(
     {
       format: 'Audio Progress {bar} {percentage}% | Time Playing: {duration_formatted} |'
@@ -315,7 +275,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   // https://trac.ffmpeg.org/ticket/3789
   // This will give us our song duration, plus some beginning and ending padding
   const delayInSeconds = Math.ceil(delayInMilli / 1000);
-  const streamDuration = delayInSeconds * 2 + Math.ceil(metadata.format.duration);
+  const streamDuration = delayInSeconds * 2 + Math.ceil(metadataFinal);
 
   // Create our ouput options
   // Some defaults we don't want change
@@ -405,17 +365,17 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
   preRenderTask();
 
   // Add this item to our history
-  const historyMetadata = metadata.common;
-  delete historyMetadata.picture;
-  historyService.addItemToHistory({
-    audio: {
-      path: randomSong,
-      metadata: historyMetadata
-    },
-    video: {
-      path: randomVideo
-    }
-  });
+  // const historyMetadata = metadataFinal.common;
+  // delete historyMetadata.picture;
+  // historyService.addItemToHistory({
+  //   audio: {
+  //     path: finalSong,
+  //     metadata: historyMetadata
+  //   },
+  //   video: {
+  //     path: randomVideo
+  //   }
+  // });
 
   return ffmpegCommand;
 };
