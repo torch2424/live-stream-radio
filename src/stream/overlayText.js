@@ -53,7 +53,9 @@ const getOverlayTextString = async (path, config, typeKey, metadata) => {
       // Check if we have an artist option
       if (overlayConfigObject.artist && overlayConfigObject.artist.enabled) {
         const itemObject = overlayConfigObject.artist;
-        const safeText = `${itemObject.label.slice(0, itemObject.label.length - 2)} - ${currentMetaData.common.artist}`;
+        const safeText = safeStrings.forFilter(
+          `${itemObject.label.slice(0, itemObject.label.length - 2)} - ${currentMetaData.common.artist}`
+        );
 
         let itemString =
           `drawtext=` +
@@ -72,7 +74,9 @@ const getOverlayTextString = async (path, config, typeKey, metadata) => {
       // Check if we have an album option
       if (overlayConfigObject.album && overlayConfigObject.album.enabled) {
         const itemObject = overlayConfigObject.album;
-        const safeText = `${itemObject.label.slice(0, itemObject.label.length - 2)} - ${currentMetaData.common.album}`;
+        const safeText = safeStrings.forFilter(
+          `${itemObject.label.slice(0, itemObject.label.length - 2)} - ${currentMetaData.common.album}`
+        );
         let itemString =
           `drawtext=` +
           `enable='between(t,${start},${end})':` +
@@ -90,7 +94,9 @@ const getOverlayTextString = async (path, config, typeKey, metadata) => {
       // Check if we have an artist option
       if (overlayConfigObject.song && overlayConfigObject.song.enabled) {
         const itemObject = overlayConfigObject.song;
-        const safeText = `${itemObject.label.slice(0, itemObject.label.length - 2)} - ${currentMetaData.common.title}`;
+        const safeText = safeStrings.forFilter(
+          `${itemObject.label.slice(0, itemObject.label.length - 2)} - ${currentMetaData.common.title}`
+        );
         let itemString =
           `drawtext=` +
           `enable='between(t,${start},${end})':` +
