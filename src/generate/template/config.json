@@ -24,7 +24,7 @@
   },
   "radio": {
     "audio_directory": "./audio",
-    "final_audio": "./final",
+    "final_audio": "final/finalSong.mp3",
     "video_directory": "./video",
     "overlay": {
       "enabled": true,

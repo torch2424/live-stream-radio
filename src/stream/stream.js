@@ -77,9 +77,7 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
 
   // CALLS THE FILE CREATED FROM concatAudio
 
-  const finalSong = `/Users/Semmes/Documents/VS-STUDIO/LIVESTREAMRADIO/live-stream-radio-ffmpeg-builds/live-stream-radio/final/finalSong.mp3`;
-
-  // const finalSong = `${path}${config[typeKey].final_audio}`;
+  const finalSong = `${path}${config[typeKey].final_audio}`;
 
   console.log(chalk.blue(`Playing the audio:`));
   console.log(finalSong);
@@ -212,7 +210,6 @@ module.exports = async (path, config, outputLocation, endCallback, errorCallback
     if (complexFilterString.length > 0) {
       complexFilterString += `, `;
     }
-
     complexFilterString += `${overlayTextFilterString}`;
   }
 
