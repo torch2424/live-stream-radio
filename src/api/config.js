@@ -13,10 +13,10 @@ const getFullConfig = async path => {
 
 const getConfigByKey = async (path, key) => {
   // Get current config
-  let configFile = editJsonFile(upath.join(path, 'config.json'));
+  let config = editJsonFile(upath.join(path, 'config.json'));
 
   // Return Config by a specific key
-  let configValue = configFile.get(key);
+  let configValue = config.get(key);
 
   // Return 200 if it has a value and 404 if it does not have a value
   if (configValue) {
@@ -27,9 +27,12 @@ const getConfigByKey = async (path, key) => {
 };
 
 const changeConfig = async (path, config, key, newValue) => {
+  // Make string safe
+  newValue = toSafeString(newValue);
+  let currentValue = key.split('.').reduce(index, config);
+
   // Change config
   let configFile = editJsonFile(upath.join(path, 'config.json'));
-  let currentValue = configFile.get(key);
 
   configFile.set(key, JSON.parse(newValue));
   configFile.save();
@@ -37,10 +40,15 @@ const changeConfig = async (path, config, key, newValue) => {
   return [200, { key: key, oldValue: currentValue, newValue: JSON.parse(newValue) }];
 };
 
-module.exports = (fastify, path, stream, getConfig) => {
+// Helper function to make a string safe for ffmpeg & json
+const toSafeString = function(string) {
+  return string;
+};
+
+module.exports = (fastify, path, stream, config) => {
   fastify.get(
     '/config',
-    authService.secureRouteHandler(getConfig, async (request, reply) => {
+    authService.secureRouteHandler(config, async (request, reply) => {
       // Returns full config is "key" is not set, otherwise only return the requested key
       let response;
       if (request.query.key) {
@@ -60,9 +68,7 @@ module.exports = (fastify, path, stream, getConfig) => {
   // Change a setting
   fastify.post(
     '/config',
-    authService.secureRouteHandler(getConfig, async (request, reply) => {
-      // We need our actual config here to make sure we are reurning the static json file
-      const config = require(`${path}/config.json`);
+    authService.secureRouteHandler(config, async (request, reply) => {
       let response = await changeConfig(path, config, request.body.key, request.body.value);
 
       reply.type('application/json').code(response[0]);

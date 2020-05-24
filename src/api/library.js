@@ -4,10 +4,9 @@ const musicMetadata = require('music-metadata');
 const authService = require('./auth');
 const supportedFileTypes = require('../supportedFileTypes');
 
-const getAllAudio = async (path, getConfig) => {
+const getAllAudio = async (path, config) => {
   // Find al of our files with the extensions
   let allFiles = [];
-  const config = await getConfig();
   supportedFileTypes.supportedAudioTypes.forEach(extension => {
     allFiles = [...allFiles, ...find.fileSync(extension, `${path}${config.radio.audio_directory}`)];
   });
@@ -15,8 +14,8 @@ const getAllAudio = async (path, getConfig) => {
   return allFiles;
 };
 
-const getAllAudioWithMetadata = async (path, getConfig) => {
-  const audioFiles = await getAllAudio(path, getConfig);
+const getAllAudioWithMetadata = async (path, config) => {
+  const audioFiles = await getAllAudio(path, config);
 
   const allMetadata = [];
   const metadataPromises = [];
@@ -39,15 +38,15 @@ const getAllAudioWithMetadata = async (path, getConfig) => {
 };
 
 // File to return all of our /radio/* routes
-module.exports = (fastify, path, stream, getConfig) => {
+module.exports = (fastify, path, stream, config) => {
   fastify.get(
     '/library/audio',
-    authService.secureRouteHandler(getConfig, async (request, reply) => {
+    authService.secureRouteHandler(config, async (request, reply) => {
       let response;
       if (request.query.include_metadata !== undefined) {
-        response = await getAllAudioWithMetadata(path, getConfig);
+        response = await getAllAudioWithMetadata(path, config);
       } else {
-        response = await getAllAudio(path, getConfig);
+        response = await getAllAudio(path, config);
       }
 
       reply.type('application/json').code(200);

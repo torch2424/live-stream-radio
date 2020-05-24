@@ -15,7 +15,6 @@ export default {
   htmlContext: {
     favicon: '/docz/favicon.ico'
   },
-  hashRouter: true,
   mdPlugins: [externalLinks.default],
   plugins: [],
   modifyBundlerConfig: config => {
