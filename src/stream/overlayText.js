@@ -16,7 +16,7 @@ const getOverlayTextString = async (path, config, typeKey, metadata) => {
     // Check if we have a title option
     if (overlayConfigObject.title && overlayConfigObject.title.enabled) {
       const itemObject = overlayConfigObject.title;
-      const safeText = safeStrings.forFilter( itemObject.text );
+      const safeText = safeStrings.forFilter(itemObject.text);
       let itemString =
         `drawtext=text='${safeText}'` +
         `:fontfile=${fontPath}` +
@@ -36,7 +36,7 @@ const getOverlayTextString = async (path, config, typeKey, metadata) => {
     // Check if we have an artist option
     if (overlayConfigObject.artist && overlayConfigObject.artist.enabled) {
       const itemObject = overlayConfigObject.artist;
-      const safeText = safeStrings.forFilter( itemObject.label + metadata.common.artist);
+      const safeText = safeStrings.forFilter(itemObject.label + metadata.common.artist);
       let itemString =
         `drawtext=text='${safeText}'` +
         `:fontfile=${fontPath}` +
@@ -52,7 +52,7 @@ const getOverlayTextString = async (path, config, typeKey, metadata) => {
     // Check if we have an album option
     if (overlayConfigObject.album && overlayConfigObject.album.enabled) {
       const itemObject = overlayConfigObject.album;
-      const safeText = safeStrings.forFilter( itemObject.label + metadata.common.album);
+      const safeText = safeStrings.forFilter(itemObject.label + metadata.common.album);
       let itemString =
         `drawtext=text='${safeText}'` +
         `:fontfile=${fontPath}` +
@@ -68,7 +68,7 @@ const getOverlayTextString = async (path, config, typeKey, metadata) => {
     // Check if we have an artist option
     if (overlayConfigObject.song && overlayConfigObject.song.enabled) {
       const itemObject = overlayConfigObject.song;
-      const safeText = safeStrings.forFilter( itemObject.label + metadata.common.title);
+      const safeText = safeStrings.forFilter(itemObject.label + metadata.common.title);
       let itemString =
         `drawtext=text='${safeText}'` +
         `:fontfile=${fontPath}` +

@@ -11,7 +11,7 @@ var safeStringInput = function(string) {
 
   // Return safe string
   return safeString;
-}
+};
 
 // Function to make string safe that are used in a filter
 var safeStringFilter = function(string) {
@@ -25,13 +25,13 @@ var safeStringFilter = function(string) {
   safeString = safeString.replace(/\:/g, '\\:');
 
   // ' will be \'
-  safeString = safeString.replace(/\'/g, '\\\'');
+  safeString = safeString.replace(/\'/g, "\\'");
 
   // Return safe string
   return safeString;
-}
+};
 
 module.exports = {
   forInput: safeStringInput,
   forFilter: safeStringFilter
-}
+};

@@ -18,32 +18,22 @@ if ((Object.keys(argv).length === 1 && argv._.length <= 0) || argv.help !== unde
   const pkg = require('../package.json');
 
   console.log(`
-
 ${chalk.blue('USAGE:')} ${chalk.yellow(pkg.name)}
   
   ${chalk.blue('--help, -h')} : Print this usage message.
-
   ${chalk.blue('--version, -v')} : Print the current version of this installation.
-
   ${chalk.blue('--generate, -g')} ${chalk.magenta('[Project Name/Directory]')} : Generate a new stream project,
     in a directory with the Project name.
-
   ${chalk.blue('--output, -o')} ${chalk.magenta('[Stream Output Location]')} : Override the 'stream_url/stream_key', 
     in the config.json, and output to the location. 
     Helpful for testing output and development.
-
   ${chalk.blue('--start, -s')} ${chalk.magenta('[Project Name/Directory]')} : Start the stream using the passed directory.
-
   ${chalk.yellow('Default:')}
-
   Will assume the --start flag if no flag is passed.
-
   E.g 
   
   ${pkg.name} [Project Name/Directory]
-
   Will Become:
-
   ${pkg.name} --start [Project Name/Directory]
   `);
 
