@@ -2,7 +2,7 @@ const historyService = require('../history.service');
 const authService = require('./auth');
 
 // Function to perform all checks before performing route
-const preCheck = (stream, config, fastify, request, reply) => {
+const preCheck = (stream, getConfig, fastify, request, reply) => {
   if (!stream) {
     reply.type('application/json').code(400);
     return {
@@ -14,11 +14,11 @@ const preCheck = (stream, config, fastify, request, reply) => {
 };
 
 // File to return all of our /stream/* routes
-module.exports = (fastify, path, stream, config) => {
+module.exports = (fastify, path, stream, getConfig) => {
   // Get stream status
   fastify.get(
     '/stream',
-    authService.secureRouteHandler(config, async (request, reply) => {
+    authService.secureRouteHandler(getConfig, async (request, reply) => {
       reply.type('application/json').code(200);
       return {
         isRunning: stream.isRunning()
@@ -29,8 +29,8 @@ module.exports = (fastify, path, stream, config) => {
   // Start the stream
   fastify.post(
     '/stream/start',
-    authService.secureRouteHandler(config, async (request, reply) => {
-      const preCheckResponse = preCheck(stream, config, fastify, request, reply);
+    authService.secureRouteHandler(getConfig, async (request, reply) => {
+      preCheckResponse = preCheck(stream, getConfig, fastify, request, reply);
       if (preCheckResponse) {
         return preCheckResponse;
       }
@@ -49,8 +49,8 @@ module.exports = (fastify, path, stream, config) => {
   // Stop the stream
   fastify.post(
     '/stream/stop',
-    authService.secureRouteHandler(config, async (request, reply) => {
-      const preCheckResponse = preCheck(stream, config, fastify, request, reply);
+    authService.secureRouteHandler(getConfig, async (request, reply) => {
+      preCheckResponse = preCheck(stream, getConfig, fastify, request, reply);
       if (preCheckResponse) {
         return preCheckResponse;
       }
@@ -69,8 +69,8 @@ module.exports = (fastify, path, stream, config) => {
   // Restart the stream
   fastify.post(
     '/stream/restart',
-    authService.secureRouteHandler(config, async (request, reply) => {
-      const preCheckResponse = preCheck(stream, config, fastify, request, reply);
+    authService.secureRouteHandler(getConfig, async (request, reply) => {
+      preCheckResponse = preCheck(stream, getConfig, fastify, request, reply);
       if (preCheckResponse) {
         return preCheckResponse;
       }
@@ -94,7 +94,7 @@ module.exports = (fastify, path, stream, config) => {
   // Stream History
   fastify.get(
     '/stream/history',
-    authService.secureRouteHandler(config, async (request, reply) => {
+    authService.secureRouteHandler(getConfig, async (request, reply) => {
       reply.type('application/json').code(200);
       return {
         history: historyService.getHistory()
@@ -105,35 +105,35 @@ module.exports = (fastify, path, stream, config) => {
   // Returns 405
   fastify.post(
     '/stream',
-    authService.secureRouteHandler(config, async (request, reply) => {
+    authService.secureRouteHandler(getConfig, async (request, reply) => {
       reply.type('application/json').code(405);
       return {};
     })
   );
   fastify.get(
     '/stream/start',
-    authService.secureRouteHandler(config, async (request, reply) => {
+    authService.secureRouteHandler(getConfig, async (request, reply) => {
       reply.type('application/json').code(405);
       return {};
     })
   );
   fastify.get(
     '/stream/stop',
-    authService.secureRouteHandler(config, async (request, reply) => {
+    authService.secureRouteHandler(getConfig, async (request, reply) => {
       reply.type('application/json').code(405);
       return {};
     })
   );
   fastify.get(
     '/stream/restart',
-    authService.secureRouteHandler(config, async (request, reply) => {
+    authService.secureRouteHandler(getConfig, async (request, reply) => {
       reply.type('application/json').code(405);
       return {};
     })
   );
   fastify.post(
     '/stream/history',
-    authService.secureRouteHandler(config, async (request, reply) => {
+    authService.secureRouteHandler(getConfig, async (request, reply) => {
       reply.type('application/json').code(405);
       return {};
     })

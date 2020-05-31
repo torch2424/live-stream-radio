@@ -4,10 +4,10 @@ var safeStringInput = function(string) {
 
   // Safen the string
   // \ will be \\
-  safeString.replace(/\\/g, '\\\\');
+  safeString = safeString.replace(/\\/g, '\\\\');
 
   // : will be \:
-  safeString.replace(/\:/g, '\\:');
+  safeString = safeString.replace(/\:/g, '\\:');
 
   // Return safe string
   return safeString;
@@ -19,13 +19,13 @@ var safeStringFilter = function(string) {
 
   // Safen the string
   // \ will be \\
-  safeString.replace(/\\/g, '\\\\');
+  safeString = safeString.replace(/\\/g, '\\\\');
 
   // : will be \:
-  safeString.replace(/\:/g, '\\:');
+  safeString = safeString.replace(/\:/g, '\\:');
 
   // ' will be \'
-  safeString.replace(/\'/g, "\\'");
+  safeString = safeString.replace(/\'/g, "\\'");
 
   // Return safe string
   return safeString;
